@@ -1,8 +1,8 @@
 /* General Body Styling */
 body {
     font-family: Garamond, serif;
-    background-color:  rgb(58, 61, 58);
-    color:rgb(125, 16, 16);
+    background-color:  rgb(43, 39, 39);
+    color:rgb(217, 0, 0);
     margin: 0;
     padding: 0;
     display: flex;
@@ -15,7 +15,7 @@ body {
 header {
     text-align: center;
     padding: 20px;
-    border: 1px solid #341414;
+    border: 1px solid #571a1a;
     background-color: #3f2f2f;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
