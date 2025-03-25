@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris Li’s Cozy Labrador | ITIS3135 | HTML Tables - Company</title>
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="scripts/HTMLInclude.min.js"></script>
+    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div data-include="components/header.html"></div>
+
+    <nav id="other-nav">
+        <ul>
+            <li><a href="stuff/CRAPPY%20webpage-lmao!.html">CRAPPY Webpage</a></li>
+            <li><a href="website_evaluations.html">Website Evaluations</a></li>
+            <li><a href="tables.html">HTML Tables</a></li>
+            <li><a href="hobby.html">Favorite Hobby</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>HTML Tables - Company</h2>
+
+        <h3>My Tabular Data</h3>
+        <ol>
+            <li>Koleda Belobog - kbelobog@belobog.com - 10 years</li>
+            <li>Anby Demara - ademara@cunninghares.com - 5 years</li>
+            <li>Ben Bigger - bbigger@cunninghares.com - 8 years</li>
+            <li>Anton Ivanov - aivanov@belobog.com - 12 years</li>
+            <li>Nicole Demara - ndemara@cunninghares.com - 6 years</li>
+            <li>Soukaku - soukaku@hollowspecialists.com - 3 years</li>
+            <li>Corin Wickes - cwickes@cunninghares.com - 7 years</li>
+            <li>Grace Howard - ghoward@victoriatech.com - 4 years</li>
+        </ol>
+
+        <h3>Employee Data in Simple Table</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Name</th><th>Email</th><th>Years of Service</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Koleda Belobog</td><td>kbelobog@belobog.com</td><td>10</td></tr>
+                    <tr><td>Anby Demara</td><td>ademara@cunninghares.com</td><td>5</td></tr>
+                    <tr><td>Ben Bigger</td><td>bbigger@cunninghares.com</td><td>8</td></tr>
+                    <tr><td>Anton Ivanov</td><td>aivanov@belobog.com</td><td>12</td></tr>
+                    <tr><td>Nicole Demara</td><td>ndemara@cunninghares.com</td><td>6</td></tr>
+                    <tr><td>Soukaku</td><td>soukaku@hollowspecialists.com</td><td>3</td></tr>
+                    <tr><td>Corin Wickes</td><td>cwickes@cunninghares.com</td><td>7</td></tr>
+                    <tr><td>Grace Howard</td><td>ghoward@victoriatech.com</td><td>4</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Employee Data in Complex Table</h3>
+<figure>
+    <figcaption>Employee Information - Zenless Zone Zero Company</figcaption>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th id="category">Category</th>
+                    <th id="name">Name</th>
+                    <th id="email">Email</th>
+                    <th id="years">Years of Service</th>
+                    <th id="salary">Monthly Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td headers="category" rowspan="2">Management</td>
+                    <td headers="name">Koleda Belobog</td>
+                    <td headers="email">kbelobog@belobog.com</td>
+                    <td headers="years">10</td>
+                    <td headers="salary">$8000</td>
+                </tr>
+                <tr>
+                    <td headers="name">Anton Ivanov</td>
+                    <td headers="email">aivanov@belobog.com</td>
+                    <td headers="years">12</td>
+                    <td headers="salary">$7500</td>
+                </tr>
+                <tr>
+                    <td headers="category" rowspan="4">Cunning Hares</td>
+                    <td headers="name">Anby Demara</td>
+                    <td headers="email">ademara@cunninghares.com</td>
+                    <td headers="years">5</td>
+                    <td headers="salary">$5500</td>
+                </tr>
+                <tr>
+                    <td headers="name">Ben Bigger</td>
+                    <td headers="email">bbigger@cunninghares.com</td>
+                    <td headers="years">8</td>
+                    <td headers="salary">$6000</td>
+                </tr>
+                <tr>
+                    <td headers="name">Nicole Demara</td>
+                    <td headers="email">ndemara@cunninghares.com</td>
+                    <td headers="years">6</td>
+                    <td headers="salary">$5800</td>
+                </tr>
+                <tr>
+                    <td headers="name">Corin Wickes</td>
+                    <td headers="email">cwickes@cunninghares.com</td>
+                    <td headers="years">7</td>
+                    <td headers="salary">$5900</td>
+                </tr>
+                <tr>
+                    <td headers="category">Special Ops</td>
+                    <td headers="name">Soukaku</td>
+                    <td headers="email">soukaku@hollowspecialists.com</td>
+                    <td headers="years">3</td>
+                    <td headers="salary">$7200</td>
+                </tr>
+                <tr>
+                    <td headers="category">Tech Division</td>
+                    <td headers="name">Grace Howard</td>
+                    <td headers="email">ghoward@victoriatech.com</td>
+                    <td headers="years">4</td>
+                    <td headers="salary">$6800</td>
+                </tr>
+                <tr>
+                    <th colspan="3">Total Years of Service</th>
+                    <th>55</th>
+                    <th>$52,700</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</figure>
+
+    </main>
+
+    <div data-include="components/footer.html"></div>
+    <script>HTMLInclude();</script>
+</body>
+</html>

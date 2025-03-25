@@ -1,0 +1,176 @@
+body {
+    background: linear-gradient(to bottom, 
+        #FCE5CD,  /* Soft peach */
+        #F6D7B0,  /* Warm beige */
+        #EED8A5,  /* Soft golden */
+        #D5C8A3,  /* Muted earthy tone */
+        #B8B89F   /* Cozy sage green */
+    );
+    background-size: 100% 250%;
+    background-position: top center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Merriweather', serif; /* Warm and cozy serif font */
+    color: #5A4A42; /* Soft brown text */
+    overflow-x: hidden;
+}
+
+/* Header Styling */
+header {
+    background-color: #8B6F47; /* Warm mocha brown header */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Pacifico', cursive; /* Cozy handwritten font */
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* Navigation Bar Styling */
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #FFF8E1; /* Soft cream white for better readability */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li:not(:last-child) {
+    margin-right: 15px;
+}
+
+nav ul li:not(:last-child)::after {
+    content: " |";
+    color: #FFF8E1;
+    margin-left: 10px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+    color: #EEC690; /* Lighter golden hue on hover */
+}
+
+/* Main Content Styling */
+main {
+    text-align: center;
+    padding: 50px;
+}
+
+main h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2em;
+    color: #8B6F47;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #8B6F47;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer ul li {
+    margin: 5px 0;
+}
+
+footer ul li a {
+    color: #FFE4B5; /* Warm beige for better visibility */
+    text-decoration: none;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+    color: #EEC690;
+}
+
+footer p {
+    margin-top: 20px;
+}
+
+/* Link Styling */
+a {
+    color: #ffd919;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #EEC690;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #D68C45;
+    text-decoration: none;
+}
+
+/* Image Styling */
+img {
+    max-width: 100%;
+    height: auto;
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+figure {
+    max-width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+figcaption {
+    font-style: italic;
+    color: #5A4A42;
+    margin-top: 10px;
+}
+
+/* Ensure the unordered list aligns to the left */
+ul {
+    text-align: left;
+    margin-left: 0;
+    padding-left: 20px;
+    list-style-position: inside;
+}
+
+ul ul {
+    padding-left: 40px;
+}
+
+/* Ensure all elements within the page are properly contained */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Prevent any specific element from going beyond the viewport width */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

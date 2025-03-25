@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta info and style sheet-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="scripts/HTMLInclude.min.js"></script> <!-- Include HTMLInclude.js -->
+    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+
+    <!--Title, name, mascot, course id, page name-->
+    <title>Chris Li's Cozy Labrador | ITCS3135 | About</title>
+</head>
+
+<body>
+    <!-- Dynamically load header -->
+    <div data-include="components/header.html"></div>
+
+    <!-- Separate Nav for "other" Webpages -->
+    <nav id="other-nav">
+        <ul>
+            <li><a href="stuff/CRAPPY%20webpage-lmao!.html">CRAPPY Webpage</a></li>
+            <li><a href="website_evaluations.html">Website Evaluations</a></li>
+            <li><a href="tables.html">HTML Tables</a></li>
+            <li><a href="hobby.html">Favorite Hobby</a></li>
+        </ul>
+    </nav>
+
+    <!--Main Content-->
+    <main>
+        <h2>About Chris Li's Cozy Labrador</h2>
+        <p>Welcome to Chris Li's Cozy Labrador, a delightful space where comfort meets creativity. 
+            Inspired by the gentle and friendly nature of Labradors, we offer a range of cozy, 
+            hand-crafted animal plushies designed to bring warmth and joy into your home.</p>
+        <p>From plushies of calm black labs to demonic orange cats, our products are crafted with care and a touch of Labrador charm. 
+            Each item is designed to evoke a sense of coziness, making your space a haven of comfort. 
+            Whether you are looking for a thoughtful gift or a little something to treat yourself, 
+            our collection has something for everyone.</p>
+    </main>
+
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <!-- Run HTMLInclude to load header/footer dynamically -->
+    <script>
+        HTMLInclude();  // Dynamically load the header and footer content
+    </script>
+
+    <!-- JavaScript to dynamically update validation links -->
+    <script>
+        document.getElementById("validation_link_html").setAttribute("href", 
+            "https://validator.w3.org/check?uri=" + location.href);
+
+        document.getElementById("validation_link_css").setAttribute("href", 
+            "https://jigsaw.w3.org/css-validator/validator?uri=" + location.href);
+    </script>
+
+</html>

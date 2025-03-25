@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris Li’s Cozy Labrador | ITIS3135 | Contract</title>
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="scripts/HTMLInclude.min.js"></script> <!-- Include HTMLInclude.js -->
+    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <!-- Dynamically load header -->
+    <div data-include="components/header.html"></div>
+
+    <!-- Separate Nav for "other" Webpages -->
+    <nav id="other-nav">
+        <ul>
+            <li><a href="stuff/CRAPPY%20webpage-lmao!.html">CRAPPY Webpage</a></li>
+            <li><a href="website_evaluations.html">Website Evaluations</a></li>
+            <li><a href="tables.html">HTML Tables</a></li>
+            <li><a href="hobby.html">Favorite Hobby</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+    <main>
+        <h2>ITIS3135 Course Contract</h2>
+        <p>Welcome to the Contract page for ITIS3135. </p>
+        <h2>Course Contract</h2>
+        <p>
+            I, <a href="introductions.html">Chris Li</a>, agree to abide by the terms of the course contract in my Spring 2025, ITIS3135, Web Development with my instructor, Professor D.I. von Briesen.
+        </p>
+        <p>
+            I understand that all work I do on publicly available online tools will be available to the world, and I will not put information there that is inappropriate for schoolwork or that I wish to keep private.
+        </p>
+        <p>
+            I also understand that it is my work that counts for attendance, not logins or showing up for class. As such, failure to turn in assignments may show as absences.
+        </p>
+        <p>
+            Signed: <em>Chris Li</em>, January 19th, 2025
+        </p>
+    </main>
+
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <!-- Run HTMLInclude to load header/footer dynamically -->
+    <script>
+        HTMLInclude();  // Dynamically load the header and footer content
+    </script>
+
+    <!-- JavaScript to dynamically update validation links -->
+    <script>
+        document.getElementById("validation_link_html").setAttribute("href", 
+            "https://validator.w3.org/check?uri=" + location.href);
+
+        document.getElementById("validation_link_css").setAttribute("href", 
+            "https://jigsaw.w3.org/css-validator/validator?uri=" + location.href);
+    </script>
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <!-- Run HTMLInclude to load header/footer dynamically -->
+    <script>
+        HTMLInclude();  // Dynamically load the header and footer content
+    </script>
+
+    <!-- JavaScript to dynamically update validation links -->
+    <script>
+        document.getElementById("validation_link_html").setAttribute("href", 
+            "https://validator.w3.org/check?uri=" + location.href);
+
+        document.getElementById("validation_link_css").setAttribute("href", 
+            "https://jigsaw.w3.org/css-validator/validator?uri=" + location.href);
+    </script>
+</body>
+</html>

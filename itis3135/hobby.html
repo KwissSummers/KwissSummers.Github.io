@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chris Li’s Gaming Hobby</title>
+
+  <!-- Google Fonts (similar to index.html) -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Embedded CSS: taken from default.css but using a different color scheme -->
+  <style>
+    /* Global Resets & Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1E1F22; /* Dark-ish background for distinct style */
+      color: #F8F8F8;           /* Light text for contrast */
+      line-height: 1.6;
+    }
+
+    /* Headings: incorporate 'Caveat' for accent if desired */
+    h1, h2, h3, h4 {
+      font-family: 'Caveat', cursive;
+      margin-bottom: 0.5rem;
+      color: #EAEAEA; /* Slightly lighter for headings */
+    }
+    h1 {
+      font-size: 2.2rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    /* Page Layout */
+    header, footer {
+      background-color: #2C2D31;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+    }
+
+    /* Header & Nav */
+    header h1 {
+      margin-bottom: 0.8rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+    }
+    nav a {
+      text-decoration: none;
+      font-family: 'Poppins', sans-serif;
+      color: #F8F8F8;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #F8F8F8;
+      border-radius: 6px;
+    }
+    nav a:hover {
+      background-color: #F8F8F8;
+      color: #2C2D31;
+    }
+
+    /* Sections */
+    section {
+      display: none; /* Hide all sections by default */
+      margin: 2rem 0;
+    }
+    section h2 {
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.3rem;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* Figures & Images */
+    figure {
+      margin: 1.5rem auto;
+      text-align: center;
+    }
+    figure img {
+      max-width: 300px;
+      height: auto;
+      display: block;
+      margin: 0.5rem auto;
+    }
+    figcaption {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    /* If images are AI-generated, you can add an italic line with the prompt. */
+    figure p em {
+      font-family: 'Poppins', sans-serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #CCC;
+    }
+
+    /* Tables */
+    table {
+      margin: 1rem auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    table, th, td {
+      border: 1px solid #666;
+    }
+    th, td {
+      text-align: center;
+      padding: 0.5rem;
+    }
+    th {
+      background-color: #2C2D31;
+      color: #FFFFFF;
+    }
+    caption {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #EAEAEA;
+    }
+
+    /* Forms */
+    form {
+      margin: 1.5rem auto;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    input, textarea {
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+    }
+    button {
+      background-color: #F8F8F8;
+      color: #2C2D31;
+      border: none;
+      border-radius: 4px;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      align-self: flex-start;
+      font-weight: 600;
+    }
+    button:hover {
+      background-color: #dedede;
+    }
+
+    /* Footer */
+    footer p {
+      margin: 0.5rem 0;
+    }
+    footer a {
+      color: #F8F8F8;
+      text-decoration: none;
+      border: 1px solid #F8F8F8;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin: 0 0.2rem;
+      display: inline-block;
+    }
+    footer a:hover {
+      background-color: #F8F8F8;
+      color: #2C2D31;
+    }
+  </style>
+
+  <!-- Optional: Favicon and html css validator -->
+  <link rel="icon" href="images/gaming-favicon.ico" type="image/x-icon">
+  <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Chris Li’s Gaming Hobby</h1>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('what')">What</a></li>
+        <li><a href="#" onclick="showSection('who')">Who</a></li>
+        <li><a href="#" onclick="showSection('when')">When</a></li>
+        <li><a href="#" onclick="showSection('where')">Where</a></li>
+        <li><a href="#" onclick="showSection('how')">How</a></li>
+        <li><a href="#" onclick="showSection('why')">Why</a></li>
+        <li><a href="#" onclick="showSection('ai-prompts')">AI Prompts</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- WHAT section (default/home) -->
+    <section id="what">
+      <h2>What is Gaming?</h2>
+      <p>Gaming is the activity of playing games, whether on consoles, PCs, mobile devices, or other means. It encompasses countless genres: from turn-based and role-playing epics to puzzle games and social simulators.</p>
+      <p>It’s a form of entertainment, social interaction, and mental exercise, often providing immersive experiences that go beyond traditional hobbies. I personally believe gaming to be the peak art form.</p>
+      <figure>
+        <img src="images/controller.jpg" alt="PS5 controller on a table">
+        <figcaption>PS5 Game Controller</figcaption>
+        <!-- If AI-generated, include an italic prompt below (example):
+        <p><em>AI Prompt: "Photorealistic PS5 controller on a wooden surface"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- WHO section -->
+    <section id="who">
+      <h2>Who Plays Games?</h2>
+      <p>People of all ages enjoy gaming, from young children learning with educational apps to adults seeking immersive, story-driven adventures. Gaming communities are wonderfully diverse, reflecting different backgrounds and interests.</p>
+      <p>I personally have been gaming since I was a kid and continue to love exploring new titles and genres. While the list of games I've experienced is too long to list, some of my favorites are Hoyoverse games, cozy indie titles, and whatever game of the year is.</p>
+
+      <table>
+        <caption>Favorite Genres &amp; Examples</caption>
+        <thead>
+          <tr>
+            <th>Genre</th>
+            <th>Example Titles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RPG</td>
+            <td>Final Fantasy, Honkai: Star Rail, Genshin Impact, Baldur's Gate 3</td>
+          </tr>
+          <tr>
+            <td>Simulator</td>
+            <td>Fields of Mistria, Stardew Valley, The Sims</td>
+          </tr>
+          <tr>
+            <td>Souls-like</td>
+            <td>Elden Ring, Nine Sols, Hollow Knight</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <figure>
+        <img src="images/gaming-group.jpg" alt="Group of people playing a game together">
+        <figcaption>Friends Teaming Up</figcaption>
+        <!-- If AI-generated, include an italic prompt below
+        <p><em>AI Prompt: "Digital illustration of friends playing couch co-op in a living room"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- WHEN section -->
+    <section id="when">
+      <h2>When to Play</h2>
+      <p>Some gamers prefer to play in short bursts during break times or commutes, while others enjoy day-long gaming sessions on weekends. Esports enthusiasts follow tournament schedules year-round.</p>
+      <p>I like to play a little throughout the day during breaks, and sometimes I sit down for longer gaming sessions either by myself or with friends.</p>
+      <figure>
+        <img src="images/night-setup.jpg" alt="Nighttime gaming setup with a glowing keyboard">
+        <figcaption>Late-Night Gaming Setup</figcaption>
+        <!-- If AI-generated, include an italic prompt below
+        <p><em>AI Prompt: "Nighttime gaming desk with neon keyboard lighting in a dimly lit room"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- WHERE section -->
+    <section id="where">
+      <h2>Where to Play</h2>
+      <p>Today, you can game nearly everywhere—on the couch with a console, at a desktop PC, or on a handheld device. Cloud gaming even allows high-fidelity titles to be played on lower-end devices as long as there’s a stable internet connection. There are many ways to access and play games.</p>
+      <p>I don’t really mind where I play. The most important part is that the environment is suitable for the game I'm playing and that I'm at ease.</p>
+      <figure>
+        <img src="images/handheld.jpg" alt="A person holding a handheld gaming console">
+        <figcaption>Gaming On the Go</figcaption>
+        <!-- If AI-generated, include an italic prompt below
+        <p><em>AI Prompt: "Minimalist image of a person playing a handheld console on a bus"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- HOW section -->
+    <section id="how">
+      <h2>How to Get Started</h2>
+      <p>Getting into gaming is relatively easy. A smartphone is a simple entry point, offering free-to-play titles. You can also invest in a console or a gaming PC for more advanced experiences. It’s helpful to watch gameplay videos or read reviews to find games that match your tastes.</p>
+      <p>Everyone has different tastes. You just have to find something that piques your interest, and the rest will take care of itself.</p>
+      <!-- Example form -->
+      <form>
+        <label for="genre">Preferred Genre:</label>
+        <input type="text" id="genre" name="genre" placeholder="e.g., RPG, Strategy">
+
+        <label for="platform">Preferred Platform:</label>
+        <input type="text" id="platform" name="platform" placeholder="e.g., PC, PlayStation, Switch">
+
+        <label for="experience">Your Gaming Experience:</label>
+        <textarea id="experience" name="experience" rows="4" placeholder="Briefly share your gaming history..."></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      <figure>
+        <img src="images/browsing-games.png" alt="Browsing games online">
+        <figcaption>Discovering New Games</figcaption>
+        <!-- If AI-generated, include an italic prompt below
+        <p><em>AI Prompt: "Simple illustration of a person browsing video game listings on a laptop"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- WHY section -->
+    <section id="why">
+      <h2>Why Gaming?</h2>
+      <p>Gaming fosters creativity, hand-eye coordination, strategic thinking, and social interaction. It offers an escape into different worlds, connecting players across the globe.</p>
+      <p>I love it for its immersive storytelling, sense of community, and the possibilities gaming offers. While the game world itself might not be real, the impact it can have on our real world is very much tangible.</p>
+      <figure>
+        <img src="images/game-world.jpg" alt="A scene from a game">
+        <figcaption>Immersive Game World</figcaption>
+        <!-- If AI-generated, include an italic prompt below
+        <p><em>AI Prompt: "Concept art of a surreal fantasy game world with floating islands"</em></p>
+        -->
+      </figure>
+    </section>
+
+    <!-- AI PROMPTS section -->
+    <section id="ai-prompts">
+      <h2>AI Prompts</h2>
+      <p>Below is a simplified main AI prompt used to help generate content for this page:</p>
+      <ul>
+        <li><strong>ChatGPT Prompt:</strong> “I'm providing you with my index.html file that I've created, create an outline for me to fill out, customize, and work on. Guide me if I'm missing any steps so I can meet the assignment criteria.”</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Designed by <a href="chrislienterprises.co/index.html">Chris Li Enterprises</a></p>
+    <!-- Validation Buttons/Links -->
+    <p>
+      <!-- Replace UNCCUSERNAME with your actual path/username -->
+      <a href="https://validator.w3.org/check?uri=https://webpages.charlotte.edu/cli36/ITIS3135/hobby.html">HTML</a>
+      <a href="https://jigsaw.w3.org/css-validator/validator?uri=https://webpages.charlotte.edu/cli36/ITIS3135/hobby.html">CSS</a>
+      <a href="https://wave.webaim.org/report#/https://webpages.charlotte.edu/cli36/ITIS3135/hobby.html">WAVE</a>
+    </p>
+  </footer>
+
+  <script>
+    // Hide/Show sections
+    function showSection(sectionId) {
+    const sections = document.querySelectorAll('main section');
+    sections.forEach((sec) => {
+        sec.style.display = 'none';
+    });
+    document.getElementById(sectionId).style.display = 'block';
+}
+
+
+    // Display "what" by default on page load
+    window.onload = () => {
+      showSection('what');
+    };
+  </script>
+
+</body>
+</html>

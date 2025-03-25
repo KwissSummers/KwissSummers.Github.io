@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Evaluations</title>
+    <link rel="stylesheet" href="styles/default.css">
+    <script src="scripts/HTMLInclude.min.js"></script>
+</head>
+<body>
+    <!-- Dynamically load header -->
+    <div data-include="components/header.html"></div>
+
+    <!-- Separate Nav for "other" Webpages -->
+    <nav id="other-nav">
+        <ul>
+            <li><a href="stuff/CRAPPY%20webpage-lmao!.html">CRAPPY Webpage</a></li>
+            <li><a href="website_evaluations.html">Website Evaluations</a></li>
+            <li><a href="tables.html">HTML Tables</a></li>
+            <li><a href="hobby.html">Favorite Hobby</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Website Evaluations</h2>
+
+        <!-- Good Website Evaluation -->
+        <section>
+            <h3><a href="https://www.apple.com">Good Website: Apple.com</a></h3>
+            <p>This is a solid website with a clean layout, excellent contrast, and consistent navigation.</p>
+            <ul>
+                <li><strong>Contrast:</strong> The site uses clear contrast between the background and text, making it easy to read.</li>
+                <li><strong>Repetition:</strong> The same fonts and colors are used throughout the site, keeping the website style consistent</li>
+                <li><strong>Alignment:</strong> All elements are aligned, making the site feel organized and professional.</li>
+                <li><strong>Proximity:</strong> Related items like menus and links are placed together to show relevance.</li>
+            </ul>
+        </section>
+
+        <!-- Bad Website Evaluation -->
+        <section>
+            <h3><a href="https://arngren.net">Bad Website: Arngren.net</a></h3>
+            <p>This website has poor layout and readability issues due to bad use of contrast and misaligned elements.</p>
+            <ul>
+                <li><strong>Contrast:</strong> The text is hard to read because, well, it has no real formatting</li>
+                <li><strong>Repetition:</strong> There's inconsistency in the use of fonts and colors, making the site feel disjointed.</li>
+                <li><strong>Alignment:</strong> Text and images are misaligned, creating a cluttered look.</li>
+                <li><strong>Proximity:</strong> While relevant items are grouped together, it's... well, it's, i dont have words to describe this.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <script>
+        HTMLInclude();  // Dynamically load header and footer
+    </script>
+</body>
+</html>
