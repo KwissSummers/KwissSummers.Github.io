@@ -298,3 +298,123 @@ figcaption {
     color: #555; /* Medium gray */
     margin-top: 10px;
 }
+
+/* === Updated Cozy Labrador Form Styling === */
+
+form {
+    background-color: #fffdf8;
+    border: 2px dashed #6B4F31;
+    padding: 25px 30px;
+    margin: 40px auto;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 580px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95em;
+    text-align: left;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #2C6B2F;
+}
+
+form input[type="text"],
+form input[type="tel"],
+form input[type="email"],
+form select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background-color: #f9f4ec;
+    box-sizing: border-box;
+}
+
+form fieldset {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fcf7ef;
+}
+
+form legend {
+    font-weight: bold;
+    color: #6B4F31;
+    margin-bottom: 10px;
+}
+
+form input[type="checkbox"],
+form input[type="radio"] {
+    margin-right: 8px;
+}
+
+form input[type="submit"],
+form input[type="reset"] {
+    background-color: #6B4F31;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    margin: 10px 8px 0 0;
+    font-size: 1em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover,
+form input[type="reset"]:hover {
+    background-color: #8a6542;
+}
+
+
+/* === Modal Popup Styling === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    padding-top: 120px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(50, 50, 50, 0.7);
+}
+
+.modal-content {
+    background-color: #fffdf8;
+    margin: auto;
+    padding: 30px;
+    border: 3px solid #6B4F31;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    color: #2C6B2F;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-family: 'Caveat', cursive;
+    font-size: 1.8em;
+}
+
+.close {
+    color: #6B4F31;
+    float: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #D97E47;
+}
