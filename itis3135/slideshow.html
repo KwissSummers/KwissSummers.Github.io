@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris Li's Cozy Labrador | ITIS3135 | Slideshow</title>
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+    <link rel="stylesheet" type="text/css" href="styles/slideshow.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="scripts/HTMLInclude.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="scripts/slideshow.js"></script>
+    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Dynamically load header -->
+    <div data-include="components/header.html"></div>
+
+    <!-- Dynamically load other pages nav -->
+    <div data-include="components/other-nav.html"></div>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Slideshow Gallery</h2>
+        <p>A gallery of items that start with each letter in "CHRIS LI"</p>
+        
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="slideshow-container">
+                <!-- The slides will be displayed here -->
+                <div class="slide fade">
+                    <div class="numbertext">1 / 7</div>
+                    <img src="images/slideshow/Castorice.PNG" alt="Camera">
+                    <div class="caption">C - for Castorice (1st letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">2 / 7</div>
+                    <img src="images/slideshow/Herta.PNG" alt="Hat">
+                    <div class="caption">H - for Herta (2nd letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">3 / 7</div>
+                    <img src="images/slideshow/Raiden.PNG" alt="Ring">
+                    <div class="caption">R - for Raiden Shogun (3rd letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">4 / 7</div>
+                    <img src="images/slideshow/Icon.PNG" alt="Ice">
+                    <div class="caption">I - for Icon (4th letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">5 / 7</div>
+                    <img src="images/slideshow/Seth.PNG" alt="Sunglasses">
+                    <div class="caption">S - for Seth (5th letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">6 / 7</div>
+                    <img src="images/slideshow/Lighter.PNG" alt="Labrador">
+                    <div class="caption">L - for Lighter (6th letter in CHRIS LI)</div>
+                </div>
+                
+                <div class="slide fade">
+                    <div class="numbertext">7 / 7</div>
+                    <img src="images/slideshow/Insane.PNG" alt="Igloo">
+                    <div class="caption">I - for Insane (7th letter in CHRIS LI)</div>
+                </div>
+
+                <!-- Next and previous buttons -->
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+
+            <!-- The dots/circles -->
+            <div class="dot-container">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+                <span class="dot" onclick="currentSlide(6)"></span>
+                <span class="dot" onclick="currentSlide(7)"></span>
+            </div>
+
+            <!-- Thumbnail navigation -->
+            <div class="thumbnail-container">
+                <div class="thumbnail" onclick="currentSlide(1)">
+                    <img src="images/slideshow/Castorice.PNG" alt="May Death Protect us!">
+                    <div class="thumb-caption">C</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(2)">
+                    <img src="images/slideshow/Herta.PNG" alt="Exploooooosion!">
+                    <div class="thumb-caption">H</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(3)">
+                    <img src="images/slideshow/Raiden.PNG" alt="Torn to Oblivion!">
+                    <div class="thumb-caption">R</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(4)">
+                    <img src="images/slideshow/Icon.PNG" alt="Astra Yao">
+                    <div class="thumb-caption">I</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(5)">
+                    <img src="images/slideshow/Seth.PNG" alt="Seth stonks">
+                    <div class="thumb-caption">S</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(6)">
+                    <img src="images/slideshow/Lighter.PNG" alt="Lighter stonks">
+                    <div class="thumb-caption">L</div>
+                </div>
+                <div class="thumbnail" onclick="currentSlide(7)">
+                    <img src="images/slideshow/Insane.PNG" alt="Burnice is insane">
+                    <div class="thumb-caption">I</div>
+                </div>
+            </div>
+            <div style="clear: both; height: 20px;"></div> <!-- Added spacing after thumbnails -->
+        </div> <!-- Close the container div -->
+
+    </main>
+
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <!-- Run HTMLInclude to load header/footer dynamically -->
+    <script>
+        HTMLInclude();  // Dynamically load the header and footer content
+    </script>
+
+    <!-- JavaScript to dynamically update validation links -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById("validation_link_html")) {
+                document.getElementById("validation_link_html").setAttribute("href", 
+                    "https://validator.w3.org/check?uri=" + location.href);
+            }
+
+            if (document.getElementById("validation_link_css")) {
+                document.getElementById("validation_link_css").setAttribute("href", 
+                    "https://jigsaw.w3.org/css-validator/validator?uri=" + location.href);
+            }
+        });
+    </script>
+</body>
+</html>
