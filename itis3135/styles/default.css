@@ -27,6 +27,8 @@ body {
     justify-content: center;
     align-items: center;
     border: 1px solid #3f6b3f;
+    /* box-sizing: border-box to fix height with padding/border issues */
+    box-sizing: border-box;
     height: 40px; /* Reduced height */
 }
 
@@ -49,7 +51,8 @@ header {
     text-align: center;
 }
 
-header h1 {
+/* Removed qualified heading selector */
+h1 {
     font-family: 'Caveat', cursive;
     font-size: 2.5em;
     margin: 0;
@@ -94,9 +97,12 @@ main {
     width: 90%; /* Percentage width */
     margin: 0 auto; /* Centers the content */
     max-width: 1200px; /* Max width for larger screens */
+    /* box-sizing: border-box to fix width with padding issues */
+    box-sizing: border-box;
 }
 
-main h2 {
+/* Removed qualified heading selector */
+h2 {
     font-family: 'Caveat', cursive;
     font-size: 2em;
     color: #6B4F31;
@@ -110,6 +116,8 @@ footer {
     position: relative;
     width: 100%;
     margin: 0;
+    /* box-sizing: border-box to fix width with padding issues */
+    box-sizing: border-box;
 }
 
 footer ul {
@@ -193,10 +201,13 @@ main ol {
     list-style-position: outside;
 }
 
-*,
-*::before,
-*::after {
+/* Use inheritance for box-sizing instead of universal selector */
+html {
     box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 html, body {
@@ -213,8 +224,10 @@ html, body {
         background-color: red;
     }
     main {
-        padding: 20px; /* Adjust padding for mobile */
-        width: 95%; /* Ensure content fits properly */
+        padding: 20px;
+        /* Use max-width instead of width to fix width with padding issue */
+        max-width: 95%;
+        margin: 0 auto;
     }
 }
 
@@ -225,8 +238,10 @@ html, body {
         background-color: orange;
     }
     main {
-        padding: 30px; /* Adjust padding for tablet */
-        width: 90%; /* Slightly larger content width */
+        padding: 30px;
+        /* Use max-width instead of width to fix width with padding issue */
+        max-width: 90%;
+        margin: 0 auto;
     }
 }
 
@@ -251,6 +266,8 @@ table {
     margin: 20px auto; /* Center table */
     font-size: 1em;
     border: 1px solid #ccc; /* Light gray border */
+    /* box-sizing: border-box to fix width with border issues */
+    box-sizing: border-box;
 }
 
 /* Table headers */
@@ -291,14 +308,6 @@ tfoot tr {
     max-width: 100%;
 }
 
-/* Styling for figure caption */
-figcaption {
-    font-style: italic;
-    font-size: 1em;
-    color: #555; /* Medium gray */
-    margin-top: 10px;
-}
-
 /* === Updated Cozy Labrador Form Styling === */
 
 form {
@@ -312,6 +321,8 @@ form {
     font-family: 'Poppins', sans-serif;
     font-size: 0.95em;
     text-align: left;
+    /* box-sizing: border-box to fix width with padding/border issues */
+    box-sizing: border-box;
 }
 
 form label {
@@ -386,6 +397,8 @@ form input[type="reset"]:hover {
     height: 100%;
     overflow: auto;
     background-color: rgba(50, 50, 50, 0.7);
+    /* box-sizing: border-box to fix height with padding-top issues */
+    box-sizing: border-box;
 }
 
 .modal-content {
@@ -399,9 +412,12 @@ form input[type="reset"]:hover {
     text-align: center;
     color: #2C6B2F;
     font-family: 'Poppins', sans-serif;
+    /* box-sizing: border-box to fix width with padding/border issues */
+    box-sizing: border-box;
 }
 
-.modal-content h3 {
+/* Removed qualified heading selector */
+h3 {
     margin-top: 0;
     font-family: 'Caveat', cursive;
     font-size: 1.8em;

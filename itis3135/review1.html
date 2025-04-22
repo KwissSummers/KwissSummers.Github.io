@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris Li's Cozy Labrador | ITIS3135 | Peer Review 1</title>
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="scripts/HTMLInclude.min.js"></script>
+    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Dynamically load header -->
+    <div data-include="components/header.html"></div>
+
+    <!-- Dynamically load other pages nav -->
+    <div data-include="components/other-nav.html"></div>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Peer Review 1</h2>
+        
+        <h3>Lombard, Garrett</h3>
+        
+        <figure>
+            <img class="peer-review-screenshot" src="images/peer-review-1.png" alt="Garrett Lombard's Website Screenshot">
+            <figcaption><a href="https://glombar4.github.io/itis3135/client_project/project_overview.html" target="_blank">Garrett's Client Project</a></figcaption>
+        </figure>
+        
+        <h3>Website Evaluation</h3>
+        
+        <h4>Website Checklist</h4>
+        <ul>
+            <li>
+                <strong>Submission Navigation:</strong>
+                The submission properly leads to the webpage for review.
+            </li>
+            
+            <li>
+                <strong>File/Folder Naming:</strong>
+                All files use lowercase with no spaces.
+            </li>
+            
+            <li>
+                <strong>Design:</strong>
+                <ul>
+                    <li><strong>Contrast/Font Sizing:</strong> The contrast is fine, albeit a bit minimal. The font size is also okay, but there could definitely be better font type usage and more page formatting. However, I believe it meets the minimal requirements.</li>
+                    <li><strong>Colors and Fonts:</strong> Color usage is fine, though not exactly creative or easy on the eyes. The all-cream-white background is a bit harsh on the eyes, and there's a lot of white space.</li>
+                    <li><strong>CRAP Principles:</strong>
+                        <ul>
+                            <li>Contrast: Minimal, but passable</li>
+                            <li>Repetition: Page formatting is consistent, though could be better structured</li>
+                            <li>Alignment: Works fine, though the navbar could be improved</li>
+                            <li>Proximity: Looks decent enough</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>Page Structure:</strong>
+                <ul>
+                    <li>Header: Present, but could definitely be better stylized</li>
+                    <li>Main: Present</li>
+                    <li>Footer: I'm uncertain if there's an actual footer, however, the website does have CSS/HTML verification links, so there could be one somewhere</li>
+                    <li>Navigation: Doesn't look too great, but it works. Navigation headers have fallen on hard times in this economy!</li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>Header Content:</strong>
+                Header is passable and uses h1
+            </li>
+            
+            <li>
+                <strong>Main Content:</strong>
+                <ul>
+                    <li>Name of page as h2: Yes</li>
+                    <li>Brand tagline: Doesn't appear to be one, may not be necessary</li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>Footer Content:</strong>
+                <ul>
+                    <li>Menu for user's pages: Present</li>
+                    <li>HTML validation button/link: Working</li>
+                    <li>CSS validation button/link: Working</li>
+                </ul>
+            </li>
+            
+            <li>
+                <strong>Assignment Requirements:</strong>
+                I think it meets requirements for the most part. I don't think it includes a dynamic header or footer, but it does have working validation links.
+            </li>
+        </ul>
+        
+        <h4>Additional Feedback</h4>
+        <ul>
+            <li><strong>Stop:</strong> Letting there be so much white space - or do, it's your website. Maybe "flashbang" is the theme. Kudos!</li>
+            <li><strong>Start:</strong> Stylizing your nav bar and page content more - it would be cool</li>
+            <li><strong>Continue:</strong> Passing this class, hopefully</li>
+        </ul>
+        
+        <h4>Overall Impression</h4>
+        <ul>
+            <li>This is a moderately passable website, needs a bit of improvement here and there but should be okay</li>
+            <li>Honestly, if you did put minimal effort into this, valid - we get way too much work in this class</li>
+            <li>I really do think your navbar is the weakest part of the website. You should/could try to improve that. Honestly, my class website isn't all that good either, I can't talk!</li>
+        </ul>
+    </main>
+
+    <!-- Dynamically load footer -->
+    <div data-include="components/footer.html"></div>
+
+    <!-- Run HTMLInclude to load header/footer dynamically -->
+    <script>
+        HTMLInclude();
+    </script>
+
+    <!-- JavaScript to dynamically update validation links -->
+    <script>
+        document.getElementById("validation_link_html").setAttribute("href", 
+            "https://validator.w3.org/check?uri=" + location.href);
+
+        document.getElementById("validation_link_css").setAttribute("href", 
+            "https://jigsaw.w3.org/css-validator/validator?uri=" + location.href);
+    </script>
+</body>
+</html>
