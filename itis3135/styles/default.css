@@ -434,3 +434,30 @@ h3 {
 .close:hover {
     color: #D97E47;
 }
+
+/* Style for the p5.js canvas container */
+#canvas-container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #F1E6D9;
+    border-radius: 15px;
+    border: 2px solid #6B4F31;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style for the canvas itself */
+#canvas-container canvas {
+    border: 1px solid #6B4F31;
+    border-radius: 8px;
+}
+
+/* Mobile responsiveness for the canvas */
+@media screen and (max-width: 650px) {
+    #canvas-container canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
