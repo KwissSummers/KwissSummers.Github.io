@@ -1,0 +1,100 @@
+
+  /* === Dev Log Page Specific === */
+.devlog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.devlog-post {
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+  transition: box-shadow 0.2s ease;
+}
+
+.devlog-post:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.devlog-date {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.devlog-excerpt {
+  margin-bottom: 1rem;
+}
+
+.devlog-toggle {
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-family: 'Bebas Neue', sans-serif;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.devlog-toggle:hover {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Hidden content area */
+.devlog-full {
+  margin-top: 1rem;
+  opacity: 0.9;
+}
+
+/* Dev Log Page Two-Column Layout */
+.devlog-layout {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Left: Posts Column */
+.devlog-posts {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Right: Sidebar */
+.devlog-sidebar {
+  flex: 1;
+  background-color: #2e2e2e;
+  padding: 1rem;
+  min-width: 220px;
+  height: fit-content;
+  border-radius: 6px;
+}
+
+.devlog-sidebar h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.devlog-sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.devlog-sidebar li {
+  margin-bottom: 0.75rem;
+}
+
+.devlog-sidebar a {
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+.devlog-sidebar a:hover {
+  opacity: 0.8;
+}

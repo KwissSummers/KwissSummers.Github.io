@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ohm Desai's Indie Game Hub | Games</title>
+
+  <link rel="stylesheet" href="styles/gamesStyle.css">
+  <link rel="stylesheet" href="styles/universalStyle.css">
+
+  <script src="scripts/HTMLInclude.min.js"></script>
+  <script src="scripts/script.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <main id="homepage-main">
+    <div class="homepage-container"> <!-- kept the container -->
+
+      <!-- Banner -->
+      <section class="homepage-banner">
+        <div class="banner-inline">
+          <img src="images/sockenginelogo.png" alt="Ohm Desai Mascot Logo" class="banner-logo">
+          <div class="banner-text">
+            <div class="homepage-title">Games</div>
+            <div class="homepage-tagline">Playable Projects & Experiments</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamically include header -->
+      <div data-include="components/header.html"></div>
+
+      <!-- Game Gallery Section - Keeping inside container -->
+      <section class="games-gallery">
+        <div class="game-card">
+          <h3>The Spices of Cthulhu</h3>
+          <img src="images/TheSpicesOfCthulu.png" alt="The Spices of Cthulhu">
+          <p>Explore the multiverse for ingredients to cook better dishes</p>
+          <a href="https://sock8416.itch.io/the-spices-of-cthulhu" class="game-button" target="_blank">Play Now</a>
+        </div>
+
+        <div class="game-card">
+          <h3>Redline Rampage</h3>
+          <img src="images/RedLineRampage.png" alt="RedLine Rampage">
+          <p>Use your drone and explore the bunker to uncover the mystery and find the survivors.</p>
+          <a href="https://sock8416.itch.io/redline-rampage" class="game-button" target="_blank">Play Now</a>
+        </div>
+
+        <div class="game-card">
+          <h3>Recon: Lost Bunker</h3>
+          <img src="images/ReconLostBunker.png" alt="Recon: LostBunker">
+          <p>Use your drone to explore the mysterious bunker and uncover its secrets.</p>
+          <a href="https://tucktheduck82.itch.io/recon-lost-bunker" class="game-button" target="_blank">Play Now</a>
+        </div>
+
+        <div class="game-card">
+          <h3>Wrath of the Abyss</h3>
+          <img src="images/WrathOfTheAbyss.png" alt="Wrath Of The Abyss">
+          <p>Use the power of the sun and moon to defend heaven from the demon king.</p>
+          <a href="https://sock8416.itch.io/wrath-of-the-abyss" class="game-button" target="_blank">Play Now</a>
+        </div>
+        
+        <div class="game-card">
+          <h3>Attack the Mannequin Men</h3>
+          <img src="images/AttackTheMannequinMan.png" alt="Attack The Mannequin Man">
+          <p>Ultrakill-like arena shooter</p>
+          <a href="https://sock8416.itch.io/attmm" class="game-button" target="_blank">Play Now</a>
+        </div>
+
+        <div class="game-card">
+          <h3>The Phantom's Touch</h3>
+          <img src="images/ThePhantom'sTouch.png" alt="The Phantom's Touch">
+          <p>Made for GMTK Game Jam 2023</p>
+          <a href="https://sock8416.itch.io/the-phantoms-touch" class="game-button" target="_blank">Play Now</a>
+        </div>
+      </section>
+
+    </div> <!-- end container -->
+  </main>
+
+  <!-- Dynamically include footer -->
+  <div data-include="components/footer.html"></div>
+
+  <!-- Enable dynamic includes -->
+  <script>
+    HTMLInclude();
+  </script>
+
+</body>
+</html>

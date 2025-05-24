@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ohm Desai's Indie Game Hub | Dev Log</title>
+
+  <link rel="stylesheet" href="styles/universalStyle.css" />
+  <link rel="stylesheet" href="styles/devlogStyle.css" />
+
+  <script src="scripts/HTMLInclude.min.js"></script>
+  <script src="scripts/script.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <main id="homepage-main">
+    <div class="homepage-container">
+
+      <!-- Banner -->
+      <section class="homepage-banner">
+        <div class="banner-inline">
+          <img src="images/sockenginelogo.png" alt="Ohm Desai Mascot Logo" class="banner-logo">
+          <div class="banner-text">
+            <div class="homepage-title">Dev Log</div>
+            <div class="homepage-tagline">Studio Updates & Progress</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation Tabs -->
+      <div data-include="components/header.html"></div>
+
+      <!-- Dev Log + Sidebar Layout -->
+      <section class="devlog-layout">
+        <!-- Blog Posts -->
+        <div class="devlog-posts">
+
+          <article class="devlog-post" id="The Spices of Cthulhu">
+            <h2>Development Log – The Spices of Cthulhu</h2>
+            <p class="devlog-date">Posted: February 28, 2025</p>
+            
+            <p class="devlog-excerpt">
+              We've launched development on our multiversal chef adventure! The core concept is established: players navigate between universes to collect exotic spices for their ultimate dish, 
+              while being pursued by Cthulhu and dealing with the cosmic consequences of their harvesting.
+            </p>
+            
+            <button class="devlog-toggle">Read More</button>
+            
+            <div class="devlog-full" hidden>
+              <h4>Completed:</h4>
+              <ul>
+                <li>Implemented spaceship controls for navigating between universes</li>
+                <li>Created the first universe with unique physics: low gravity spice world</li>
+                <li>Designed the "universe crunch" mechanic that triggers when spices are harvested</li>
+                <li>Initial concept art for the chef protagonist and their cosmic spice rack</li>
+              </ul>
+              
+              <h4>Challenges:</h4>
+              <ul>
+                <li>Need to make each universe's physics feel distinctly different yet playable</li>
+                <li>Balancing Cthulhu's pursuit speed to maintain tension without frustration</li>
+                <li>Black hole growth rate needs tuning to give players enough harvest time</li>
+              </ul>
+              
+              <h4>Next Steps:</h4>
+              <ul>
+                <li>Implement the "three spices" objective system with home-pointing arrow</li>
+                <li>Design second universe: reverse gravity mechanics</li>
+                <li>Create visual effects for universe collapse sequence</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="devlog-post" id="Recon: Lost Bunker">
+            <h2>Devlog – Recon: Lost Bunker</h2>
+            <p class="devlog-date">Posted: November 27, 2024</p>
+            
+            <p class="devlog-excerpt">
+              Development has begun on our atmospheric drone exploration game. We've built the basic framework for controlling the drone and the first section of the abandoned bunker.
+            </p>
+            
+            <button class="devlog-toggle">Read More</button>
+            
+            <div class="devlog-full" hidden>
+              <h4>Completed:</h4>
+              <ul>
+                <li>Drone flight controls with physics-based movement</li>
+                <li>First bunker section: entrance and decontamination chamber</li>
+                <li>Basic scanning mechanic to identify objects of interest</li>
+              </ul>
+              
+              <h4>Challenges:</h4>
+              <ul>
+                <li>Finding the right balance for drone battery life</li>
+                <li>Making tight corridor navigation feel precise without being frustrating</li>
+              </ul>
+              
+              <h4>Next Steps:</h4>
+              <ul>
+                <li>Implement the story delivery system through found logs and environmental storytelling</li>
+                <li>Design the drone upgrade system</li>
+                <li>Create the second bunker section: living quarters</li>
+              </ul>
+            </div>
+          </article>
+          
+          <article class="devlog-post" id="Redline Rampage">
+            <h2>Development Log – Redline Rampage</h2>
+            <p class="devlog-date">Posted: August 23, 2024</p>
+            
+            <p class="devlog-excerpt">
+              Initial development of our high-octane getaway driver experience is underway. The team has created a prototype with the core driving mechanics and the first urban environment.
+            </p>
+            
+            <button class="devlog-toggle">Read More</button>
+            
+            <div class="devlog-full" hidden>
+              <h4>Completed:</h4>
+              <ul>
+                <li>Vehicle physics system with drift mechanics</li>
+                <li>First city section with police spawn locations</li>
+                <li>Basic police AI that responds to player speed and collision damage</li>
+              </ul>
+              
+              <h4>Challenges:</h4>
+              <ul>
+                <li>Finding the right balance between arcade feel and realistic handling</li>
+                <li>Police catch-up mechanics feel too punishing for new players</li>
+              </ul>
+              
+              <h4>Next Steps:</h4>
+              <ul>
+                <li>Implement the heat system (higher speeds = more police presence)</li>
+                <li>Design the first special obstacle: construction zones</li>
+                <li>Create the vehicle damage model and visual representation</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="devlog-sidebar">
+          <h3>Jump To</h3>
+          <ul>
+            <li><a href="#The Spices of Cthulhu">The Spices of Cthulhu</a></li>
+            <li><a href="#Recon: Lost Bunker">Recon: Lost Bunker</a></li>
+            <li><a href="#Redline Rampage">Redline Rampage</a></li>
+          </ul>
+        </aside>
+      </section>
+
+    </div> <!-- end container -->
+  </main>
+
+  <!-- Dynamically include footer -->
+  <div data-include="components/footer.html"></div>
+
+  <!-- Enable dynamic includes -->
+  <script>
+    HTMLInclude();
+  </script>
+
+</body>
+</html>

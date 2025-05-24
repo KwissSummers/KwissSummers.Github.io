@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ohm Desai's Indie Game Hub | Contact</title>
+
+  <link rel="stylesheet" href="styles/contactStyle.css">
+  <link rel="stylesheet" href="styles/universalStyle.css">
+
+  <script src="scripts/HTMLInclude.min.js"></script>
+  <script src="scripts/script.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <main id="homepage-main">
+    <div class="homepage-container">
+
+      <!-- Banner -->
+      <section class="homepage-banner">
+        <div class="banner-inline">
+          <img src="images/sockenginelogo.png" alt="Ohm Desai Mascot Logo" class="banner-logo">
+          <div class="banner-text">
+            <div class="homepage-title">Contact</div>
+            <div class="homepage-tagline">Get in Touch</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation Tabs -->
+      <div data-include="components/header.html"></div>
+
+      <!-- Social Links (same as homepage) -->
+      <section class="homepage-socials">
+        <a href="https://sock8416.itch.io/" target="_blank">
+          <img src="images/itchio-logo.png" alt="Itch.io">
+        </a>
+        <a href="https://discord.gg/24YcbmAass" target="_blank">
+          <img src="images/discord-logo.png" alt="Discord">
+        </a>
+        <a href="https://github.com/odesai840" target="_blank">
+          <img src="images/github-logo.png" alt="GitHub">
+        </a>
+        <a href="https://www.instagram.com/sock.games/" target="_blank">
+          <img src="images/instagram-logo.png" alt="Instagram">
+        </a>
+        <a href="https://bsky.app/profile/sock8416.bsky.social" target="_blank">
+          <img src="images/bluesky-logo.png" alt="Bluesky">
+        </a>
+      </section>
+
+      <!-- Contact Form Layout -->
+      <section class="contact-layout">
+        <!-- Form now uses the data-formsubmit attribute instead of action -->
+        <form id="contact-form" class="contact-form" data-formsubmit="odesai840@gmail.com">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Write your message here..." required></textarea>
+
+          <!-- FormSubmit configuration hidden fields -->
+          <input type="hidden" name="_subject" value="New contact message from Sock Games website">
+          <input type="hidden" name="_captcha" value="false">
+          
+          <button type="submit">Send</button>
+        </form>
+
+        <div id="contact-thanks">
+          Thanks for sending me a message!
+        </div>
+        
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div data-include="components/footer.html"></div>
+
+  <script>
+    HTMLInclude();
+  </script>
+
+</body>
+</html>

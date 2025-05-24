@@ -4,102 +4,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chris Li's Webpage Root</title>
-    <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
+    <title>Ohm Desai's Indie Game Hub | Home</title>
 
-    <style>
-        /* Embedded CSS */
+    <link rel="stylesheet" href="styles/indexStyle.css">
+    <link rel="stylesheet" href="styles/universalStyle.css">
+    
+    <script src="scripts/HTMLInclude.min.js"></script>
+    <script src="scripts/script.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-
-        main {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        main h2 {
-            font-size: 2rem;
-            color: #4CAF50;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        nav ul li {
-            display: inline;
-        }
-
-        nav ul li a {
-            color: #FFD700;
-            text-decoration: none;
-        }
-
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
-        .validator {
-            margin-top: 1rem;
-        }
-    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-    <header>
-        <h1>Welcome to Chris's Home Page</h1>
-    </header>
-
-    <main>
-        <h2>About This Page</h2>
-        <p>This is my personal home page for school and beyond. Explore the links below to learn more about me and my work!</p>
+    <main id="homepage-main">
+      <div class="homepage-container">
+    
+        <!-- Banner Section -->
+        <section class="homepage-banner">
+          <div class="banner-inline">
+            <img src="images/sockenginelogo.png" alt="Ohm Desai Mascot Logo" class="banner-logo">
+            <div class="banner-text">
+              <div class="homepage-title">Sock Games</div>
+              <div class="homepage-tagline">Games that change the way you play</div>
+            </div>
+          </div>
+        </section>
+          
+        <!-- Dynamically include header -->
+        <div data-include="components/header.html"></div>
+    
+        <!-- Grid Layout: Logo + Intro -->
+        <section class="homepage-intro">
+          <div class="homepage-logo">
+            <img src="images/socksquarelogo.png" alt="Sock Games Studio Logo">
+          </div>
+          <div class="homepage-description">
+            <p>
+              Sock Games is an independent studio founded on the principle that great games come from innovative thinking and player-focused design.
+              We create experiences that challenge conventions while remaining accessible and engaging.
+              Our talented team combines technical expertise with creative vision to develop games that leave a lasting impression. 
+              At Sock Games, we're not just making games—we're crafting experiences that players will remember.
+            </p>
+          </div>
+        </section>
+    
+        <!-- Social Links -->
+        <section class="homepage-socials">
+          <a href="https://sock8416.itch.io/" target="_blank" aria-label="Itch.io Profile">
+            <img src="images/itchio-logo.png" alt="Itch.io">
+          </a>
+          <a href="https://discord.gg/24YcbmAass" target="_blank" aria-label="Discord Server">
+            <img src="images/discord-logo.png" alt="Discord">
+          </a>
+          <a href="https://github.com/odesai840" target="_blank" aria-label="GitHub Profile">
+            <img src="images/github-logo.png" alt="GitHub">
+          </a>
+          <a href="https://www.instagram.com/sock.games/" target="_blank" aria-label="Instagram Page">
+            <img src="images/instagram-logo.png" alt="Instagram">
+          </a>
+          <a href="https://bsky.app/profile/sock8416.bsky.social" target="_blank" aria-label="Bluesky Profile">
+            <img src="images/bluesky-logo.png" alt="Bluesky">
+          </a>
+        </section>
+    
+        <!-- Blog Preview + Customizable Panel -->
+        <section class="homepage-content">
+          <div class="homepage-posts" id="recent-devlogs">
+            <!-- Devlog previews will be inserted here by JavaScript -->
+            <h3>Recent Development Updates</h3>
+          </div>
+          
+          <aside class="homepage-sidepanel">
+            <h3>Welcome!</h3>
+            <p>Click on the devlog titles to read more about each update and follow our development journey.</p>
+            <p>Use the navigation bar above to explore our website and discover our games, development logs, and more about our studio.</p>
+            <p>Join our community on social media to stay connected and be the first to hear about new releases and updates!</p>
+          </aside>
+        </section>
+      </div> <!-- end container -->
     </main>
+    
+    <!-- Dynamically include footer -->
+    <div data-include="components/footer.html"></div>
 
-    <footer>
-        <nav>
-            <ul>
-                <li><a href="itis3135/introductions.html">Introduction</a></li>
-                <li><a href="https://kwisssummers.github.io/itis3135/">ITIS3135</a></li>
-                <li><a href="https://www.linkedin.com/in/chris4li/" target="_blank">LinkedIn</a></li>
-                <li><a href="https://github.com/KwissSummers" target="_blank">GitHub</a></li>
-                <li><a href="https://kwisssummers.github.io/" target="_blank">GitHub Pages</a></li>
-                <li><a href="https://webpages.charlotte.edu/cli36/" target="_blank">CLT Web</a></li>
-            </ul>
-        </nav>
-    </footer>
-
+    <!-- Enable dynamic includes -->
+    <script>
+        HTMLInclude();
+    </script>
 </body>
-
 </html>

@@ -1,0 +1,202 @@
+/* === Global Reset & Base Styles === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* === Header (Nav Tabs) === */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0;
+    margin: 1.5rem 0;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  
+  .nav-tabs li a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    width: 120px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  
+  .nav-tabs li a:hover {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    transform: scale(1.1);
+  }
+  
+  /* Divider under the banner */
+  .nav-divider {
+    height: 3px;
+    background-color: #ffffff;
+    margin: 2rem auto 1.5rem auto;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 2rem;
+    box-sizing: border-box;
+  }
+  
+  /* === Footer Styling === */
+  .site-footer {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    padding: 1rem 0;
+    margin-top: 2rem;
+  }
+  
+  .site-footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .site-footer a:hover {
+    opacity: 1;
+  }
+  
+  /* === Heading Font Styles === */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  h1 { font-size: 4rem; }
+  h2 { font-size: 2.25rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1rem; }
+  
+  /* === Homepage Banner (Logo + Title + Tagline) === */
+  .homepage-banner {
+    padding: 2rem;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .banner-inline {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .banner-logo {
+    width: 115px;
+    height: 115px;
+    flex-shrink: 0;
+  }
+  
+  .banner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* === Container Wrapper === */
+  /* === Reusable Page Container === */
+  #homepage-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .homepage-container {
+    min-width: 896px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  
+  /* === Homepage Title and Tagline === */
+  .homepage-title {
+    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .homepage-tagline {
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+  }
+
+  /* === Social Media Icons === */
+.homepage-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+}
+
+.homepage-socials img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.homepage-socials img:hover {
+  transform: scale(1.1);
+}
+
+.popup {
+  transition: opacity 0.3s ease;
+}
+
+.active-tab {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  font-weight: bold;
+}
+
+  
+  
