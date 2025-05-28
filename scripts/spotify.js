@@ -261,7 +261,7 @@ class SpotifyPlayer {
             const trackUrl = track.external_urls.spotify;
             
             return `
-                <div class="track-item ${index === 0 ? 'current-track' : ''}">
+                <div class="track-item current-track">
                     <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
                         ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
                         <div class="spotify-overlay">🎵</div>
@@ -279,7 +279,7 @@ class SpotifyPlayer {
                         </div>
                         ` : `
                         <div class="track-controls">
-                            <span class="no-preview">Preview not available</span>
+                            <span class="no-preview">Click icon to listen on Spotify!</span>
                         </div>
                         `}
                     </div>
