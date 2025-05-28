@@ -291,12 +291,14 @@ class SpotifyPlayer {
             <div class="spotify-tracks">
                 <h3>🎵 Recently Played ${isCached ? '(Cached)' : ''}</h3>
                 ${tracksHtml}
-                <div class="spotify-footer">
-                    <button onclick="spotifyPlayer.confirmDisconnect()" class="disconnect-btn" title="Disconnect your Spotify account">⚙️</button>
-                </div>
             </div>
         `;
     }
+
+                /* THIS WOULD'VE GONE INTO CODE DIRECTLY ABOVE RIGHT AFTER ${tracksHtml}
+                <div class="spotify-footer">
+                    <button onclick="spotifyPlayer.confirmDisconnect()" class="disconnect-btn" title="Disconnect your Spotify account">⚙️</button>
+                </div>*/
 
     // Handle play button - either preview or open Spotify
     handlePlay(previewUrl, spotifyUrl, button) {
@@ -355,7 +357,7 @@ class SpotifyPlayer {
         }
     }
 
-    // Confirm disconnect with prompt
+    /*// Confirm disconnect with prompt
     confirmDisconnect() {
         if (confirm('Are you sure you want to disconnect Spotify?')) {
             this.disconnect();
@@ -372,7 +374,7 @@ class SpotifyPlayer {
         this.refreshToken = null;
         this.tokenExpiry = null;
         this.showConnectButton();
-    }
+    }*/
 }
 
 // Initialize Spotify player when DOM is loaded
