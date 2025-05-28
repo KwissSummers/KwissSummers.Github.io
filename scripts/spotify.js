@@ -3,7 +3,15 @@
 class SpotifyPlayer {
     constructor() {
         this.clientId = '8c6c27e0178f4ade956817d9ba7c8d69';
-        this.redirectUri = window.location.origin;
+        // Set specific redirect URI based on current domain
+        if (window.location.hostname === 'chrissummers.dev') {
+            this.redirectUri = 'https://chrissummers.dev';
+        } else if (window.location.hostname === 'kwisssummers.github.io') {
+            this.redirectUri = 'https://kwisssummers.github.io';
+        } else {
+            // Fallback for local testing
+            this.redirectUri = window.location.origin;
+        }
         this.scopes = 'user-read-recently-played';
         this.accessToken = localStorage.getItem('spotify_access_token');
         this.refreshToken = localStorage.getItem('spotify_refresh_token');
@@ -261,8 +269,9 @@ class SpotifyPlayer {
                         <div class="track-title">${this.truncateText(track.name, 25)}</div>
                         <div class="track-artist">${this.truncateText(track.artists[0].name, 20)}</div>
                         <div class="track-controls">
-                            ${previewUrl ? `<button onclick="spotifyPlayer.togglePreview('${previewUrl}', this)" class="play-btn">▶</button>` : ''}
-                            <a href="${trackUrl}" target="_blank" class="spotify-link" title="Open in Spotify">🎵</a>
+                            <button onclick="spotifyPlayer.handlePlay('${previewUrl || trackUrl}', '${trackUrl}', this)" class="play-btn" title="${previewUrl ? 'Play 30s preview' : 'Open in Spotify'}">
+                                ${previewUrl ? '▶' : '🎵'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -274,13 +283,23 @@ class SpotifyPlayer {
                 <h3>🎵 Recently Played ${isCached ? '(Cached)' : ''}</h3>
                 ${tracksHtml}
                 <div class="spotify-footer">
-                    <button onclick="spotifyPlayer.disconnect()" class="disconnect-btn">Disconnect</button>
+                    <button onclick="spotifyPlayer.confirmDisconnect()" class="disconnect-btn" title="Disconnect your Spotify account">⚙️</button>
                 </div>
             </div>
         `;
     }
 
-    // Toggle preview playback
+    // Handle play button - either preview or open Spotify
+    handlePlay(previewUrl, spotifyUrl, button) {
+        // If it's a Spotify URL (no preview), open in new tab
+        if (previewUrl === spotifyUrl) {
+            window.open(spotifyUrl, '_blank');
+            return;
+        }
+        
+        // Otherwise, toggle preview playback
+        this.togglePreview(previewUrl, button);
+    }
     togglePreview(previewUrl, button) {
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
@@ -324,6 +343,13 @@ class SpotifyPlayer {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
+        }
+    }
+
+    // Confirm disconnect with prompt
+    confirmDisconnect() {
+        if (confirm('Are you sure you want to disconnect Spotify?')) {
+            this.disconnect();
         }
     }
 
