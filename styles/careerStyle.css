@@ -1,0 +1,277 @@
+/* === Career Page Styles === */
+
+/* Career Overview Section */
+.career-overview {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.career-summary {
+  flex: 2;
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+
+.career-highlights {
+  flex: 1;
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+
+.career-highlights ul {
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.career-highlights li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+/* Timeline Styles */
+.career-timeline {
+  margin-bottom: 3rem;
+}
+
+.career-timeline h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.timeline-date {
+  flex: 0 0 150px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: 0.25rem;
+}
+
+.timeline-content {
+  flex: 1;
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+
+.timeline-content h3 {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.timeline-content h4 {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.responsibilities {
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.responsibilities li {
+  margin-bottom: 0.5rem;
+}
+
+/* Skills Section */
+.career-skills {
+  margin-bottom: 3rem;
+}
+
+.skills-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.skills-column {
+  flex: 1;
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+
+.skill-category {
+  margin-bottom: 1.5rem;
+}
+
+.skill-category h4 {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.soft-skills {
+  list-style: none;
+  padding-left: 0;
+}
+
+.soft-skills li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.soft-skills li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #ffffff;
+}
+
+/* Education Section */
+.career-education {
+  margin-bottom: 2rem;
+}
+
+.education-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.education-column {
+  flex: 1;
+  background-color: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+
+.education-item {
+  margin-bottom: 1.5rem;
+}
+
+.education-item h4 {
+  margin-bottom: 0.25rem;
+}
+
+.education-school {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.education-date {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.education-details {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.certifications,
+.additional-learning {
+  list-style: none;
+  padding-left: 0;
+}
+
+.certifications li,
+.additional-learning li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.certifications li::before,
+.additional-learning li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    gap: 1.5rem;
+  }
+  
+  .timeline-item {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    flex-direction: column;
+  }
+  
+  .timeline-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .timeline-date {
+    flex: none;
+    font-size: 1rem;
+  }
+  
+  .timeline-content,
+  .career-summary,
+  .career-highlights,
+  .skills-column,
+  .education-column {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    gap: 1rem;
+  }
+  
+  .timeline-content,
+  .career-summary,
+  .career-highlights,
+  .skills-column,
+  .education-column {
+    padding: 0.75rem;
+  }
+  
+  .timeline-content h3,
+  .career-summary h2,
+  .skills-column h3 {
+    font-size: 1.25rem;
+  }
+}

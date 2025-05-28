@@ -27,36 +27,45 @@
   .nav-tabs {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
     padding: 0;
     margin: 1.5rem 0;
     list-style: none;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
-  
+
   .nav-tabs li a {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #ffffff;
     border: 1px solid #ffffff;
     border-radius: 6px;
-    width: 120px;
-    height: 42px;
+    width: 90px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     box-sizing: border-box;
     padding: 0;
+    white-space: nowrap;
+    background-color: transparent;
   }
-  
+
   .nav-tabs li a:hover {
     background-color: #ffffff;
     color: #1a1a1a;
-    transform: scale(1.1);
+    transform: scale(1.05);
+  }
+
+  /* Active tab styling - prevent white flash on load */
+  .nav-tabs li a.active-tab {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    font-weight: bold;
   }
   
   /* Divider under the banner */
@@ -135,7 +144,6 @@
   }
   
   /* === Container Wrapper === */
-  /* === Reusable Page Container === */
   #homepage-main {
     display: flex;
     flex-direction: column;
@@ -143,13 +151,13 @@
     padding: 2rem;
   }
   
+  /* Desktop: Keep itch.io-like fixed width */
   .homepage-container {
     min-width: 896px;
     max-width: 960px;
     margin: 0 auto;
     padding: 0 2rem;
   }
-  
   
   /* === Homepage Title and Tagline === */
   .homepage-title {
@@ -168,35 +176,219 @@
     margin-top: 0.5rem;
   }
 
-  /* === Social Media Icons === */
-.homepage-socials {
-  display: flex;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 1.5rem 0;
-}
+  /* === Social Media Icons - PROPERLY FIXED FOR CONSISTENT SIZE === */
+  .homepage-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+  }
 
-.homepage-socials img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  transition: transform 0.2s ease;
-  cursor: pointer;
-}
+  .homepage-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+  }
 
-.homepage-socials img:hover {
-  transform: scale(1.1);
-}
+  .homepage-socials img {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 4px;
+  }
 
-.popup {
-  transition: opacity 0.3s ease;
-}
+  .homepage-socials a:hover {
+    transform: scale(1.1);
+  }
 
-.active-tab {
-  background-color: #ffffff;
-  color: #1a1a1a;
-  font-weight: bold;
-}
+  .popup {
+    transition: opacity 0.3s ease;
+  }
 
+  /* === RESPONSIVE DESIGN (itch.io style) === */
   
-  
+  /* Large Tablet & Small Desktop */
+  @media (max-width: 1024px) {
+    .homepage-container {
+      min-width: unset;
+      max-width: 100%;
+      padding: 0 1.5rem;
+    }
+    
+    .nav-divider {
+      padding: 0 1.5rem;
+    }
+    
+    #homepage-main {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Tablet */
+  @media (max-width: 768px) {
+    .homepage-container {
+      padding: 0 1rem;
+    }
+    
+    .nav-divider {
+      padding: 0 1rem;
+    }
+    
+    #homepage-main {
+      padding: 1rem;
+      gap: 1.5rem;
+    }
+    
+    /* Navigation adjustments */
+    .nav-tabs {
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .nav-tabs li a {
+      width: 75px;
+      height: 36px;
+      font-size: 1rem;
+    }
+    
+    /* Banner adjustments */
+    .homepage-banner {
+      padding: 1.5rem 1rem;
+    }
+    
+    .banner-inline {
+      gap: 1rem;
+    }
+    
+    .banner-logo {
+      width: 80px;
+      height: 80px;
+    }
+    
+    /* Typography scaling */
+    .homepage-title {
+      font-size: 2.5rem;
+    }
+    
+    .homepage-tagline {
+      font-size: 1.1rem;
+    }
+    
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    
+    /* Social icons */
+    .homepage-socials {
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+    
+    .homepage-socials a {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .homepage-socials img {
+      width: 40px !important;
+      height: 40px !important;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .homepage-container {
+      padding: 0 0.75rem;
+    }
+    
+    .nav-divider {
+      padding: 0 0.75rem;
+    }
+    
+    #homepage-main {
+      padding: 0.75rem;
+      gap: 1rem;
+    }
+    
+    /* Navigation - smaller tabs */
+    .nav-tabs {
+      gap: 0.25rem;
+      flex-wrap: wrap; /* Allow wrapping on very small screens */
+      justify-content: center;
+    }
+    
+    .nav-tabs li a {
+      width: 65px;
+      height: 34px;
+      font-size: 0.9rem;
+    }
+    
+    /* Banner - stack vertically on very small screens */
+    .banner-inline {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+    }
+    
+    .banner-logo {
+      width: 70px;
+      height: 70px;
+    }
+    
+    .homepage-banner {
+      padding: 1rem 0.75rem;
+    }
+    
+    /* Typography - mobile optimized */
+    .homepage-title {
+      font-size: 2rem;
+    }
+    
+    .homepage-tagline {
+      font-size: 1rem;
+    }
+    
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.1rem; }
+    
+    /* Social icons - more compact */
+    .homepage-socials {
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+    }
+    
+    .homepage-socials a {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .homepage-socials img {
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+
+  /* Extra Small Mobile */
+  @media (max-width: 480px) {
+    .nav-tabs li a {
+      width: 55px;
+      height: 32px;
+      font-size: 0.8rem;
+    }
+    
+    .homepage-title {
+      font-size: 1.75rem;
+    }
+    
+    .homepage-tagline {
+      font-size: 0.9rem;
+    }
+  }

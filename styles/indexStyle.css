@@ -106,3 +106,66 @@
 .homepage-sidepanel p {
   margin-bottom: 0.75rem;
 }
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 1024px) {
+  #homepage-main {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .homepage-intro {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .homepage-logo,
+  .homepage-description {
+    flex: none;
+  }
+  
+  .homepage-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .homepage-posts,
+  .homepage-sidepanel {
+    flex: none;
+  }
+  
+  .homepage-description,
+  .homepage-post,
+  .homepage-sidepanel {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .homepage-intro {
+    gap: 1rem;
+  }
+  
+  .homepage-content {
+    gap: 1rem;
+  }
+  
+  .homepage-description,
+  .homepage-post,
+  .homepage-sidepanel {
+    padding: 0.75rem;
+  }
+  
+  .homepage-posts > h3:first-child {
+    font-size: 1.5rem;
+  }
+  
+  .homepage-post h3 {
+    font-size: 1.25rem;
+  }
+  
+  .homepage-sidepanel h3 {
+    font-size: 1.25rem;
+  }
+}
