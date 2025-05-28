@@ -1,5 +1,5 @@
-/* === Games Gallery === */
-.games-gallery {
+/* === Projects Gallery === */
+.projects-gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
@@ -11,7 +11,7 @@
   margin-right: auto;
 }
   
-.game-card {
+.project-card {
   background-color: #2e2e2e;
   padding: 1rem;
   width: 280px; /* Slightly reduced from 300px to fit better in container */
@@ -22,14 +22,14 @@
   border-radius: 4px;
 }
 
-.game-card img {
+.project-card img {
   width: 100%;
   height: 180px; /* Slightly reduced to maintain proportions */
   object-fit: cover;
   border-radius: 4px;
 }
 
-.game-button {
+.project-button {
   margin-top: 1rem;
   background-color: #ffffff;
   color: #1a1a1a;
@@ -43,6 +43,6 @@
   text-decoration: none;
 }
 
-.game-button:hover {
+.project-button:hover {
   transform: scale(1.05);
 }

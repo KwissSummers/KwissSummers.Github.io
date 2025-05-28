@@ -262,17 +262,26 @@ class SpotifyPlayer {
             
             return `
                 <div class="track-item ${index === 0 ? 'current-track' : ''}">
-                    <div class="track-artwork">
+                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
                         ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
+                        <div class="spotify-overlay">🎵</div>
                     </div>
                     <div class="track-info">
                         <div class="track-title">${this.truncateText(track.name, 25)}</div>
                         <div class="track-artist">${this.truncateText(track.artists[0].name, 20)}</div>
+                        ${previewUrl ? `
                         <div class="track-controls">
-                            <button onclick="spotifyPlayer.handlePlay('${previewUrl || trackUrl}', '${trackUrl}', this)" class="play-btn" title="${previewUrl ? 'Play 30s preview' : 'Open in Spotify'}">
-                                ${previewUrl ? '▶' : '🎵'}
-                            </button>
+                            <button onclick="spotifyPlayer.togglePreview('${previewUrl}', this, '${index}')" class="play-btn" id="play-btn-${index}">▶</button>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progress-${index}"></div>
+                            </div>
+                            <span class="time-display" id="time-${index}">0:00</span>
                         </div>
+                        ` : `
+                        <div class="track-controls">
+                            <span class="no-preview">Preview not available</span>
+                        </div>
+                        `}
                     </div>
                 </div>
             `;

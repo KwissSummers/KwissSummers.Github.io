@@ -254,7 +254,7 @@
   background: rgba(29, 185, 84, 0.15);
 }
 
-/* Track Artwork */
+/* Track Artwork - Now clickable to open Spotify */
 .track-artwork {
   width: 60px;
   height: 60px;
@@ -262,12 +262,36 @@
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.track-artwork:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .track-artwork img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.spotify-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(29, 185, 84, 0.9);
+  color: white;
+  padding: 2px 4px;
+  font-size: 0.7rem;
+  border-radius: 0 6px 0 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.track-artwork:hover .spotify-overlay {
+  opacity: 1;
 }
 
 .no-artwork {
@@ -312,11 +336,12 @@
   white-space: nowrap;
 }
 
-/* Track Controls */
+/* Track Controls - Enhanced with progress bar */
 .track-controls {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  margin-top: 0.5rem;
 }
 
 .play-btn {
@@ -332,11 +357,42 @@
   cursor: pointer;
   font-size: 0.7rem;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .play-btn:hover {
   background: #1ed760;
   transform: scale(1.1);
+}
+
+.progress-container {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #1db954;
+  width: 0%;
+  transition: width 0.1s ease;
+  border-radius: 2px;
+}
+
+.time-display {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  min-width: 35px;
+  text-align: right;
+}
+
+.no-preview {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
 }
 
 .spotify-link {
