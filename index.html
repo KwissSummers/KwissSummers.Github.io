@@ -11,6 +11,7 @@
     
     <script src="scripts/HTMLInclude.min.js"></script>
     <script src="scripts/script.js" defer></script>
+    <script src="scripts/spotify.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Google Fonts -->
@@ -25,7 +26,7 @@
         <!-- Banner Section -->
         <section class="homepage-banner">
           <div class="banner-inline">
-            <img src="images/sockenginelogo.png" alt="Ohm Desai Mascot Logo" class="banner-logo">
+            <img src="images/artMe.jpg" alt="Ohm Desai Mascot Logo" class="banner-logo">
             <div class="banner-text">
               <div class="homepage-title">ChrisSummers</div>
               <div class="homepage-tagline">My cozy little nook on the internet</div>
@@ -39,7 +40,7 @@
         <!-- Grid Layout: Logo + Intro -->
         <section class="homepage-intro">
           <div class="homepage-logo">
-            <img src="images/socksquarelogo.png" alt="Sock Games Studio Logo">
+            <img src="images/artMe.jpg" alt="Sock Games Studio Logo">
           </div>
           <div class="homepage-description">
             <p>
@@ -71,20 +72,20 @@
           </a>
         </section>
     
-        <!-- Blog Preview + Customizable Panel -->
+        <!-- Blog Preview + Spotify Widget -->
         <section class="homepage-content">
           <div class="homepage-posts" id="recent-devlogs">
             <!-- Devlog previews will be inserted here by JavaScript -->
             <h3>Recent Development Updates</h3>
           </div>
           
-          <aside class="homepage-sidepanel">
-            <h3>Welcome!</h3>
-            <p>Click on the devlog titles to read more about each update and follow my development journey.</p>
-            <p>Use the navigation bar above to explore my website and learn more about me!</p>
-            <p>You can also connect with me on linkedin or follow me on social media by clicking on the
-              corresponding icons above.
-            </p>
+          <!-- Spotify Widget (replaces the welcome sidepanel) -->
+          <aside class="homepage-sidepanel" id="spotify-widget">
+            <!-- Spotify content will be loaded here -->
+            <div class="spotify-loading">
+              <h3>🎵 Loading...</h3>
+              <p>Connecting to Spotify...</p>
+            </div>
           </aside>
         </section>
       </div> <!-- end container -->

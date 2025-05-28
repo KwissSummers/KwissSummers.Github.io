@@ -162,7 +162,7 @@ function initDevlogToggle() {
     });
 }
 
-// Blog toggle functionality - New functionality
+// Blog toggle functionality - Match devlog exactly
 function initBlogToggle() {
     const blogToggles = document.querySelectorAll('.blog-toggle');
     blogToggles.forEach(button => {
@@ -170,12 +170,9 @@ function initBlogToggle() {
             const blogPost = this.closest('.blog-post');
             const fullContent = blogPost.querySelector('.blog-full');
             
-            if (fullContent.hidden) {
-                fullContent.hidden = false;
-                this.textContent = 'Show Less';
-            } else {
-                fullContent.hidden = true;
-                this.textContent = 'Read More';
+            if (fullContent) {
+                fullContent.hidden = !fullContent.hidden;
+                this.textContent = fullContent.hidden ? "Read More" : "Show Less";
             }
         });
     });
@@ -219,7 +216,7 @@ function initBlogFiltering() {
         });
     });
 
-    function filterPosts(filterType, filterValue) {
+      function filterPosts(filterType, filterValue) {
         const posts = document.querySelectorAll('.blog-post');
         
         posts.forEach(post => {
@@ -238,10 +235,13 @@ function initBlogFiltering() {
                 }
             }
             
+            // Use display instead of hidden to avoid conflicts with toggle
             if (shouldShow) {
-                post.classList.remove('hidden');
+                post.style.display = 'block';
+                post.removeAttribute('data-filtered');
             } else {
-                post.classList.add('hidden');
+                post.style.display = 'none';
+                post.setAttribute('data-filtered', 'true');
             }
         });
     }

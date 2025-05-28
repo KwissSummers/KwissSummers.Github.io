@@ -25,7 +25,7 @@
       <!-- Banner -->
       <section class="homepage-banner">
         <div class="banner-inline">
-          <img src="images/profile-logo.png" alt="Chris Li Logo" class="banner-logo">
+          <img src="images/artMe.jpg" alt="Chris Li Logo" class="banner-logo">
           <div class="banner-text">
             <div class="homepage-title">Blog</div>
             <div class="homepage-tagline">Thoughts & Insights</div>
@@ -36,28 +36,23 @@
       <!-- Navigation Tabs -->
       <div data-include="components/header.html"></div>
 
-      <!-- Blog + Sidebar Layout -->
-      <section class="blog-layout">
+      <!-- Blog Layout -->
+      <section class="devlog-layout">
         <!-- Blog Posts -->
-        <div class="blog-posts">
+        <div class="devlog-posts">
           
-          <!-- Example post with proper categories and tags -->
-          <article class="blog-post" id="welcome-to-my-blog" data-category="thoughts" data-tags="introduction">
-            <h2>Welcome to My Blog</h2>
-            <p class="blog-date">Posted: May 24th, 2025</p>
-            <div class="blog-tags">
-              <span class="blog-tag">Introduction</span>
-              <span class="blog-tag">Thoughts</span>
-            </div>
+          <article class="devlog-post" id="welcome-to-my-blog" data-category="thoughts" data-tags="introduction">
+            <h2>Blog – Welcome to My Blog</h2>
+            <p class="devlog-date">Posted: May 24th, 2025</p>
             
-            <p class="blog-excerpt">
+            <p class="devlog-excerpt">
               Hello, this is my first blog post. Honestly I don't know if anyone will ever see this,
               but if anything at least I'll have a record of my thoughts and ideas.
             </p>
             
-            <button class="blog-toggle">Read More</button>
+            <button class="devlog-toggle">Read More</button>
             
-            <div class="blog-full" hidden>
+            <div class="devlog-full" hidden>
               <h4>Getting Started</h4>
               <p>
                 I'm not quite sure what I'm doing yet, but I used to keep diaries as a kid, maybe this 
@@ -67,36 +62,27 @@
               </p>
               
               <h4>Something I'm looking into</h4>
-              <ul>
-                <p>
+              <p>
                 I'm actually still coding this website as I write this, so I'm still uncertain how this 
-                will all turn out. But I've seen an incredible website I found on a reddit post when I was 
-                looking for inspiration. It's made by <a href="https://dimden.dev/" target="_blank">dimden</a>.
+                will all turn out. But I've seen an incredible website I found by <a href="https://dimden.dev/" target="_blank">dimden</a>.
                 It's a really cool website that had a lot of love put into it, when I see things like this, these little 
                 passion projects people create, I can't help but smile. It's just so cool. This might age poorly but I'd 
                 love to make something like that one day. 
               </p>
-              </ul>
             </div>
           </article>
 
-          <!-- Add more example posts to demonstrate filtering -->
-          <article class="blog-post" id="learning-web-dev" data-category="learning" data-tags="web-development,coding">
-            <h2>Learning Web Development</h2>
-            <p class="blog-date">Posted: May 25th, 2025</p>
-            <div class="blog-tags">
-              <span class="blog-tag">Web Development</span>
-              <span class="blog-tag">Learning</span>
-              <span class="blog-tag">Coding</span>
-            </div>
+          <article class="devlog-post" id="learning-web-dev" data-category="learning" data-tags="web-development,coding">
+            <h2>Blog – Learning Web Development</h2>
+            <p class="devlog-date">Posted: May 25th, 2025</p>
             
-            <p class="blog-excerpt">
+            <p class="devlog-excerpt">
               Reflecting on my journey learning web development and the challenges I've faced along the way.
             </p>
             
-            <button class="blog-toggle">Read More</button>
+            <button class="devlog-toggle">Read More</button>
             
-            <div class="blog-full" hidden>
+            <div class="devlog-full" hidden>
               <h4>The Learning Process</h4>
               <p>
                 Web development has been quite a journey. Starting with HTML and CSS, then moving to JavaScript,
@@ -111,22 +97,17 @@
             </div>
           </article>
 
-          <article class="blog-post" id="project-planning" data-category="projects" data-tags="planning,development">
-            <h2>Project Planning Thoughts</h2>
-            <p class="blog-date">Posted: May 26th, 2025</p>
-            <div class="blog-tags">
-              <span class="blog-tag">Projects</span>
-              <span class="blog-tag">Planning</span>
-              <span class="blog-tag">Development</span>
-            </div>
+          <article class="devlog-post" id="project-planning" data-category="projects" data-tags="planning,development">
+            <h2>Blog – Project Planning Thoughts</h2>
+            <p class="devlog-date">Posted: May 26th, 2025</p>
             
-            <p class="blog-excerpt">
+            <p class="devlog-excerpt">
               Some thoughts on how I approach planning and organizing my development projects.
             </p>
             
-            <button class="blog-toggle">Read More</button>
+            <button class="devlog-toggle">Read More</button>
             
-            <div class="blog-full" hidden>
+            <div class="devlog-full" hidden>
               <h4>Planning is Key</h4>
               <p>
                 I've learned that taking time to plan before diving into code saves hours of debugging later.
@@ -136,127 +117,66 @@
           </article>
         </div>
 
-        <!-- Sidebar -->
-        <aside class="blog-sidebar">
-          <h3>Recent Posts</h3>
+        <!-- Sidebar with simple filtering -->
+        <aside class="devlog-sidebar">
+          <h3>Jump To</h3>
           <ul>
-            <!-- Update these links when you add new posts -->
             <li><a href="#welcome-to-my-blog">Welcome to My Blog</a></li>
             <li><a href="#learning-web-dev">Learning Web Development</a></li>
             <li><a href="#project-planning">Project Planning Thoughts</a></li>
           </ul>
           
-          <h3>Categories</h3>
-          <ul class="blog-categories">
-            <!-- These will now work as filters -->
-            <li><a href="#" data-category="all">All Posts</a></li>
-            <li><a href="#" data-category="thoughts">Thoughts</a></li>
-            <li><a href="#" data-category="projects">Projects</a></li>
-            <li><a href="#" data-category="art/media">Art/Media</a></li>
-            <li><a href="#" data-category="learning">Learning</a></li>
+          <h3>Filter by Category</h3>
+          <ul>
+            <li><a href="#" onclick="filterByCategory('all')">All Posts</a></li>
+            <li><a href="#" onclick="filterByCategory('thoughts')">Thoughts</a></li>
+            <li><a href="#" onclick="filterByCategory('learning')">Learning</a></li>
+            <li><a href="#" onclick="filterByCategory('projects')">Projects</a></li>
           </ul>
           
-          <h3>Tags</h3>
-          <div class="sidebar-tags">
-            <!-- These will now work as filters -->
-            <span class="sidebar-tag" data-tag="introduction">Introduction</span>
-            <span class="sidebar-tag" data-tag="web-development">Web Dev</span>
-            <span class="sidebar-tag" data-tag="coding">Coding</span>
-            <span class="sidebar-tag" data-tag="planning">Planning</span>
-            <span class="sidebar-tag" data-tag="development">Development</span>
+          <h3>Filter by Tags</h3>
+          <div class="tech-tags">
+            <span class="tech-tag" onclick="filterByTag('introduction')">Introduction</span>
+            <span class="tech-tag" onclick="filterByTag('web-development')">Web Dev</span>
+            <span class="tech-tag" onclick="filterByTag('coding')">Coding</span>
+            <span class="tech-tag" onclick="filterByTag('planning')">Planning</span>
+            <span class="tech-tag" onclick="filterByTag('development')">Development</span>
           </div>
         </aside>
       </section>
-
-    </div> <!-- end container -->
+    </div>
   </main>
 
-  <!-- Dynamically include footer -->
   <div data-include="components/footer.html"></div>
 
-  <!-- Enable dynamic includes -->
   <script>
     HTMLInclude();
   </script>
 
-  <!-- Blog filtering and toggle functionality -->
+  <!-- Simple filtering -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Blog post toggle functionality
-      const toggleButtons = document.querySelectorAll('.blog-toggle');
-      toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const blogPost = this.closest('.blog-post');
-          const fullContent = blogPost.querySelector('.blog-full');
-          
-          if (fullContent.hidden) {
-            fullContent.hidden = false;
-            this.textContent = 'Read Less';
-          } else {
-            fullContent.hidden = true;
-            this.textContent = 'Read More';
-          }
-        });
+    function filterByCategory(category) {
+      const posts = document.querySelectorAll('.devlog-post');
+      posts.forEach(post => {
+        if (category === 'all' || post.getAttribute('data-category') === category) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
       });
+    }
 
-      // Category filtering
-      const categoryLinks = document.querySelectorAll('[data-category]');
-      categoryLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const category = this.getAttribute('data-category');
-          
-          // Remove active state from all category links
-          categoryLinks.forEach(l => l.classList.remove('filter-active'));
-          // Add active state to clicked link
-          this.classList.add('filter-active');
-          
-          filterPosts('category', category);
-        });
+    function filterByTag(tag) {
+      const posts = document.querySelectorAll('.devlog-post');
+      posts.forEach(post => {
+        const tags = post.getAttribute('data-tags');
+        if (tags && tags.includes(tag)) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
       });
-
-      // Tag filtering
-      const tagButtons = document.querySelectorAll('[data-tag]');
-      tagButtons.forEach(tag => {
-        tag.addEventListener('click', function() {
-          const tagName = this.getAttribute('data-tag');
-          
-          // Remove active state from all tags
-          tagButtons.forEach(t => t.classList.remove('filter-active'));
-          // Add active state to clicked tag
-          this.classList.add('filter-active');
-          
-          filterPosts('tag', tagName);
-        });
-      });
-
-      function filterPosts(filterType, filterValue) {
-        const posts = document.querySelectorAll('.blog-post');
-        
-        posts.forEach(post => {
-          let shouldShow = false;
-          
-          if (filterValue === 'all') {
-            shouldShow = true;
-          } else if (filterType === 'category') {
-            const postCategory = post.getAttribute('data-category');
-            shouldShow = postCategory === filterValue;
-          } else if (filterType === 'tag') {
-            const postTags = post.getAttribute('data-tags');
-            if (postTags) {
-              const tagsArray = postTags.split(',').map(tag => tag.trim());
-              shouldShow = tagsArray.includes(filterValue);
-            }
-          }
-          
-          if (shouldShow) {
-            post.classList.remove('hidden');
-          } else {
-            post.classList.add('hidden');
-          }
-        });
-      }
-    });
+    }
   </script>
 
 </body>

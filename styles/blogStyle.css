@@ -1,252 +1,202 @@
-/* === Blog Page Styles === */
+/* === Blog Page Styles (Using Working Devlog Structure) === */
 
-/* Blog Layout */
-.blog-layout {
+/* Dev Log Page Two-Column Layout - Copied from devlogStyle.css */
+.devlog-layout {
   display: flex;
   gap: 2rem;
   padding: 2rem;
 }
 
-/* Left: Posts Column */
-.blog-posts {
+/* Left: Posts Column - Copied from devlogStyle.css */
+.devlog-posts {
   flex: 3;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-/* Right: Sidebar */
-.blog-sidebar {
+/* Right: Sidebar - Copied from devlogStyle.css */
+.devlog-sidebar {
   flex: 1;
   background-color: #2e2e2e;
-  padding: 1.5rem;
-  min-width: 250px;
+  padding: 1rem;
+  min-width: 220px;
   height: fit-content;
   border-radius: 6px;
   position: sticky;
   top: 2rem;
 }
 
-/* Blog Post Styles */
-.blog-post {
+/* Blog/Devlog Post Styles - Copied from devlogStyle.css */
+.devlog-post {
   background-color: #2e2e2e;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 6px;
   transition: box-shadow 0.2s ease;
 }
 
-.blog-post.hidden {
-  display: none;
+.devlog-post:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-.blog-post:hover {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.blog-post h2 {
-  margin-bottom: 0.75rem;
-  color: #ffffff;
-}
-
-.blog-date {
+.devlog-date {
   font-size: 0.9rem;
   opacity: 0.7;
-  margin-bottom: 1rem;
-  font-style: italic;
+  margin-bottom: 0.5rem;
 }
 
-/* Blog Tags */
-.blog-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.devlog-excerpt {
   margin-bottom: 1rem;
 }
 
-.blog-tag {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Blog Content */
-.blog-excerpt {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  font-size: 1.05rem;
-}
-
-.blog-toggle {
+.devlog-toggle {
   background-color: transparent;
   border: 1px solid #ffffff;
   color: #ffffff;
   font-family: 'Bebas Neue', sans-serif;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-radius: 4px;
 }
 
-.blog-toggle:hover {
+.devlog-toggle:hover {
   background-color: #ffffff;
   color: #1a1a1a;
-  transform: translateY(-1px);
 }
 
-/* Hidden content area */
-.blog-full {
-  margin-top: 1.5rem;
-  opacity: 0.95;
+/* Hidden content area - FIXED to prevent color inversion */
+.devlog-full {
+  margin-top: 1rem;
+  opacity: 0.9;
   line-height: 1.6;
+  color: #ffffff !important;
+  background-color: transparent !important;
 }
 
-.blog-full h4 {
+/* Force all content inside devlog-full to be white */
+.devlog-full * {
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+/* Add proper spacing for devlog content */
+.devlog-full h4 {
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
-  color: #ffffff;
+  color: #ffffff !important;
+  font-family: 'Bebas Neue', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
 }
 
-.blog-full ul {
-  margin: 1rem 0;
+.devlog-full p {
+  margin-bottom: 1rem;
+  color: #ffffff !important;
+}
+
+.devlog-full ul {
+  margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
 
-.blog-full li {
+.devlog-full li {
   margin-bottom: 0.5rem;
+  color: #ffffff !important;
 }
 
-/* Sidebar Styles */
-.blog-sidebar h3 {
+.devlog-full a {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.devlog-full a:hover {
+  opacity: 0.8;
+}
+
+/* Sidebar Styles - Fixed for consistent Jump To links */
+.devlog-sidebar h3 {
   margin-bottom: 1rem;
   font-size: 1.25rem;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5rem;
 }
 
-.blog-sidebar ul {
+.devlog-sidebar ul {
   list-style: none;
   padding-left: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.blog-sidebar li {
+.devlog-sidebar li {
   margin-bottom: 0.75rem;
 }
 
-.blog-sidebar a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  transition: opacity 0.2s ease;
+.devlog-sidebar a {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 1rem;
   cursor: pointer;
-}
-
-.blog-sidebar a:hover {
-  opacity: 0.8;
-  text-decoration: underline;
-}
-
-/* Blog Categories */
-.blog-categories {
-  margin-bottom: 2rem;
-}
-
-.blog-categories a {
-  display: block;
-  padding: 0.25rem 0;
-}
-
-/* Sidebar Tags */
-.sidebar-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.sidebar-tag {
-  background-color: #1a1a1a;
-  color: #ffffff;
+  transition: all 0.2s ease;
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
-  font-size: 0.8rem;
+  display: block;
+}
+
+.devlog-sidebar a:hover {
+  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(3px);
+  text-decoration: underline !important;
+}
+
+/* Technologies/Tags section - Copied from devlogStyle.css */
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.tech-tag {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  line-height: 1.2;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.sidebar-tag:hover {
-  background-color: #ffffff;
-  color: #1a1a1a;
-}
-
-/* Blog Post Content Styling */
-.blog-full p {
-  margin-bottom: 1rem;
-}
-
-.blog-full strong {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-/* Filter states */
-.filter-active {
+.tech-tag:hover {
   background-color: #ffffff !important;
   color: #1a1a1a !important;
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .blog-layout {
-    padding: 1.5rem;
-  }
+/* Project status adjustments - Copied from devlogStyle.css */
+.devlog-sidebar ul li {
+  font-size: 0.9rem;
+  line-height: 1.3;
 }
 
+/* Responsive adjustments - Copied from devlogStyle.css */
 @media (max-width: 768px) {
-  .blog-layout {
+  .devlog-layout {
     flex-direction: column;
     padding: 1rem;
     gap: 1.5rem;
   }
   
-  .blog-sidebar {
+  .devlog-sidebar {
     position: static;
-    margin-top: 0;
-    order: -1; /* Move sidebar above posts on mobile */
+    order: -1;
+    min-width: unset;
   }
   
-  .blog-post {
-    padding: 1.5rem;
-  }
-  
-  .sidebar-tags {
+  .tech-tags {
     justify-content: center;
-  }
-}
-
-@media (max-width: 640px) {
-  .blog-layout {
-    padding: 0.75rem;
-  }
-  
-  .blog-post {
-    padding: 1rem;
-  }
-  
-  .blog-post h2 {
-    font-size: 1.5rem;
-  }
-  
-  .blog-sidebar {
-    padding: 1rem;
   }
 }

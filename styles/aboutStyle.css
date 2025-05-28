@@ -1,37 +1,332 @@
-/* === About Bio Section === */
-.about-bio {
-  background-color: #2e2e2e;
-  padding: 1.5rem;
-  margin-top: 2rem;
+/* === Steam-Style About Page === */
+
+/* Steam Profile Section */
+.steam-profile {
+  margin: 2rem 0;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.about-bio-header {
+.profile-main {
   display: flex;
-  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Left Side - Profile Info */
+.profile-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-.about-pfp {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+.profile-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
-.about-bio-text p {
-  margin-top: 0.5rem;
+.profile-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
 }
 
-/* === Q&A Boxes === */
-.about-facts {
+.profile-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+  justify-content: space-between;
+  min-height: 160px;
+  padding: 0.5rem 0;
 }
 
-.about-box {
-  background-color: #2e2e2e;
+.profile-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-subtitle {
+  color: #66c0f4;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.profile-location {
+  color: #8f98a0;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.profile-status {
+  color: #90ba3c;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Profile Stats */
+.profile-stats {
+  display: flex;
+  gap: 2rem;
   padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-label {
+  color: #8f98a0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+/* Profile Summary */
+.profile-summary {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-summary h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.profile-summary p {
+  color: #c7d5e0;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.profile-summary p:last-child {
+  margin-bottom: 0;
+}
+
+/* Right Side - Info Cards */
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.info-card h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Activity Items */
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.activity-title {
+  color: #c7d5e0;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.activity-time {
+  color: #8f98a0;
+  font-size: 0.85rem;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: #66c0f4;
+  color: #1e1e1e;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Interests List */
+.interests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.interest-item {
+  color: #c7d5e0;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.interest-item:last-child {
+  border-bottom: none;
+}
+
+/* About Details Section */
+.about-details {
+  margin: 3rem 0 2rem 0;
+}
+
+.about-details h2 {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.detail-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.detail-card {
+  background: #2e2e2e;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.detail-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.detail-card h3 {
+  color: #66c0f4;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.detail-card p {
+  color: #c7d5e0;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.detail-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-main {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .profile-stats {
+    justify-content: space-around;
+  }
+}
+
+@media (max-width: 768px) {
+  .steam-profile {
+    margin: 1rem 0;
+  }
+  
+  .profile-main {
+    padding: 1.5rem;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .profile-avatar {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .profile-info {
+    min-height: 140px;
+  }
+  
+  .profile-name {
+    font-size: 2rem;
+  }
+  
+  .profile-stats {
+    gap: 1rem;
+  }
+  
+  .detail-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-main {
+    padding: 1rem;
+  }
+  
+  .profile-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .skills-grid {
+    justify-content: center;
+  }
+}
