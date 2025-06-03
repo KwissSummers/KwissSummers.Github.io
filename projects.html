@@ -21,15 +21,15 @@
 <body>
 
   <main id="homepage-main">
-    <div class="homepage-container"> <!-- kept the container -->
+    <div class="homepage-container">
 
       <!-- Banner -->
       <section class="homepage-banner">
         <div class="banner-inline">
-          <img src="images/artMe.jpg" alt="Ohm Desai Mascot Logo" class="banner-logo">
+          <img src="images/artMe.jpg" alt="Chris Li Logo" class="banner-logo">
           <div class="banner-text">
             <div class="homepage-title">Projects</div>
-            <div class="homepage-tagline">Projects & Experiments</div>
+            <div class="homepage-tagline">Past Projects</div>
           </div>
         </div>
       </section>
@@ -37,20 +37,364 @@
       <!-- Dynamically include header -->
       <div data-include="components/header.html"></div>
 
-      <!-- Project Gallery Section - Keeping inside container -->
-      <section class="projects-gallery">
-        <div class="project-card">
-          <h3>Redline Rampage</h3>
-          <img src="images/RedLineRampage.png" alt="RedLine Rampage">
-          <p>Use your drone and explore the bunker to uncover the mystery and find the survivors.</p>
-          <a href="https://sock8416.itch.io/redline-rampage" class="project-button" target="_blank">Play Now</a>
-        </div>
+      <!-- Project Filter Tabs -->
+      <section class="projects-filter">
+        <button class="filter-tab active" data-filter="all">All Projects</button>
+        <button class="filter-tab" data-filter="gamedev">Game Dev</button>
+        <button class="filter-tab" data-filter="design">Design</button>
+        <button class="filter-tab" data-filter="general">General</button>
+      </section>
 
-        <div class="project-card">
-          <h3>Stay Tuned!</h3>
-          <img src="images/TheSpicesOfCthulu.png" alt="Stay Tuned!">
-          <p>Stay Tuned for More!</p>
-          <!-- <a href="website link" class="project-button" target="_blank">Play Now</a> -->
+      <!-- Project Gallery Section -->
+      <section class="projects-gallery">
+        <div class="projects-grid">
+          
+          <!-- Project 1: Redline Rampage -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/RedLineRampage.png" alt="RedLine Rampage">
+            </div>
+            <div class="project-content">
+              <h3>Redline Rampage</h3>
+              <p class="project-tech">AI • Art • Game Design</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://sock8416.itch.io/redline-rampage" class="project-button primary" target="_blank">Play Now</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Redline Rampage</h3>
+              <p class="details-tech">AI • Art • Game Design</p>
+              <div class="details-description">
+                <p>Drone exploration game for AI in Computer Games class. Created all art assets and implemented AI mechanics for bunker exploration and survivor rescue missions.</p>
+                <p>Demonstrates digital art creation skills and practical AI implementation in gaming contexts.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://sock8416.itch.io/redline-rampage" class="project-button primary" target="_blank">Play Now</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: Uproot -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/uproot-placeholder.png" alt="Uproot Game">
+            </div>
+            <div class="project-content">
+              <h3>Uproot</h3>
+              <p class="project-tech">GameMaker • Art • Audio</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/Snarlbyte/Uproot" class="project-button primary" target="_blank">GitHub</a>
+              <a href="https://youtu.be/ZXHSDv5lPME" class="project-button secondary" target="_blank">Trailer</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Uproot</h3>
+              <p class="details-tech">GameMaker • Art Creation • Audio Editing</p>
+              <div class="details-description">
+                <p>Intro to Game Development project featuring custom art assets and edited soundtrack using free online sounds.</p>
+                <p>Complete game experience showcasing early game development skills in visual design and audio editing.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/Snarlbyte/Uproot" class="project-button primary" target="_blank">GitHub</a>
+                <a href="https://youtu.be/ZXHSDv5lPME" class="project-button secondary" target="_blank">Trailer</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3: Shadows of Pestis -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/shadows-pestis-placeholder.png" alt="Shadows of Pestis">
+            </div>
+            <div class="project-content">
+              <h3>Shadows of Pestis</h3>
+              <p class="project-tech">GameMaker • Team • Video</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/Shadows_of_Pestis" class="project-button primary" target="_blank">GitHub</a>
+              <a href="https://youtu.be/z-T9Ljda8xY" class="project-button secondary" target="_blank">Trailer</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Shadows of Pestis</h3>
+              <p class="details-tech">GameMaker • Team Collaboration • Video Editing</p>
+              <div class="details-description">
+                <p>Medieval fantasy game where players fight the Shadow Plague as "The Doctor." Contributed art assets and created the game trailer.</p>
+                <p>Features dash mechanics, combat systems, and ranged attacks. Showcased team collaboration and promotional material creation.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/Shadows_of_Pestis" class="project-button primary" target="_blank">GitHub</a>
+                <a href="https://youtu.be/z-T9Ljda8xY" class="project-button secondary" target="_blank">Trailer</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4: Simple Inventory System -->
+          <div class="project-card" data-category="general">
+            <div class="project-image">
+              <img src="images/inventory-system-placeholder.png" alt="Inventory System">
+            </div>
+            <div class="project-content">
+              <h3>Simple Inventory System</h3>
+              <p class="project-tech">Web Dev • JavaScript • UI/UX</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/SimpleInventorySystem" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Simple Inventory System</h3>
+              <p class="details-tech">Web Development • JavaScript • UI/UX</p>
+              <div class="details-description">
+                <p>Comprehensive inventory management system inspired by Genshin Impact's interface. Features item filtering, discard functionality, and responsive design.</p>
+                <p>Final Web Development project demonstrating advanced JavaScript and UI/UX design principles.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/SimpleInventorySystem" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 5: RoamMates Platform -->
+          <div class="project-card" data-category="general">
+            <div class="project-image">
+              <img src="images/roammates-placeholder.png" alt="RoamMates Travel Platform">
+            </div>
+            <div class="project-content">
+              <h3>RoamMates Platform</h3>
+              <p class="project-tech">HTML • CSS • JavaScript • Security</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/Roammates" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>RoamMates Platform</h3>
+              <p class="details-tech">HTML • CSS • JavaScript • Web Security • 2FA</p>
+              <div class="details-description">
+                <p>Collaborative platform for UNCC students to find travel companions. Features forum functionality, 2FA with UNCC account verification, and profile management.</p>
+                <p>Focused on web security, user authentication, and creating a safe community platform for student travelers.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/Roammates" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 6: Credit Card Fraud Detection -->
+          <div class="project-card" data-category="general">
+            <div class="project-image">
+              <img src="images/fraud-detection-placeholder.png" alt="Credit Card Fraud Detection">
+            </div>
+            <div class="project-content">
+              <h3>Credit Card Fraud Detection</h3>
+              <p class="project-tech">Python • ML • Data Analysis</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/CreditCardFraudDetection" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Credit Card Fraud Detection</h3>
+              <p class="details-tech">Python • Machine Learning • Data Analysis</p>
+              <div class="details-description">
+                <p>One-week ML project applying pattern recognition to detect fraudulent credit card transactions. Implemented data preprocessing and model evaluation techniques.</p>
+                <p>Demonstrates AI/ML proficiency with real-world financial data, including data cleaning and feature engineering.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/CreditCardFraudDetection" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 7: Gashaboss -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/gashaboss-placeholder.png" alt="Gashaboss Game">
+            </div>
+            <div class="project-content">
+              <h3>Gashaboss</h3>
+              <p class="project-tech">Unity • C# • UI • Game Systems</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/LDMONTY007/Gashaboss" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Gashaboss</h3>
+              <p class="details-tech">Unity • C# • UI Design • Game Systems</p>
+              <div class="details-description">
+                <p>Advanced Game Development project featuring complex game mechanics and user interactions. Created UI system and wrote item management scripts.</p>
+                <p>Collaborative team effort delivering a complete gaming experience for Advanced Game Development course.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/LDMONTY007/Gashaboss" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 8: Capstone Game -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/capstone-placeholder.png" alt="Capstone Game Project">
+            </div>
+            <div class="project-content">
+              <h3>Capstone Game</h3>
+              <p class="project-tech">Unity • C# • Senior Capstone</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/Capstone-Game" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Capstone Game</h3>
+              <p class="details-tech">Unity • C# • Game Systems • Senior Capstone</p>
+              <div class="details-description">
+                <p>Senior capstone project exploring innovative game mechanics and systems. While unfinished due to technical challenges and deadline constraints.</p>
+                <p>Demonstrated ambitious design concepts and advanced programming techniques despite time limitations.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/Capstone-Game" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 9: Game Jam Collection -->
+          <div class="project-card" data-category="gamedev">
+            <div class="project-image">
+              <img src="images/game-jam-placeholder.png" alt="Game Jam Projects">
+            </div>
+            <div class="project-content">
+              <h3>Game Jam Collection</h3>
+              <p class="project-tech">Various Engines • Team • Assets</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button primary" target="_blank">View All Jams</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Game Jam Collection</h3>
+              <p class="details-tech">Various Engines • Team Collaboration • Asset Creation</p>
+              <div class="details-description">
+                <p>Contributing team member in multiple game jams: Cat Fight Tactics, Frank's Big Day (Global Game Jam), Pub Puzzlers (49er Kickoff), and 2025 Spring Jam.</p>
+                <p>Focused on asset creation and behind-the-scenes support while balancing academic coursework commitments.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button primary" target="_blank">View All Jams</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 10: Client Website -->
+          <div class="project-card" data-category="general">
+            <div class="project-image">
+              <img src="images/client-website-placeholder.png" alt="Client Website Project">
+            </div>
+            <div class="project-content">
+              <h3>Client Website</h3>
+              <p class="project-tech">HTML • CSS • JavaScript</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/ClientWebsite" class="project-button primary" target="_blank">View GitHub</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>Client Website</h3>
+              <p class="details-tech">HTML • CSS • JavaScript • Client Work</p>
+              <div class="details-description">
+                <p>Final Web Development project - professional website for showcasing game development portfolio. Foundation for my current personal website.</p>
+                <p>Adapted and enhanced for specific client needs, demonstrating professional web development skills.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://github.com/KwissSummers/ClientWebsite" class="project-button primary" target="_blank">View GitHub</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+          <!-- Project 11: KarpTime App Concept -->
+          <div class="project-card" data-category="design">
+            <div class="project-image">
+              <img src="images/karptime-placeholder.png" alt="KarpTime Mobile App">
+            </div>
+            <div class="project-content">
+              <h3>KarpTime App Concept</h3>
+              <p class="project-tech">UX/UI • Business • Figma</p>
+              <div class="project-description">
+                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
+              </div>
+            </div>
+            <div class="project-actions">
+              <a href="https://docs.google.com/presentation/d/1xvqI9zfezQkyePArEaUebEh80aONrKfHAVreKETGPsM/edit?usp=sharing"
+                 class="project-button primary" target="_blank">View Presentation</a>
+            </div>
+            
+            <!-- Details View -->
+            <div class="project-details-view">
+              <h3>KarpTime App Concept</h3>
+              <p class="details-tech">UX/UI Design • Business Strategy • Figma</p>
+              <div class="details-description">
+                <p>Comprehensive mobile app concept for social media time management through gamification. Complete business model with user accounts, rewards, and subscriptions.</p>
+                <p>Created Figma mockups, presentations, and conducted research on ethics, analytics, and social impact.</p>
+              </div>
+              <div class="details-actions">
+                <a href="https://docs.google.com/presentation/d/1xvqI9zfezQkyePArEaUebEh80aONrKfHAVreKETGPsM/edit?usp=sharing"
+                 class="project-button primary" target="_blank">View Presentation</a>
+                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -63,6 +407,56 @@
   <!-- Enable dynamic includes -->
   <script>
     HTMLInclude();
+  </script>
+
+  <!-- Projects Page JavaScript -->
+  <script>
+    // Filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const filter = this.getAttribute('data-filter');
+          
+          // Update active tab
+          filterTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Filter projects
+          projectCards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            
+            if (filter === 'all' || category === filter) {
+              card.style.display = 'block';
+              card.classList.remove('hiding');
+              card.classList.add('showing');
+            } else {
+              card.classList.add('hiding');
+              card.classList.remove('showing');
+              setTimeout(() => {
+                if (card.classList.contains('hiding')) {
+                  card.style.display = 'none';
+                }
+              }, 300);
+            }
+          });
+        });
+      });
+    });
+
+    // Toggle details view functionality
+    function toggleDetails(button) {
+      const card = button.closest('.project-card');
+      const isDetailsView = card.classList.contains('details-view');
+      
+      if (isDetailsView) {
+        card.classList.remove('details-view');
+      } else {
+        card.classList.add('details-view');
+      }
+    }
   </script>
 
 </body>

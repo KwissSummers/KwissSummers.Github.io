@@ -279,7 +279,7 @@ class SpotifyPlayer {
                         </div>
                         ` : `
                         <div class="track-controls">
-                            <span class="no-preview">Click icon to listen on Spotify!</span>
+                            <span class="no-preview">Click the icon to listen on Spotify!</span>
                         </div>
                         `}
                     </div>
