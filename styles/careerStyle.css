@@ -1,4 +1,4 @@
-/* === Enhanced Career Page Styles === */
+/* === Enhanced Career Page Styles with Golden Glow === */
 
 /* Career Overview Section - Enhanced */
 .career-overview {
@@ -9,11 +9,166 @@
 }
 
 .career-summary {
-  flex: 1; /* Equal 50/50 split */
-  background-color: #2e2e2e;
+  flex: 1;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
   padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.career-summary:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.coursework-column h3 {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #66d9a6;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.course-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.course-tag {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.course-tag:hover {
+  background-color: rgba(255, 200, 100, 0.9);
+  color: #1a1a1a;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 12px rgba(255, 200, 100, 0.4),
+    0 0 15px rgba(255, 180, 80, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    gap: 1.5rem;
+  }
+  
+  .timeline-item {
+    gap: 1.5rem;
+  }
+  
+  .coursework-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    flex-direction: column;
+  }
+  
+  .timeline-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .timeline-date {
+    flex: none;
+    font-size: 1rem;
+  }
+  
+  .timeline-content,
+  .career-summary,
+  .career-highlights,
+  .skills-column,
+  .education-column {
+    padding: 1.5rem;
+  }
+  
+  .career-summary h2,
+  .career-highlights h3,
+  .skills-column h3,
+  .education-column h3 {
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .coursework-container {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .coursework-column {
+    padding: 0.75rem;
+    min-height: 150px;
+  }
+  
+  .coursework-column h3 {
+    font-size: 0.9rem;
+  }
+  
+  .course-tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .career-overview,
+  .skills-container,
+  .education-container {
+    gap: 1rem;
+  }
+  
+  .timeline-content,
+  .career-summary,
+  .career-highlights,
+  .skills-column,
+  .education-column {
+    padding: 1rem;
+  }
+  
+  .career-summary h2,
+  .career-highlights h3,
+  .skills-column h3,
+  .education-column h3 {
+    margin: -1rem -1rem 1rem -1rem;
+    padding: 0.8rem 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .timeline-content h3,
+  .career-summary h2,
+  .skills-column h3 {
+    font-size: 1.25rem;
+  }
 }
 
 .career-summary h2 {
@@ -21,7 +176,7 @@
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
@@ -33,12 +188,11 @@
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
-  text-align: left; /* Changed from center to left for better readability */
+  text-align: left;
   color: #ffffff;
-  max-width: none; /* Remove max-width constraint */
+  max-width: none;
 }
 
-/* Add spacing between sentences for better readability */
 .career-summary p::after {
   content: "";
   display: block;
@@ -50,11 +204,24 @@
 }
 
 .career-highlights {
-  flex: 1; /* Equal 50/50 split */
-  background-color: #2e2e2e;
+  flex: 1;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
   padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.career-highlights:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .career-highlights h3 {
@@ -62,7 +229,7 @@
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
@@ -92,12 +259,26 @@
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.career-timeline h2:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .timeline-item {
@@ -125,10 +306,23 @@
 
 .timeline-content {
   flex: 1;
-  background-color: #2e2e2e;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
   padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.timeline-content:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .timeline-content h3 {
@@ -139,7 +333,7 @@
 
 .timeline-content h4 {
   margin-bottom: 1rem;
-  color: #66c0f4;
+  color: #66d9a6;
   font-size: 1rem;
 }
 
@@ -168,16 +362,30 @@
 }
 
 .career-skills h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #1e8449 0%, #11a350 100%);
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.career-skills h2:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .skills-container {
@@ -187,10 +395,23 @@
 
 .skills-column {
   flex: 1;
-  background-color: #2e2e2e;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
   padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.skills-column:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .skills-column h3 {
@@ -198,7 +419,7 @@
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
@@ -217,7 +438,7 @@
 .skill-category h4 {
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: #66c0f4;
+  color: #66d9a6;
   font-weight: 600;
 }
 
@@ -231,16 +452,20 @@
   background-color: #1a1a1a;
   color: #ffffff;
   padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .skill-tag:hover {
-  background-color: #66c0f4;
+  background-color: rgba(255, 200, 100, 0.9);
   color: #1a1a1a;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 15px rgba(255, 200, 100, 0.4),
+    0 0 20px rgba(255, 180, 80, 0.2);
 }
 
 .soft-skills {
@@ -261,87 +486,7 @@
   content: "▸";
   position: absolute;
   left: 0;
-  color: #66c0f4;
-}
-
-/* Projects Section - Enhanced */
-.career-projects {
-  margin-bottom: 3rem;
-}
-
-.career-projects h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
-  color: #ffffff;
-  margin-bottom: 2rem;
-  padding: 1.25rem 2rem;
-  border-radius: 8px;
-  font-size: 1.4rem;
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.project-card {
-  background-color: #2e2e2e;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.project-card h3 {
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-}
-
-.project-tech {
-  color: #66c0f4;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.project-card p {
-  color: #c7d5e0;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
-  font-size: 0.9rem;
-}
-
-.project-link {
-  display: inline-block;
-  color: #1db954;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border: 1px solid #1db954;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-}
-
-.project-link:hover {
-  background-color: #1db954;
-  color: #ffffff;
-  transform: translateY(-1px);
+  color: #66d9a6;
 }
 
 /* Education Section - Enhanced */
@@ -354,12 +499,26 @@
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.career-education h2:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .education-container {
@@ -369,28 +528,40 @@
 
 .education-column {
   flex: 1;
-  background-color: #2e2e2e;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
   padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.education-column:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .education-column h3 {
   background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
-  padding: 1.25rem 1.5rem; /* Reduced horizontal padding */
-  border-radius: 8px 8px 0 0;
-  font-size: 1.1rem; /* Reduced font size to prevent clipping */
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+  font-size: 1.1rem;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.03em; /* Reduced letter spacing */
+  letter-spacing: 0.03em;
 }
 
-/* Special styling for longer headers */
 .education-column h3.long-header {
-  font-size: 1rem; /* Even smaller for very long headers */
+  font-size: 1rem;
   padding: 1rem 1rem;
   letter-spacing: 0.02em;
 }
@@ -412,7 +583,7 @@
 .education-school {
   font-weight: 500;
   margin-bottom: 0.25rem;
-  color: #66c0f4;
+  color: #66d9a6;
   font-size: 0.95rem;
 }
 
@@ -429,7 +600,7 @@
 }
 
 .education-details strong {
-  color: #66c0f4;
+  color: #66d9a6;
 }
 
 .certifications,
@@ -464,7 +635,7 @@
 }
 
 .certifications a {
-  color: #66c0f4;
+  color: #66d9a6;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -484,178 +655,51 @@
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.career-coursework h2:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .coursework-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
-  gap: 1rem; /* Reduced gap */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   max-width: 100%;
 }
 
 .coursework-column {
-  background-color: #2e2e2e;
-  padding: 1rem; /* Reduced padding */
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  min-height: 200px; /* Set minimum height for consistency */
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  min-height: 200px;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.coursework-column h3 {
-  margin-bottom: 0.75rem; /* Reduced margin */
-  font-size: 0.95rem; /* Reduced font size */
-  color: #66c0f4;
-  text-align: center;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.course-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem; /* Reduced gap */
-  justify-content: center;
-}
-
-.course-tag {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  padding: 0.25rem 0.5rem; /* Reduced padding */
-  border-radius: 3px; /* Smaller border radius */
-  font-size: 0.7rem; /* Reduced font size */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
-  text-align: center;
-  line-height: 1.2;
-  word-break: break-word; /* Allow text to break */
-}
-
-.course-tag:hover {
-  background-color: #66c0f4;
-  color: #1a1a1a;
-  transform: translateY(-1px);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .career-overview,
-  .skills-container,
-  .education-container {
-    gap: 1.5rem;
-  }
-  
-  .timeline-item {
-    gap: 1.5rem;
-  }
-  
-  .project-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-  
-  .coursework-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
-    gap: 0.75rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .career-overview,
-  .skills-container,
-  .education-container {
-    flex-direction: column;
-  }
-  
-  .timeline-item {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .timeline-date {
-    flex: none;
-    font-size: 1rem;
-  }
-  
-  .timeline-content,
-  .career-summary,
-  .career-highlights,
-  .skills-column,
-  .education-column {
-    padding: 1.5rem;
-  }
-  
-  /* Adjust header margins for mobile */
-  .career-summary h2,
-  .career-highlights h3,
-  .skills-column h3,
-  .education-column h3 {
-    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
-    padding: 1rem 1.5rem;
-    font-size: 1.2rem;
-  }
-  
-  .project-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .coursework-container {
-    grid-template-columns: 1fr; /* Single column on mobile */
-    gap: 0.5rem;
-  }
-  
-  .coursework-column {
-    padding: 0.75rem;
-    min-height: 150px;
-  }
-  
-  .coursework-column h3 {
-    font-size: 0.9rem;
-  }
-  
-  .course-tag {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.4rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .career-overview,
-  .skills-container,
-  .education-container {
-    gap: 1rem;
-  }
-  
-  .timeline-content,
-  .career-summary,
-  .career-highlights,
-  .skills-column,
-  .education-column,
-  .project-card {
-    padding: 1rem;
-  }
-  
-  /* Adjust header margins for smaller mobile */
-  .career-summary h2,
-  .career-highlights h3,
-  .skills-column h3,
-  .education-column h3 {
-    margin: -1rem -1rem 1rem -1rem;
-    padding: 0.8rem 1rem;
-    font-size: 1.1rem;
-  }
-  
-  .timeline-content h3,
-  .career-summary h2,
-  .skills-column h3 {
-    font-size: 1.25rem;
-  }
-  
-  .project-card h3 {
-    font-size: 1.1rem;
-  }
+.coursework-column:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 25px rgba(255, 200, 100, 0.4),
+    0 0 50px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }

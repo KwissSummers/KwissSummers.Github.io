@@ -1,329 +1,379 @@
-/* === Projects Page Styles === */
+/* === Enhanced Projects Gallery - 3D Boxes with Golden Glow === */
 
 /* Projects Gallery Container */
 .projects-gallery {
-  margin: 2rem auto;
-  max-width: 1200px;
-  padding: 0 2rem;
+  position: relative;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 3rem;
 }
 
-/* Projects Grid - 3 Columns */
+/* Projects Grid */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-/* Individual Project Cards */
+/* Individual Project Cards - 3D Enhanced with Golden Glow */
 .project-card {
-  background-color: #2e2e2e;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  height: 400px; /* Increased height for better proportions */
-  overflow: hidden;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  text-align: left;
+  transition: all 0.4s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  min-height: 280px;
+  position: relative;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(255, 200, 100, 0.05) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 12px;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Project Image */
-.project-image {
-  width: 100%;
-  height: 160px;
-  overflow: hidden;
-  flex-shrink: 0;
+.project-card:hover::before {
+  opacity: 1;
 }
 
-.project-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Project Content */
-.project-content {
-  padding: 1.25rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
+/* Project Card Header */
 .project-card h3 {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
   color: #ffffff;
   text-align: center;
-  line-height: 1.2;
+  min-height: auto;
+  position: relative;
+  z-index: 1;
 }
 
+/* Project Tech Tags */
 .project-tech {
   color: #66c0f4;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 500;
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: center;
-  line-height: 1.3;
-  height: 2.6rem; /* Fixed height for exactly 2 lines */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* Project Description Area */
 .project-description {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center the button vertically in the remaining space */
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
-.project-description p {
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: #c7d5e0;
-  margin: 0 0 0.75rem 0;
-  text-align: center;
-  flex: 1;
+.project-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  text-align: left;
 }
 
-/* Details Button */
-.details-btn {
+/* Expandable Description */
+.project-description-short {
+  display: block;
+}
+
+.project-description-full {
+  display: none;
+}
+
+.project-description.expanded .project-description-short {
+  display: none;
+}
+
+.project-description.expanded .project-description-full {
+  display: block;
+}
+
+.read-more-btn {
   background: none;
-  border: 1px solid #66c0f4;
+  border: none;
   color: #66c0f4;
   cursor: pointer;
-  font-size: 0.75rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  transition: all 0.2s ease;
-  align-self: center;
-  margin-top: auto;
+  font-size: 0.8rem;
+  padding: 0.3rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+  text-align: left;
 }
 
-.details-btn:hover {
-  background-color: #66c0f4;
-  color: #1a1a1a;
+.read-more-btn:hover {
+  color: #ffffff;
 }
 
-/* Project Actions */
+/* Project Actions Area - Always at Bottom */
 .project-actions {
-  padding: 1.25rem;
-  padding-top: 0;
+  margin-top: auto;
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
-/* Project Buttons */
+/* Single Button */
 .project-button {
   background-color: #1db954;
   color: #ffffff;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 0.75rem;
-  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  padding: 0.75rem 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: inline-block;
   letter-spacing: 0.05em;
   text-align: center;
-  min-width: 70px;
-  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .project-button:hover {
   background-color: #1ed760;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+  box-shadow: 
+    0 6px 20px rgba(29, 185, 84, 0.4),
+    0 0 15px rgba(29, 185, 84, 0.2);
 }
 
-.project-button.primary {
-  background-color: #1db954;
+/* Multiple Buttons Container */
+.project-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+.project-buttons .project-button {
+  flex: 1;
+  min-width: 80px;
+  font-size: 0.75rem;
+  padding: 0.6rem 0.8rem;
+}
+
+/* Secondary Button Style */
 .project-button.secondary {
   background-color: transparent;
   border: 1px solid #66c0f4;
   color: #66c0f4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .project-button.secondary:hover {
   background-color: #66c0f4;
   color: #1a1a1a;
-  box-shadow: 0 4px 15px rgba(102, 192, 244, 0.3);
+  box-shadow: 
+    0 6px 20px rgba(102, 192, 244, 0.4),
+    0 0 15px rgba(102, 192, 244, 0.2);
 }
 
-/* === DETAILS VIEW === */
-
-/* Hide normal content when in details view */
-.project-card.details-view .project-image,
-.project-card.details-view .project-content,
-.project-card.details-view .project-actions {
-  display: none;
-}
-
-/* Show details content */
-.project-details-view {
-  display: none;
-  padding: 1.5rem;
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* Custom Scrollbar Styling */
-.project-details-view::-webkit-scrollbar {
-  width: 6px;
-}
-
-.project-details-view::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.project-details-view::-webkit-scrollbar-thumb {
-  background: #66c0f4;
-  border-radius: 3px;
-}
-
-.project-details-view::-webkit-scrollbar-thumb:hover {
-  background: #52a9e0;
-}
-
-/* Firefox Scrollbar */
-.project-details-view {
-  scrollbar-width: thin;
-  scrollbar-color: #66c0f4 rgba(255, 255, 255, 0.1);
-}
-
-.project-card.details-view .project-details-view {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.project-details-view h3 {
+/* Concept-only Button */
+.project-button.concept {
+  background-color: #666666;
   color: #ffffff;
-  font-size: 1.3rem;
-  margin-bottom: 0.75rem;
-  text-align: center;
-  border-bottom: 2px solid #66c0f4;
-  padding-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.details-tech {
-  color: #66c0f4;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-align: center;
-  margin-bottom: 1rem;
+.project-button.concept:hover {
+  background-color: #777777;
+  box-shadow: 
+    0 6px 20px rgba(119, 119, 119, 0.4),
+    0 0 15px rgba(119, 119, 119, 0.2);
 }
 
-.details-description {
-  color: #c7d5e0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  text-align: left;
-  margin-bottom: 1rem;
-  flex: 1;
+/* Navigation Arrows - HIDDEN as requested */
+.projects-nav {
+  display: none !important;
 }
 
-.details-description p {
-  margin-bottom: 0.75rem;
+.projects-nav-left,
+.projects-nav-right {
+  display: none !important;
 }
 
-.details-actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: auto;
-}
-
-.back-btn {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 0.75rem;
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  transition: all 0.2s ease;
-  min-width: 70px;
-}
-
-.back-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Filter Tabs */
+/* Filter/Category Tabs */
 .projects-filter {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
 }
 
 .filter-tab {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-weight: 500;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.filter-tab:hover,
-.filter-tab.active {
-  background-color: #66c0f4;
-  color: #1a1a1a;
-  border-color: #66c0f4;
+.filter-tab:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 20px rgba(255, 200, 100, 0.3),
+    0 0 40px rgba(255, 180, 80, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
-/* Project Categories - Left Border */
-.project-card[data-category="gamedev"] {
+.filter-tab.active {
+  background-color: rgba(255, 200, 100, 0.8);
+  color: #1a1a1a;
+  border-color: rgba(255, 200, 100, 0.8);
+  box-shadow: 
+    0 0 25px rgba(255, 200, 100, 0.5),
+    0 0 50px rgba(255, 180, 80, 0.3);
+}
+
+/* Project Categories - Color coding with enhanced glow */
+.project-card[data-category="game"] {
   border-left: 4px solid #e74c3c;
+}
+
+.project-card[data-category="game"]:hover {
+  border-left-color: rgba(255, 200, 100, 0.8);
+}
+
+.project-card[data-category="web"] {
+  border-left: 4px solid #3498db;
+}
+
+.project-card[data-category="web"]:hover {
+  border-left-color: rgba(255, 200, 100, 0.8);
+}
+
+.project-card[data-category="ai-ml"] {
+  border-left: 4px solid #f39c12;
+}
+
+.project-card[data-category="ai-ml"]:hover {
+  border-left-color: rgba(255, 200, 100, 0.8);
 }
 
 .project-card[data-category="design"] {
   border-left: 4px solid #9b59b6;
 }
 
-.project-card[data-category="general"] {
-  border-left: 4px solid #3498db;
+.project-card[data-category="design"]:hover {
+  border-left-color: rgba(255, 200, 100, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .project-card {
+    min-height: 260px;
+    padding: 1.25rem;
+  }
+  
+  .projects-gallery {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .project-card {
+    padding: 1rem;
+    min-height: 240px;
+  }
+  
+  .projects-filter {
+    gap: 0.5rem;
+  }
+  
+  .filter-tab {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .project-buttons {
+    flex-direction: column;
+  }
+  
+  .project-buttons .project-button {
+    flex: none;
+    min-width: auto;
+  }
 }
 
 /* Animation for filtering */
 .project-card.hiding {
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.8);
   transition: all 0.3s ease;
 }
 
@@ -333,93 +383,21 @@
   transition: all 0.3s ease;
 }
 
-/* === RESPONSIVE DESIGN === */
-
-@media (max-width: 1200px) {
-  .projects-gallery {
-    max-width: 100%;
-    padding: 0 1.5rem;
-  }
+/* Loading state */
+.projects-loading {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-@media (max-width: 900px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  .project-card {
-    height: 380px;
-  }
-  
-  .project-image {
-    height: 140px;
-  }
+/* Empty state */
+.projects-empty {
+  text-align: center;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-@media (max-width: 640px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .projects-gallery {
-    padding: 0 1rem;
-  }
-  
-  .project-card {
-    height: auto;
-    min-height: 380px;
-  }
-  
-  .project-content {
-    padding: 1rem;
-  }
-  
-  .project-actions {
-    padding: 1rem;
-    padding-top: 0;
-  }
-  
-  .projects-filter {
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .filter-tab {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-  }
-  
-  .project-button,
-  .back-btn {
-    min-width: 60px;
-    font-size: 0.7rem;
-    padding: 0.5rem 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .project-card h3 {
-    font-size: 1.1rem;
-  }
-  
-  .project-tech {
-    font-size: 0.7rem;
-  }
-  
-  .project-description p {
-    font-size: 0.8rem;
-  }
-  
-  .details-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .project-button,
-  .back-btn {
-    width: 100%;
-    max-width: 200px;
-  }
+.projects-empty h3 {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.7);
 }

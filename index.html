@@ -20,16 +20,22 @@
 </head>
 
 <body>
+    <!-- Rain Effects -->
+    <div class="ambient-light"></div>
+    <div class="rain-container" id="rainContainer"></div>
+    <div class="window-effect"></div>
+    <!--<button class="audio-toggle" onclick="toggleRainSound()">🌧️ Rain Sounds</button>-->
+
     <main id="homepage-main">
       <div class="homepage-container">
     
         <!-- Banner Section -->
         <section class="homepage-banner">
           <div class="banner-inline">
-            <img src="images/artMe.jpg" alt="Ohm Desai Mascot Logo" class="banner-logo">
+            <img src="images/artMe.jpg" alt="Chris Li Logo" class="banner-logo">
             <div class="banner-text">
               <div class="homepage-title">ChrisSummers</div>
-              <div class="homepage-tagline">Welcome to my little nook on the internet</div>
+              <div class="homepage-tagline">My cozy little nook on the internet</div>
             </div>
           </div>
         </section>
@@ -37,26 +43,32 @@
         <!-- Dynamically include header -->
         <div data-include="components/header.html"></div>
     
-        <!-- Grid Layout: Logo + Intro -->
+        <!-- Grid Layout: Logo + Intro (ORIGINAL LAYOUT) -->
         <section class="homepage-intro">
           <div class="homepage-logo">
             <img src="images/artMe.jpg" alt="Sock Games Studio Logo">
           </div>
           <div class="homepage-description">
-            <p>
-              Hello, this is my website. I've created this website as a way to showcase my work, 
-              the things I learn, the things I'm interested in, and what I'm currently working on.
-
-              I'm coding this website from scratch. I'd like to use this website as a way to
-              document my journey as a programmer and person, and may try adding new things to it as I learn.
-
-              I hope you enjoy your time here, and if you have any questions or comments, 
-              feel free to reach out to me! (I even have a little contact form tab!)
-            </p>
+            <!-- About This Site Card -->
+            <div class="about-site-card">
+              <h3>About This Site</h3>
+              <p>
+                Hello, this is my website. I've created this website as a way to showcase my work, 
+                the things I learn, the things I'm interested in, and what I'm currently working on.
+              </p>
+              <p>
+                I'm coding this website from scratch. I'd like to use this website as a way to
+                document my journey as a programmer and person, and may try adding new things to it as I learn.
+              </p>
+              <p>
+                I hope you enjoy your time here, and if you have any questions or comments, 
+                feel free to reach out to me! (I even have a little contact form tab!)
+              </p>
+            </div>
           </div>
         </section>
     
-        <!-- Social Links -->
+        <!-- Social Links (Enhanced with hover effects) -->
         <section class="homepage-socials">
           <a href="https://www.linkedin.com/in/chris4li/" target="_blank" aria-label="LinkedIn Profile">
             <img src="images/linkedin-logo.png" alt="LinkedIn">
@@ -72,10 +84,10 @@
           </a>
         </section>
     
-        <!-- Blog Preview + Spotify Widget -->
+        <!-- Blog Preview + Spotify Widget (ORIGINAL LAYOUT) -->
         <section class="homepage-content">
           <div class="homepage-posts" id="recent-devlogs">
-            <!-- Devlog previews will be inserted here by JavaScript -->
+            <!-- Enhanced devlog previews will be inserted here by JavaScript -->
             <h3>Recent Development Updates</h3>
           </div>
           

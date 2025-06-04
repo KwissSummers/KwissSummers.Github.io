@@ -9,9 +9,46 @@
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    background-color: #1a1a1a;
-    color: #ffffff;
-  }
+    background: 
+      /* Enhanced wooden panel texture - spaced out by 30% */
+      repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.015) 3px,
+        transparent 6px,
+        rgba(0, 0, 0, 0.04) 9px,
+        transparent 12px,
+        rgba(255, 255, 255, 0.02) 130px,
+        rgba(255, 255, 255, 0.04) 133px,
+        rgba(0, 0, 0, 0.06) 136px,
+        transparent 139px,
+        rgba(255, 255, 255, 0.01) 260px
+      ),
+      /* Spaced out vertical wood grain */
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        rgba(255, 255, 255, 0.015) 1.5px,
+        transparent 3px,
+        rgba(0, 0, 0, 0.02) 4.5px,
+        transparent 6px,
+        rgba(255, 255, 255, 0.008) 7.5px,
+        transparent 9px
+      ),
+      /* Wood panel separators - spaced out */
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 154px,
+        rgba(0, 0, 0, 0.1) 156px,
+        rgba(255, 255, 255, 0) 158px,
+        transparent 161px
+      ),
+      /* Base gradient - lighter for better contrast */
+      linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+      color: #aeaeae;
+      background-attachment: fixed;
+    }
   
   a {
     color: inherit;
@@ -23,15 +60,36 @@
     height: auto;
   }
   
-  /* === Header (Nav Tabs) === */
+  /* === Header (Nav Tabs) - Hanging 3D Light Bulbs === */
   .nav-tabs {
     display: flex;
     justify-content: center;
     gap: 0.75rem;
     padding: 0;
-    margin: 1.5rem 0;
+    margin: 1.5rem 0 3rem 0; /* Extra bottom margin for hanging effect */
     list-style: none;
     flex-wrap: nowrap;
+    position: relative;
+  }
+
+  /* Hanging wire/cable for each tab */
+  .nav-tabs li {
+    position: relative;
+  }
+
+  .nav-tabs li::before {
+    content: '';
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 2rem;
+    background: linear-gradient(to bottom, #666 0%, #999 50%, #666 100%);
+    box-shadow: 
+      inset 1px 0 0 rgba(255, 255, 255, 0.3),
+      inset -1px 0 0 rgba(0, 0, 0, 0.3);
+    border-radius: 1px;
   }
 
   .nav-tabs li a {
@@ -40,43 +98,159 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #ffffff;
-    border: 1px solid #ffffff;
-    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px; /* Make them more bulb-like */
     width: 90px;
-    height: 40px;
+    height: 50px; /* Slightly taller for bulb shape */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-sizing: border-box;
     padding: 0;
     white-space: nowrap;
-    background-color: transparent;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+    position: relative;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    transform: perspective(100px) rotateX(5deg);
+  }
+
+  /* Light bulb filament effect */
+  .nav-tabs li a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    opacity: 0.5;
+  }
+
+  /* Glow effect around the bulb */
+  .nav-tabs li a::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
   }
 
   .nav-tabs li a:hover {
-    background-color: #ffffff;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 200, 100, 0.3) 0%, rgba(255, 180, 80, 0.1) 100%);
     color: #1a1a1a;
-    transform: scale(1.05);
+    transform: perspective(100px) rotateX(0deg) translateY(-3px);
+    border-color: rgba(255, 200, 100, 0.8);
+    box-shadow: 
+      0 0 25px rgba(255, 200, 100, 0.6),
+      0 0 50px rgba(255, 180, 80, 0.4),
+      0 8px 20px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 10px rgba(255, 200, 100, 0.8);
   }
 
-  /* Active tab styling - prevent white flash on load */
+  .nav-tabs li a:hover::after {
+    opacity: 1;
+    background: radial-gradient(circle, rgba(255, 200, 100, 0.4) 0%, rgba(255, 180, 80, 0.2) 50%, transparent 70%);
+  }
+
+  /* Active tab styling - lit up bulb */
   .nav-tabs li a.active-tab {
-    background-color: #ffffff;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 200, 100, 0.4) 0%, rgba(255, 180, 80, 0.2) 100%);
     color: #1a1a1a;
     font-weight: bold;
+    border-color: rgba(255, 200, 100, 0.9);
+    box-shadow: 
+      0 0 30px rgba(255, 200, 100, 0.8),
+      0 0 60px rgba(255, 180, 80, 0.5),
+      0 6px 15px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    animation: bulb-glow 2s ease-in-out infinite alternate;
+    text-shadow: 0 0 15px rgba(255, 200, 100, 1);
+  }
+
+  .nav-tabs li a.active-tab::after {
+    opacity: 1;
+    background: radial-gradient(circle, rgba(255, 200, 100, 0.5) 0%, rgba(255, 180, 80, 0.3) 50%, transparent 70%);
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes bulb-glow {
+    0% {
+      box-shadow: 
+        0 0 25px rgba(255, 200, 100, 0.6),
+        0 0 50px rgba(255, 180, 80, 0.4),
+        0 6px 15px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    }
+    100% {
+      box-shadow: 
+        0 0 35px rgba(255, 200, 100, 0.9),
+        0 0 70px rgba(255, 180, 80, 0.6),
+        0 6px 15px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  @keyframes glow-pulse {
+    0% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
   }
   
-  /* Divider under the banner */
+  /* Divider under the banner - Now the hanging cable/wire */
   .nav-divider {
-    height: 3px;
-    background-color: #ffffff;
-    margin: 2rem auto 1.5rem auto;
+    height: 4px;
+    background: linear-gradient(to right, 
+      transparent 0%, 
+      #666 10%, 
+      #999 20%, 
+      #ccc 50%, 
+      #999 80%, 
+      #666 90%, 
+      transparent 100%);
+    margin: 2rem auto 0 auto; /* Remove bottom margin since tabs hang from it */
     width: 100%;
     max-width: 1000px;
     padding: 0 2rem;
     box-sizing: border-box;
+    border-radius: 2px;
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  /* Add cable texture/depth */
+  .nav-divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255, 255, 255, 0.1) 2px,
+      transparent 4px
+    );
+    border-radius: 2px;
   }
   
   /* === Footer Styling === */
@@ -114,13 +288,42 @@
   h5 { font-size: 1.25rem; }
   h6 { font-size: 1rem; }
   
-  /* === Homepage Banner (Logo + Title + Tagline) === */
+  /* === Homepage Banner (Logo + Title + Tagline) - Enhanced with Permanent Golden Glow === */
   .homepage-banner {
     padding: 2rem;
-    background-color: #1a1a1a;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 2px solid rgba(255, 200, 100, 0.6);
+    border-radius: 12px;
+    margin: 1rem 2rem;
+    box-shadow: 
+      0 0 30px rgba(255, 200, 100, 0.4),
+      0 0 60px rgba(255, 180, 80, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .homepage-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 200, 100, 0.1) 50%, transparent 100%);
+    animation: banner-glow 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes banner-glow {
+    0% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0.6;
+    }
   }
   
   .banner-inline {
@@ -129,18 +332,24 @@
     gap: 1.5rem;
     max-width: 1000px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
   
   .banner-logo {
     width: 115px;
     height: 115px;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
   }
   
   .banner-text {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 1;
   }
   
   /* === Container Wrapper === */
@@ -151,12 +360,17 @@
     padding: 2rem;
   }
   
-  /* Desktop: Keep itch.io-like fixed width */
+  /* Desktop: Container with the gray from about.html detail-card */
   .homepage-container {
     min-width: 896px;
     max-width: 960px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    margin: 0 auto 2rem auto; /* Added bottom margin to prevent clipping */
+    padding: 0 2rem 2rem 2rem; /* Added bottom padding to extend container */
+    background: #1a1a1a; /* Same gray as about.html detail-card */
+    border-radius: 12px;
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
   /* === Homepage Title and Tagline === */
@@ -176,7 +390,7 @@
     margin-top: 0.5rem;
   }
 
-  /* === Social Media Icons - PROPERLY FIXED FOR CONSISTENT SIZE === */
+  /* === Social Media Icons - Enhanced with Golden Glow === */
   .homepage-socials {
     display: flex;
     justify-content: center;
@@ -188,23 +402,95 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: transparent;
-    border-radius: 4px;
-    transition: transform 0.2s ease;
+    width: 56px;
+    height: 56px;
+    background-color: rgba(46, 46, 46, 0.8);
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .homepage-socials a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 200, 100, 0.1) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
   }
 
   .homepage-socials img {
-    width: 48px !important;
-    height: 48px !important;
+    width: 36px !important;
+    height: 36px !important;
     object-fit: contain;
     object-position: center;
     border-radius: 4px;
+    filter: grayscale(100%) brightness(0.8);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
   }
 
   .homepage-socials a:hover {
+    transform: scale(1.15) translateY(-3px);
+    border-color: rgba(255, 200, 100, 0.8);
+    box-shadow: 
+      0 0 30px rgba(255, 200, 100, 0.5),
+      0 0 60px rgba(255, 180, 80, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .homepage-socials a:hover::before {
+    transform: translateX(100%);
+  }
+
+  .homepage-socials a:hover img {
+    filter: grayscale(0%) brightness(1.1);
     transform: scale(1.1);
+  }
+
+  /* LinkedIn specific hover color */
+  .homepage-socials a[href*="linkedin"]:hover {
+    background: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
+    border-color: #0a66c2;
+    box-shadow: 
+      0 0 30px rgba(10, 102, 194, 0.5),
+      0 0 60px rgba(10, 102, 194, 0.3);
+  }
+
+  /* Discord specific hover color */
+  .homepage-socials a[href*="discord"]:hover {
+    background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%);
+    border-color: #5865f2;
+    box-shadow: 
+      0 0 30px rgba(88, 101, 242, 0.5),
+      0 0 60px rgba(88, 101, 242, 0.3);
+  }
+
+  /* GitHub specific hover color */
+  .homepage-socials a[href*="github"]:hover {
+    background: linear-gradient(135deg, #21293c 0%, #0d1117 100%);
+    border-color: #21293c;
+    box-shadow: 
+      0 0 30px rgba(33, 41, 60, 0.5),
+      0 0 60px rgba(33, 41, 60, 0.3);
+  }
+
+  /* Instagram specific hover color */
+  .homepage-socials a[href*="instagram"]:hover {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    border-color: #e1306c;
+    box-shadow: 
+      0 0 30px rgba(225, 48, 108, 0.5),
+      0 0 60px rgba(225, 48, 108, 0.3);
   }
 
   .popup {
@@ -218,7 +504,13 @@
     .homepage-container {
       min-width: unset;
       max-width: 100%;
-      padding: 0 1.5rem;
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      margin: 0 auto 1.5rem auto;
+      background: #1a1a1a;
+      border-radius: 12px;
+      box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     
     .nav-divider {
@@ -233,7 +525,13 @@
   /* Tablet */
   @media (max-width: 768px) {
     .homepage-container {
-      padding: 0 1rem;
+      padding: 0 1rem 1rem 1rem;
+      margin: 0 auto 1rem auto;
+      background: #1a1a1a;
+      border-radius: 8px;
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
     
     .nav-divider {
@@ -245,21 +543,27 @@
       gap: 1.5rem;
     }
     
-    /* Navigation adjustments */
+    /* Navigation adjustments for hanging lights */
     .nav-tabs {
       gap: 0.5rem;
-      margin: 1rem 0;
+      margin: 1rem 0 2.5rem 0; /* Maintain hanging space */
     }
     
     .nav-tabs li a {
       width: 75px;
-      height: 36px;
+      height: 45px;
       font-size: 1rem;
+    }
+    
+    .nav-tabs li::before {
+      top: -1.5rem;
+      height: 1.5rem;
     }
     
     /* Banner adjustments */
     .homepage-banner {
       padding: 1.5rem 1rem;
+      margin: 1rem;
     }
     
     .banner-inline {
@@ -291,20 +595,26 @@
     }
     
     .homepage-socials a {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
     }
     
     .homepage-socials img {
-      width: 40px !important;
-      height: 40px !important;
+      width: 32px !important;
+      height: 32px !important;
     }
   }
 
   /* Mobile */
   @media (max-width: 640px) {
     .homepage-container {
-      padding: 0 0.75rem;
+      padding: 0 0.75rem 0.75rem 0.75rem;
+      margin: 0 auto 0.75rem auto;
+      background: #1a1a1a;
+      border-radius: 6px;
+      box-shadow: 
+        0 3px 12px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
     
     .nav-divider {
@@ -316,17 +626,24 @@
       gap: 1rem;
     }
     
-    /* Navigation - smaller tabs */
+    /* Navigation - smaller hanging light bulbs */
     .nav-tabs {
       gap: 0.25rem;
       flex-wrap: wrap; /* Allow wrapping on very small screens */
       justify-content: center;
+      margin: 0.8rem 0 2rem 0;
     }
     
     .nav-tabs li a {
       width: 65px;
-      height: 34px;
+      height: 42px;
       font-size: 0.9rem;
+    }
+    
+    .nav-tabs li::before {
+      top: -1.2rem;
+      height: 1.2rem;
+      width: 1.5px;
     }
     
     /* Banner - stack vertically on very small screens */
@@ -343,6 +660,7 @@
     
     .homepage-banner {
       padding: 1rem 0.75rem;
+      margin: 0.5rem;
     }
     
     /* Typography - mobile optimized */
@@ -366,13 +684,13 @@
     }
     
     .homepage-socials a {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
     }
     
     .homepage-socials img {
-      width: 36px !important;
-      height: 36px !important;
+      width: 28px !important;
+      height: 28px !important;
     }
   }
 
@@ -380,8 +698,14 @@
   @media (max-width: 480px) {
     .nav-tabs li a {
       width: 55px;
-      height: 32px;
+      height: 38px;
       font-size: 0.8rem;
+    }
+    
+    .nav-tabs li::before {
+      top: -1rem;
+      height: 1rem;
+      width: 1px;
     }
     
     .homepage-title {
@@ -392,3 +716,520 @@
       font-size: 0.9rem;
     }
   }
+
+  /* === TAB TRANSITION ANIMATIONS === */
+
+/* Option 1: Simple Fade Transition */
+.page-transition-fade {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page-transition-fade.page-loaded {
+  opacity: 1;
+}
+
+/* Option 2: Slide In From Right */
+.page-transition-slide {
+  transform: translateX(50px);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.page-transition-slide.page-loaded {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Option 3: Scale + Fade (subtle zoom effect) */
+.page-transition-scale {
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.page-transition-scale.page-loaded {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Option 4: Slide Up From Bottom */
+.page-transition-slide-up {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.page-transition-slide-up.page-loaded {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Option 5: Gaming-Style Glitch Effect (more complex) */
+.page-transition-glitch {
+  opacity: 0;
+  transform: translateX(-10px);
+  filter: blur(2px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-transition-glitch.page-loaded {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+/* Apply to main content container */
+#homepage-main {
+  /* Choose your preferred transition style */
+  /* Example: */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease-out;
+}
+
+#homepage-main.page-loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tab Button Hover Animations (Enhanced) - Updated for Light Bulbs */
+.nav-tabs li a {
+  /* Already defined above in the hanging lights section */
+}
+
+/* Enhanced hover effect with light bulb glow */
+.nav-tabs li a:hover {
+  /* Already defined above in the hanging lights section */
+}
+
+/* Active tab with pulsing light bulb animation */
+.nav-tabs li a.active-tab {
+  /* Already defined above in the hanging lights section */
+}
+
+/* Loading indicator for page transitions */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 26, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.loading-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Staggered animation for content sections */
+.homepage-banner {
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.main-nav {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.homepage-intro {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.homepage-socials {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.homepage-content {
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .page-transition-fade,
+  .page-transition-slide,
+  .page-transition-scale,
+  .page-transition-slide-up,
+  .page-transition-glitch,
+  #homepage-main {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* === RAINY CAFE ATMOSPHERE === */
+
+/* Rain Container - covers the entire viewport */
+.rain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Individual Fireflies - Floating Glowing Particles */
+.rain-drop {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Firefly Animation - Random Floating Movement */
+@keyframes firefly-float {
+    0% {
+        transform: translate(0px, 0px) scale(0.8);
+        opacity: 0.6;
+    }
+    25% {
+        transform: translate(30px, -20px) scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translate(-25px, 15px) scale(1.1);
+        opacity: 1;
+    }
+    75% {
+        transform: translate(20px, -10px) scale(0.9);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-15px, 25px) scale(0.7);
+        opacity: 0.4;
+    }
+}
+
+@keyframes firefly-float-alt {
+    0% {
+        transform: translate(0px, 0px) scale(0.9);
+        opacity: 0.5;
+    }
+    20% {
+        transform: translate(-40px, 30px) scale(1.1);
+        opacity: 0.8;
+    }
+    40% {
+        transform: translate(35px, -25px) scale(1);
+        opacity: 1;
+    }
+    60% {
+        transform: translate(-20px, 40px) scale(0.8);
+        opacity: 0.9;
+    }
+    80% {
+        transform: translate(25px, -15px) scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-30px, -35px) scale(0.6);
+        opacity: 0.3;
+    }
+}
+
+@keyframes firefly-float-circular {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+        opacity: 0.7;
+    }
+    25% {
+        transform: translate(40px, 40px) scale(0.9);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(0px, 80px) scale(1.1);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translate(-40px, 40px) scale(0.8);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(0px, 0px) scale(1);
+        opacity: 0.5;
+    }
+}
+
+/* Golden Fireflies */
+.rain-drop.gold {
+    background: radial-gradient(circle, rgba(255, 215, 100, 0.9) 0%, rgba(255, 180, 50, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(255, 215, 100, 0.8),
+        0 0 15px rgba(255, 180, 50, 0.4);
+    animation: firefly-float 8s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.gold:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 15px rgba(255, 215, 100, 1),
+        0 0 25px rgba(255, 180, 50, 0.8),
+        0 0 35px rgba(255, 215, 100, 0.6);
+}
+
+/* Blue Fireflies */
+.rain-drop.blue {
+    background: radial-gradient(circle, rgba(100, 200, 255, 0.9) 0%, rgba(50, 150, 255, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 6px rgba(100, 200, 255, 0.8),
+        0 0 12px rgba(50, 150, 255, 0.4);
+    animation: firefly-float-alt 9s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.blue:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 12px rgba(100, 200, 255, 1),
+        0 0 20px rgba(50, 150, 255, 0.8),
+        0 0 30px rgba(100, 200, 255, 0.6);
+}
+
+/* Green Fireflies */
+.rain-drop.green {
+    background: radial-gradient(circle, rgba(100, 255, 150, 0.9) 0%, rgba(50, 200, 100, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 7px rgba(100, 255, 150, 0.8),
+        0 0 14px rgba(50, 200, 100, 0.4);
+    animation: firefly-float-circular 7s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.green:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 14px rgba(100, 255, 150, 1),
+        0 0 22px rgba(50, 200, 100, 0.8),
+        0 0 32px rgba(100, 255, 150, 0.6);
+}
+
+/* Silver Fireflies - NEW */
+.rain-drop.silver {
+    background: radial-gradient(circle, rgba(220, 220, 220, 0.9) 0%, rgba(180, 180, 180, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 6px rgba(220, 220, 220, 0.8),
+        0 0 12px rgba(180, 180, 180, 0.4);
+    animation: firefly-float-alt 8.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.silver:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 12px rgba(220, 220, 220, 1),
+        0 0 20px rgba(180, 180, 180, 0.8),
+        0 0 30px rgba(220, 220, 220, 0.6);
+}
+
+/* Pink Fireflies - NEW */
+.rain-drop.pink {
+    background: radial-gradient(circle, rgba(255, 150, 200, 0.9) 0%, rgba(255, 100, 180, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(255, 150, 200, 0.8),
+        0 0 15px rgba(255, 100, 180, 0.4);
+    animation: firefly-float-circular 7.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.pink:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 15px rgba(255, 150, 200, 1),
+        0 0 25px rgba(255, 100, 180, 0.8),
+        0 0 35px rgba(255, 150, 200, 0.6);
+}
+
+/* Subtle White Fireflies */
+.rain-drop.light {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(200, 200, 200, 0.3) 70%, transparent 100%);
+    box-shadow: 
+        0 0 4px rgba(255, 255, 255, 0.6),
+        0 0 8px rgba(200, 200, 200, 0.3);
+    animation: firefly-float 10s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.light:hover {
+    transform: scale(1.3) !important;
+    box-shadow: 
+        0 0 8px rgba(255, 255, 255, 0.9),
+        0 0 16px rgba(200, 200, 200, 0.6),
+        0 0 24px rgba(255, 255, 255, 0.4);
+}
+
+/* Medium Fireflies - Warm Colors */
+.rain-drop.medium {
+    background: radial-gradient(circle, rgba(255, 150, 100, 0.8) 0%, rgba(255, 120, 80, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 5px rgba(255, 150, 100, 0.7),
+        0 0 10px rgba(255, 120, 80, 0.4);
+    animation: firefly-float-alt 8.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.medium:hover {
+    transform: scale(1.4) !important;
+    box-shadow: 
+        0 0 10px rgba(255, 150, 100, 1),
+        0 0 18px rgba(255, 120, 80, 0.7),
+        0 0 26px rgba(255, 150, 100, 0.5);
+}
+
+/* Heavy Fireflies - Bright Cyan */
+.rain-drop.heavy {
+    background: radial-gradient(circle, rgba(80, 255, 200, 0.9) 0%, rgba(40, 200, 150, 0.5) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(80, 255, 200, 0.8),
+        0 0 16px rgba(40, 200, 150, 0.4);
+    animation: firefly-float-circular 6.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.rain-drop.heavy:hover {
+    transform: scale(1.6) !important;
+    box-shadow: 
+        0 0 16px rgba(80, 255, 200, 1),
+        0 0 28px rgba(40, 200, 150, 0.8),
+        0 0 40px rgba(80, 255, 200, 0.6);
+}
+
+/* Cafe Window Effect */
+.window-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 2;
+    background: 
+        radial-gradient(ellipse at top left, rgba(0,0,0,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at top right, rgba(0,0,0,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(0,0,0,0.05) 0%, transparent 40%),
+        radial-gradient(ellipse at bottom right, rgba(0,0,0,0.05) 0%, transparent 40%);
+}
+
+/* Cozy Lighting Effect - Enhanced with softer bubbles */
+.ambient-light {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: 
+        /* Warm golden soft spots */
+        radial-gradient(circle at 30% 20%, rgba(255, 220, 150, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(255, 180, 120, 0.025) 0%, transparent 45%),
+        /* Cool blue ambient soft spots */
+        radial-gradient(circle at 80% 30%, rgba(100, 200, 255, 0.02) 0%, transparent 40%),
+        /* Green accent soft spots */
+        radial-gradient(circle at 20% 70%, rgba(100, 255, 150, 0.02) 0%, transparent 35%),
+        /* Additional soft bubble texture */
+        radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.008) 0%, transparent 25%),
+        radial-gradient(circle at 10% 50%, rgba(255, 255, 255, 0.006) 0%, transparent 30%),
+        radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.007) 0%, transparent 28%);
+}
+
+/* Audio Toggle Button */
+.audio-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(46, 46, 46, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.audio-toggle:hover {
+    background: rgba(102, 217, 166, 0.9);
+    color: #1a1a1a;
+}
+
+/* Responsive Design for Rain */
+@media (max-width: 768px) {
+    .rain-drop {
+        width: 1px;
+    }
+    
+    .rain-drop.light { height: 6px; }
+    .rain-drop.medium { height: 8px; }
+    .rain-drop.heavy { 
+        height: 12px; 
+        width: 2px;
+    }
+    .rain-drop.blue { height: 9px; }
+    .rain-drop.gold { height: 7px; }
+    .rain-drop.green { 
+        height: 10px; 
+        width: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rain-drop {
+        animation: none !important;
+    }
+    
+    .window-effect,
+    .ambient-light {
+        display: none;
+    }
+}

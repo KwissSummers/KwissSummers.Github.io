@@ -1,4 +1,4 @@
-/* === Homepage Content Only === */
+/* === Homepage Content - Original Layout with Improvements === */
 
 /* Main section wrapper */
 #homepage-main {
@@ -8,7 +8,7 @@
   padding: 2rem;
 }
 
-/* === Logo + Intro Flex Grid === */
+/* === Logo + Intro Flex Grid (ORIGINAL) === */
 .homepage-intro {
   display: flex;
   gap: 2rem;
@@ -21,7 +21,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a1a1a;
+  background-color: transparent;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.4s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.homepage-logo:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .homepage-logo img {
@@ -29,22 +45,65 @@
   max-width: 210px;
   max-height: 210px;
   height: auto;
+  border-radius: 8px;
 }
 
 .homepage-description {
   flex: 2;
-  background-color: #2e2e2e;
-  padding: 1rem;
+  background-color: #2e2e2e; /* Back to version 13 gray */
   min-height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  font-size: 0.95rem; /* Slightly smaller font */
-  line-height: 1.5;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* === Content + Posts === */
+.homepage-description:hover {
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* About This Site Card */
+.about-site-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  text-align: left;
+}
+
+.about-site-card h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.about-site-card p {
+  color: #ffffff;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.about-site-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* === Content + Posts (ORIGINAL) === */
 .homepage-content {
   display: flex;
   gap: 2rem;
@@ -60,22 +119,73 @@
 .homepage-posts > h3:first-child {
   margin-bottom: 1rem;
   font-size: 1.75rem;
-  color: white;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
+/* Enhanced Devlog Posts with Golden Glow */
 .homepage-post {
-  background-color: #2e2e2e;
-  padding: 1rem;
+  background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%); /* Back to version 13 gray */
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.homepage-post::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(255, 200, 100, 0.05) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.homepage-post:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 200, 100, 0.6);
+  box-shadow: 
+    0 0 30px rgba(255, 200, 100, 0.4),
+    0 0 60px rgba(255, 180, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.homepage-post:hover::before {
+  opacity: 1;
 }
 
 .homepage-post h3 {
-  font-size: 1.5rem; /* Slightly smaller heading */
+  font-size: 1.3rem;
   margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.homepage-post h3 a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.homepage-post:hover h3 a {
+  color: #ffffff;
 }
 
 .homepage-post p {
-  font-size: 0.95rem; /* Slightly smaller text */
+  font-size: 0.95rem;
   line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
 }
 
 .homepage-post .post-date {
@@ -83,91 +193,52 @@
   opacity: 0.8;
   margin-top: -0.25rem;
   margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
 }
 
 .homepage-sidepanel {
   flex: 1;
-  background-color: #2e2e2e;
+  background-color: #2e2e2e; /* Back to version 13 gray */
   padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 0.9rem; /* Smaller text */
+  font-size: 0.9rem;
   line-height: 1.4;
+  border-radius: 12px;
+  border: 2px solid rgba(29, 185, 84, 0.3);
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 0 20px rgba(29, 185, 84, 0.2),
+    0 0 40px rgba(29, 185, 84, 0.1),
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.homepage-sidepanel:hover {
+  border-color: rgba(29, 185, 84, 0.8);
+  box-shadow: 
+    0 0 30px rgba(29, 185, 84, 0.5),
+    0 0 60px rgba(29, 185, 84, 0.3),
+    0 0 100px rgba(29, 185, 84, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .homepage-sidepanel h3 {
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
+  color: #ffffff;
 }
 
 .homepage-sidepanel p {
   margin-bottom: 0.75rem;
-}
-
-/* === RESPONSIVE DESIGN === */
-@media (max-width: 1024px) {
-  #homepage-main {
-    gap: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .homepage-intro {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .homepage-logo,
-  .homepage-description {
-    flex: none;
-  }
-  
-  .homepage-content {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .homepage-posts,
-  .homepage-sidepanel {
-    flex: none;
-  }
-  
-  .homepage-description,
-  .homepage-post,
-  .homepage-sidepanel {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .homepage-intro {
-    gap: 1rem;
-  }
-  
-  .homepage-content {
-    gap: 1rem;
-  }
-  
-  .homepage-description,
-  .homepage-post,
-  .homepage-sidepanel {
-    padding: 0.75rem;
-  }
-  
-  .homepage-posts > h3:first-child {
-    font-size: 1.5rem;
-  }
-  
-  .homepage-post h3 {
-    font-size: 1.25rem;
-  }
-  
-  .homepage-sidepanel h3 {
-    font-size: 1.25rem;
-  }
+  color: #ffffff;
 }
 
 /* === Spotify Widget Styles === */
@@ -186,7 +257,7 @@
 
 .spotify-connect p {
   margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -312,7 +383,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 0; /* Allows text truncation */
+  min-width: 0;
 }
 
 .track-title {
@@ -336,7 +407,7 @@
   white-space: nowrap;
 }
 
-/* Track Controls - Enhanced with progress bar */
+/* Track Controls */
 .track-controls {
   display: flex;
   gap: 0.5rem;
@@ -409,32 +480,6 @@
   transform: scale(1.2);
 }
 
-/* Spotify Footer */
-.spotify-footer {
-  text-align: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.disconnect-btn {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.3);
-  border: none;
-  padding: 0.4rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  opacity: 0.5;
-}
-
-.disconnect-btn:hover {
-  color: rgba(255, 255, 255, 0.7);
-  opacity: 1;
-  transform: scale(1.1);
-}
-
 /* Loading State */
 .spotify-loading {
   text-align: center;
@@ -451,51 +496,93 @@
   font-size: 0.9rem;
 }
 
-/* Responsive Design */
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 1024px) {
+  #homepage-main {
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .track-item {
-    gap: 0.5rem;
-    padding: 0.5rem;
+  .homepage-intro {
+    flex-direction: column;
+    gap: 1.5rem;
   }
   
-  .track-artwork {
-    width: 50px;
-    height: 50px;
+  .homepage-logo,
+  .homepage-description {
+    flex: none;
   }
   
-  .track-title {
-    font-size: 0.85rem;
+  .homepage-content {
+    flex-direction: column;
+    gap: 1.5rem;
   }
   
-  .track-artist {
-    font-size: 0.75rem;
+  .homepage-posts,
+  .homepage-sidepanel {
+    flex: none;
   }
   
-  .play-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 0.6rem;
+  .homepage-description,
+  .homepage-post,
+  .homepage-sidepanel {
+    padding: 1rem;
+  }
+  
+  .about-site-card {
+    padding: 1rem;
+  }
+  
+  .homepage-socials a {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .homepage-socials img {
+    width: 32px !important;
+    height: 32px !important;
   }
 }
 
 @media (max-width: 640px) {
-  .spotify-tracks {
-    padding: 0.25rem;
+  .homepage-intro {
+    gap: 1rem;
   }
   
-  .track-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .homepage-content {
+    gap: 1rem;
   }
   
-  .track-info {
-    align-items: center;
+  .homepage-description,
+  .homepage-post,
+  .homepage-sidepanel {
+    padding: 0.75rem;
   }
   
-  .track-title,
-  .track-artist {
-    white-space: normal;
-    text-align: center;
+  .about-site-card {
+    padding: 1rem;
+  }
+  
+  .homepage-posts > h3:first-child {
+    font-size: 1.5rem;
+  }
+  
+  .homepage-post h3 {
+    font-size: 1.1rem;
+  }
+  
+  .homepage-sidepanel h3 {
+    font-size: 1.25rem;
+  }
+  
+  .homepage-socials a {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .homepage-socials img {
+    width: 28px !important;
+    height: 28px !important;
   }
 }

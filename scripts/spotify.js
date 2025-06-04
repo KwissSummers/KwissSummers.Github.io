@@ -1,4 +1,4 @@
-// spotify.js - Spotify Web API Integration
+// spotify.js - Fixed Spotify Web API Integration
 
 class SpotifyPlayer {
     constructor() {
@@ -18,18 +18,71 @@ class SpotifyPlayer {
         this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
         this.currentAudio = null;
         this.updateInterval = null;
+        this.tokenCheckInterval = null; // New: Regular token checking
     }
 
     // Initialize the Spotify player
     init() {
+        console.log('Initializing Spotify Player...');
+        
         // Check if we have a valid token
         if (this.accessToken && this.isTokenValid()) {
+            console.log('Valid token found, starting updates');
             this.startUpdating();
+            this.startTokenMonitoring(); // New: Monitor token expiry
+        } else if (this.refreshToken && !this.isTokenValid()) {
+            console.log('Token expired, attempting refresh');
+            this.attemptTokenRefresh();
         } else if (this.hasAuthCode()) {
+            console.log('Auth code found, handling callback');
             this.handleAuthCallback();
         } else {
+            console.log('No valid auth, showing connect button');
             this.showConnectButton();
         }
+    }
+
+    // NEW: Monitor token expiry and refresh automatically
+    startTokenMonitoring() {
+        // Check token every 5 minutes
+        this.tokenCheckInterval = setInterval(() => {
+            console.log('Checking token validity...');
+            if (!this.isTokenValid()) {
+                console.log('Token expired, attempting refresh');
+                this.attemptTokenRefresh();
+            }
+        }, 5 * 60 * 1000); // 5 minutes
+    }
+
+    // NEW: Attempt to refresh token
+    async attemptTokenRefresh() {
+        if (!this.refreshToken) {
+            console.log('No refresh token available, showing connect button');
+            this.showConnectButton();
+            return;
+        }
+
+        try {
+            await this.refreshAccessToken();
+            console.log('Token refreshed successfully');
+            this.startUpdating();
+        } catch (error) {
+            console.error('Failed to refresh token:', error);
+            // Clear invalid tokens and show connect button
+            this.clearTokens();
+            this.showConnectButton();
+        }
+    }
+
+    // NEW: Clear all stored tokens
+    clearTokens() {
+        localStorage.removeItem('spotify_access_token');
+        localStorage.removeItem('spotify_refresh_token');
+        localStorage.removeItem('spotify_token_expiry');
+        localStorage.removeItem('spotify_cached_tracks');
+        this.accessToken = null;
+        this.refreshToken = null;
+        this.tokenExpiry = null;
     }
 
     // Check if we have an auth code in the URL
@@ -38,16 +91,22 @@ class SpotifyPlayer {
         return urlParams.has('code');
     }
 
-    // Check if current token is still valid
+    // IMPROVED: Check if current token is still valid (with buffer)
     isTokenValid() {
-        if (!this.tokenExpiry) return false;
-        return Date.now() < parseInt(this.tokenExpiry);
+        if (!this.tokenExpiry || !this.accessToken) return false;
+        // Add 5-minute buffer before expiry
+        const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+        return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
     }
 
     // Show connect to Spotify button
     showConnectButton() {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
+
+        // Stop any running intervals
+        this.stopUpdating();
+        this.stopTokenMonitoring();
 
         container.innerHTML = `
             <div class="spotify-connect">
@@ -58,6 +117,14 @@ class SpotifyPlayer {
                 </button>
             </div>
         `;
+    }
+
+    // NEW: Stop token monitoring
+    stopTokenMonitoring() {
+        if (this.tokenCheckInterval) {
+            clearInterval(this.tokenCheckInterval);
+            this.tokenCheckInterval = null;
+        }
     }
 
     // Start Spotify authentication
@@ -96,6 +163,7 @@ class SpotifyPlayer {
                 // Clean up URL
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
+                this.startTokenMonitoring(); // Start monitoring after successful auth
             } catch (error) {
                 console.error('Failed to get access token:', error);
                 this.showConnectButton();
@@ -133,6 +201,8 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
+        
+        console.log('Tokens stored successfully. Expires in:', data.expires_in, 'seconds');
     }
 
     // Get recently played tracks
@@ -149,22 +219,29 @@ class SpotifyPlayer {
 
         if (!response.ok) {
             if (response.status === 401) {
+                console.log('401 error - token expired, attempting refresh');
                 // Token expired, try to refresh
-                await this.refreshAccessToken();
-                return this.getRecentTracks();
+                await this.attemptTokenRefresh();
+                // Retry the request if refresh was successful
+                if (this.accessToken) {
+                    return this.getRecentTracks();
+                }
+                throw new Error('Failed to refresh token');
             }
-            throw new Error('Failed to fetch recent tracks');
+            throw new Error(`API request failed: ${response.status}`);
         }
 
         const data = await response.json();
         return data.items;
     }
 
-    // Refresh access token
+    // IMPROVED: Refresh access token with better error handling
     async refreshAccessToken() {
         if (!this.refreshToken) {
             throw new Error('No refresh token');
         }
+
+        console.log('Attempting to refresh access token...');
 
         const response = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
@@ -180,6 +257,7 @@ class SpotifyPlayer {
         });
 
         if (!response.ok) {
+            console.error('Refresh token request failed:', response.status);
             throw new Error('Failed to refresh token');
         }
 
@@ -188,8 +266,16 @@ class SpotifyPlayer {
         this.accessToken = data.access_token;
         this.tokenExpiry = Date.now() + (data.expires_in * 1000);
 
+        // Update refresh token if a new one is provided
+        if (data.refresh_token) {
+            this.refreshToken = data.refresh_token;
+            localStorage.setItem('spotify_refresh_token', this.refreshToken);
+        }
+
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
+        
+        console.log('Token refreshed successfully. New expiry:', new Date(this.tokenExpiry));
     }
 
     // Update the display with recent tracks
@@ -295,11 +381,6 @@ class SpotifyPlayer {
         `;
     }
 
-                /* THIS WOULD'VE GONE INTO CODE DIRECTLY ABOVE RIGHT AFTER ${tracksHtml}
-                <div class="spotify-footer">
-                    <button onclick="spotifyPlayer.confirmDisconnect()" class="disconnect-btn" title="Disconnect your Spotify account">⚙️</button>
-                </div>*/
-
     // Handle play button - either preview or open Spotify
     handlePlay(previewUrl, spotifyUrl, button) {
         // If it's a Spotify URL (no preview), open in new tab
@@ -311,6 +392,7 @@ class SpotifyPlayer {
         // Otherwise, toggle preview playback
         this.togglePreview(previewUrl, button);
     }
+
     togglePreview(previewUrl, button) {
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
@@ -356,25 +438,6 @@ class SpotifyPlayer {
             this.updateInterval = null;
         }
     }
-
-    /*// Confirm disconnect with prompt
-    confirmDisconnect() {
-        if (confirm('Are you sure you want to disconnect Spotify?')) {
-            this.disconnect();
-        }
-    }
-
-    // Disconnect Spotify
-    disconnect() {
-        this.stopUpdating();
-        localStorage.removeItem('spotify_access_token');
-        localStorage.removeItem('spotify_refresh_token');
-        localStorage.removeItem('spotify_token_expiry');
-        this.accessToken = null;
-        this.refreshToken = null;
-        this.tokenExpiry = null;
-        this.showConnectButton();
-    }*/
 }
 
 // Initialize Spotify player when DOM is loaded

@@ -19,7 +19,12 @@
 </head>
 
 <body>
-
+<!-- Rain Effects -->
+    <div class="ambient-light"></div>
+    <div class="rain-container" id="rainContainer"></div>
+    <div class="window-effect"></div>
+    <!--<button class="audio-toggle" onclick="toggleRainSound()">🌧️ Rain Sounds</button>-->
+    
   <main id="homepage-main">
     <div class="homepage-container">
 
@@ -29,7 +34,7 @@
           <img src="images/artMe.jpg" alt="Chris Li Logo" class="banner-logo">
           <div class="banner-text">
             <div class="homepage-title">Projects</div>
-            <div class="homepage-tagline">Past Projects</div>
+            <div class="homepage-tagline">Projects & Experiments</div>
           </div>
         </div>
       </section>
@@ -40,361 +45,247 @@
       <!-- Project Filter Tabs -->
       <section class="projects-filter">
         <button class="filter-tab active" data-filter="all">All Projects</button>
-        <button class="filter-tab" data-filter="gamedev">Game Dev</button>
+        <button class="filter-tab" data-filter="game">Games</button>
+        <button class="filter-tab" data-filter="web">Web Dev</button>
+        <button class="filter-tab" data-filter="ai-ml">AI/ML</button>
         <button class="filter-tab" data-filter="design">Design</button>
-        <button class="filter-tab" data-filter="general">General</button>
       </section>
 
       <!-- Project Gallery Section -->
       <section class="projects-gallery">
+        <!-- Navigation Arrows -->
+        <button class="projects-nav projects-nav-left" onclick="scrollProjects(-1)">‹</button>
+        <button class="projects-nav projects-nav-right" onclick="scrollProjects(1)">›</button>
+        
         <div class="projects-grid">
-          
-          <!-- Project 1: Redline Rampage -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/RedLineRampage.png" alt="RedLine Rampage">
-            </div>
-            <div class="project-content">
-              <h3>Redline Rampage</h3>
-              <p class="project-tech">AI • Art • Game Design</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <!-- Featured Game Projects -->
+          <div class="project-card" data-category="game">
+            <h3>Redline Rampage</h3>
+            <p class="project-tech">AI in Computer Games • Art Creation • Game Design</p>
+            <div class="project-description">
+              <p class="project-description-short">A conceptual game where the player drives away to escape the law.</p>
+              <p class="project-description-full">
+                A game made for AI in Computer Games, the police cars in the game use pathfinding to target and chase the player. I created the art assets for the game and did some of the coding, admittedly I feel like it's really rough.
+                <br><br>
+                It was done in a short period of time overall, but it taught me a lot about coding pathfinding at the very least.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://sock8416.itch.io/redline-rampage" class="project-button primary" target="_blank">Play Now</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Redline Rampage</h3>
-              <p class="details-tech">AI • Art • Game Design</p>
-              <div class="details-description">
-                <p>Drone exploration game for AI in Computer Games class. Created all art assets and implemented AI mechanics for bunker exploration and survivor rescue missions.</p>
-                <p>Demonstrates digital art creation skills and practical AI implementation in gaming contexts.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://sock8416.itch.io/redline-rampage" class="project-button primary" target="_blank">Play Now</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://sock8416.itch.io/redline-rampage" class="project-button" target="_blank">Play on itch.io</a>
             </div>
           </div>
 
-          <!-- Project 2: Uproot -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/uproot-placeholder.png" alt="Uproot Game">
-            </div>
-            <div class="project-content">
-              <h3>Uproot</h3>
-              <p class="project-tech">GameMaker • Art • Audio</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="game">
+            <h3>Uproot</h3>
+            <p class="project-tech">GameMaker • Art Creation • Audio Editing</p>
+            <div class="project-description">
+              <p class="project-description-short">A short puzzle platformer, with environment shift mechanics</p>
+              <p class="project-description-full">
+                This game was done in my intro to game dev class. The goal was to create a puzzle platformer with some scenic elements. I did the art and sound design for the game.
+                <br><br>
+                I ended up buying procreate to create the art assets, and while I never trained in digital art, it was fun to learn to use layers and different brushes to create art. Conceptually I understand how to create art, but truthfully, I need a lot more practice.
+                <br><br>
+                Digital art feels very different from traditional art. But I do think it's the future.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/Snarlbyte/Uproot" class="project-button primary" target="_blank">GitHub</a>
-              <a href="https://youtu.be/ZXHSDv5lPME" class="project-button secondary" target="_blank">Trailer</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Uproot</h3>
-              <p class="details-tech">GameMaker • Art Creation • Audio Editing</p>
-              <div class="details-description">
-                <p>Intro to Game Development project featuring custom art assets and edited soundtrack using free online sounds.</p>
-                <p>Complete game experience showcasing early game development skills in visual design and audio editing.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/Snarlbyte/Uproot" class="project-button primary" target="_blank">GitHub</a>
+              <div class="project-buttons">
+                <a href="https://github.com/Snarlbyte/Uproot" class="project-button" target="_blank">GitHub</a>
                 <a href="https://youtu.be/ZXHSDv5lPME" class="project-button secondary" target="_blank">Trailer</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
               </div>
             </div>
           </div>
 
-          <!-- Project 3: Shadows of Pestis -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/shadows-pestis-placeholder.png" alt="Shadows of Pestis">
-            </div>
-            <div class="project-content">
-              <h3>Shadows of Pestis</h3>
-              <p class="project-tech">GameMaker • Team • Video</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="game">
+            <h3>Shadows of Pestis</h3>
+            <p class="project-tech">GameMaker • Team Collaboration • Video Editing</p>
+            <div class="project-description">
+              <p class="project-description-short">Medieval fantasy combat platformer where you fight the Shadow Plague as "The Doctor."</p>
+              <p class="project-description-full">
+                A game made for intro to gamedev, I did a chunk of the art for this game. It's mildly amusing because I wanted to get better at coding but every team I'm on needs someone to do art, so I kept ending up doing art. (most comp sci students dont have art backgrounds)
+                <br><br>
+                Anyways, it's a combat platformer that was actually sorta fun to play overall. I also did the video editing for the trailer and it was my first time being exposed to Davinci Studio.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/Shadows_of_Pestis" class="project-button primary" target="_blank">GitHub</a>
-              <a href="https://youtu.be/z-T9Ljda8xY" class="project-button secondary" target="_blank">Trailer</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Shadows of Pestis</h3>
-              <p class="details-tech">GameMaker • Team Collaboration • Video Editing</p>
-              <div class="details-description">
-                <p>Medieval fantasy game where players fight the Shadow Plague as "The Doctor." Contributed art assets and created the game trailer.</p>
-                <p>Features dash mechanics, combat systems, and ranged attacks. Showcased team collaboration and promotional material creation.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/Shadows_of_Pestis" class="project-button primary" target="_blank">GitHub</a>
+              <div class="project-buttons">
+                <a href="https://github.com/KwissSummers/Shadows_of_Pestis" class="project-button" target="_blank">GitHub</a>
                 <a href="https://youtu.be/z-T9Ljda8xY" class="project-button secondary" target="_blank">Trailer</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
               </div>
             </div>
           </div>
 
-          <!-- Project 4: Simple Inventory System -->
-          <div class="project-card" data-category="general">
-            <div class="project-image">
-              <img src="images/inventory-system-placeholder.png" alt="Inventory System">
-            </div>
-            <div class="project-content">
-              <h3>Simple Inventory System</h3>
-              <p class="project-tech">Web Dev • JavaScript • UI/UX</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="game">
+            <h3>Gashaboss</h3>
+            <p class="project-tech">Unity • C# • UI Design • Game Systems</p>
+            <div class="project-description">
+              <p class="project-description-short">A 3D gacha roguelite</p>
+              <p class="project-description-full">
+                My friend LD wanted to make this game, the concept he proposed was definitely interesting. I ended up writing most of the item scripts and created the UI for the game as well as the code behind the UI elements.
+                <br><br>
+                I also coded in a display case at the request of LD where you can view items you've collected and rotate their 3D models ingame, Resident Evil style. LD said he's still working on the game, I think he wants it to be officially released one day.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/SimpleInventorySystem" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Simple Inventory System</h3>
-              <p class="details-tech">Web Development • JavaScript • UI/UX</p>
-              <div class="details-description">
-                <p>Comprehensive inventory management system inspired by Genshin Impact's interface. Features item filtering, discard functionality, and responsive design.</p>
-                <p>Final Web Development project demonstrating advanced JavaScript and UI/UX design principles.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/SimpleInventorySystem" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/LDMONTY007/Gashaboss" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 5: RoamMates Platform -->
-          <div class="project-card" data-category="general">
-            <div class="project-image">
-              <img src="images/roammates-placeholder.png" alt="RoamMates Travel Platform">
-            </div>
-            <div class="project-content">
-              <h3>RoamMates Platform</h3>
-              <p class="project-tech">HTML • CSS • JavaScript • Security</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="game">
+            <h3>Capstone Game</h3>
+            <p class="project-tech">Unity • C# • Game Systems • Senior Capstone</p>
+            <div class="project-description">
+              <p class="project-description-short">My senior capstone project, I wanted to create a single soulslike bossfight</p>
+              <p class="project-description-full">
+                I've been trying really hard to create a hollow knight ish bossfight for what seems like forever, my senior year capstone game was my latest attempt at doing so. I had to take my capstone a semester early due to scheduling conflicts so I went into it without a lot of experience.
+                <br><br>
+                Anyways, conceptually it played very similarly to hollow knight, there were a ton of assets and animations made for the game. Unfortunately you wont be able to see them because the boss had some game breaking bugs that I couldn't fix in time for the demo.
+                <br><br>
+                If anything, it taught me a lot more about how to code with unity and the work that goes into making a game. Even a single boss fight in the game required me to code a lot of systems for a functioning game. I wonder if the code could be salvaged, I might try to fix it up one day or repurpose it.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/Roammates" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>RoamMates Platform</h3>
-              <p class="details-tech">HTML • CSS • JavaScript • Web Security • 2FA</p>
-              <div class="details-description">
-                <p>Collaborative platform for UNCC students to find travel companions. Features forum functionality, 2FA with UNCC account verification, and profile management.</p>
-                <p>Focused on web security, user authentication, and creating a safe community platform for student travelers.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/Roammates" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/KwissSummers/Capstone-Game" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 6: Credit Card Fraud Detection -->
-          <div class="project-card" data-category="general">
-            <div class="project-image">
-              <img src="images/fraud-detection-placeholder.png" alt="Credit Card Fraud Detection">
-            </div>
-            <div class="project-content">
-              <h3>Credit Card Fraud Detection</h3>
-              <p class="project-tech">Python • ML • Data Analysis</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <!-- Web Development Projects -->
+          <div class="project-card" data-category="web">
+            <h3>Simple Inventory System</h3>
+            <p class="project-tech">Web Development • JavaScript • UI/UX</p>
+            <div class="project-description">
+              <p class="project-description-short">A general UI simple inventory system</p>
+              <p class="project-description-full">
+                I basically more or less recreated a super simplified version of genshin impact's inventory system for my object oriented coding class. It's fully functional and works just fine, it even stores your save data and everything.
+                <br><br>
+                It also has a lot of filter and sorting options, and different popup windows and whatnot. Honestly I feel like I've been learning more about UI/UX design lately than I have about coding gameplay mechanics.
+                <br><br>
+                It's mildly disheartening, but at least I'm understanding what I'm doing. It kinda reminds me of web development actually.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/CreditCardFraudDetection" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Credit Card Fraud Detection</h3>
-              <p class="details-tech">Python • Machine Learning • Data Analysis</p>
-              <div class="details-description">
-                <p>One-week ML project applying pattern recognition to detect fraudulent credit card transactions. Implemented data preprocessing and model evaluation techniques.</p>
-                <p>Demonstrates AI/ML proficiency with real-world financial data, including data cleaning and feature engineering.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/CreditCardFraudDetection" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/KwissSummers/SimpleInventorySystem" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 7: Gashaboss -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/gashaboss-placeholder.png" alt="Gashaboss Game">
-            </div>
-            <div class="project-content">
-              <h3>Gashaboss</h3>
-              <p class="project-tech">Unity • C# • UI • Game Systems</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="web">
+            <h3>RoamMates Platform</h3>
+            <p class="project-tech">HTML • CSS • JavaScript • Web Security • 2FA</p>
+            <div class="project-description">
+              <p class="project-description-short">Travel buddy finder for UNCC students.</p>
+              <p class="project-description-full">
+                So the idea was to help UNCC students find travel companions, which seemed like a genuinely useful thing to build. We implemented forum functionality, and a profile/messaging system. I personally implemented the 2-factor authentication with UNCC account verification API.
+                <br><br>
+                It honestly wasn't too hard to do. This was one of my first experiences working with a team, I actually had to do more leading than playing behind the scenes support too. Mostly because my teammates were a little shy and reserved, but I think we did pretty well.
+                <br><br>
+                I've never been one to take a leading role, but this experience taught me I could, working with everyones strengths and filling in where we were weak. I've never considered myself the best coder, I didn't even learn to code before coming to college, but as a generalist I really do feel like I'm contributing by covering for weak spots.
+                <br><br>
+                The industry wants us to specialize though, so I'm trying.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/LDMONTY007/Gashaboss" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Gashaboss</h3>
-              <p class="details-tech">Unity • C# • UI Design • Game Systems</p>
-              <div class="details-description">
-                <p>Advanced Game Development project featuring complex game mechanics and user interactions. Created UI system and wrote item management scripts.</p>
-                <p>Collaborative team effort delivering a complete gaming experience for Advanced Game Development course.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/LDMONTY007/Gashaboss" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/KwissSummers/Roammates" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 8: Capstone Game -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/capstone-placeholder.png" alt="Capstone Game Project">
-            </div>
-            <div class="project-content">
-              <h3>Capstone Game</h3>
-              <p class="project-tech">Unity • C# • Senior Capstone</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <div class="project-card" data-category="web">
+            <h3>Client Website</h3>
+            <p class="project-tech">HTML • CSS • JavaScript • Client Work</p>
+            <div class="project-description">
+              <p class="project-description-short">Made a website for a friend's game dev portfolio</p>
+              <p class="project-description-full">
+                This was my final project for Web Development class, but it was also a real client project for a friend who could use a portfolio site. It was kinda fun getting to work on something with a goal in mind but no specific directions.
+                <br><br>
+                I think I did a pretty good job on it, as for how it turned out, well. It's actually the foundation code for this website. I altered the css styling and a lot of the scripts and html files to customize it more to my own tastes.
+                <br><br>
+                So you can consider it a beta version for my own website that you're on now.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/Capstone-Game" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Capstone Game</h3>
-              <p class="details-tech">Unity • C# • Game Systems • Senior Capstone</p>
-              <div class="details-description">
-                <p>Senior capstone project exploring innovative game mechanics and systems. While unfinished due to technical challenges and deadline constraints.</p>
-                <p>Demonstrated ambitious design concepts and advanced programming techniques despite time limitations.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/Capstone-Game" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/KwissSummers/ClientWebsite" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 9: Game Jam Collection -->
-          <div class="project-card" data-category="gamedev">
-            <div class="project-image">
-              <img src="images/game-jam-placeholder.png" alt="Game Jam Projects">
-            </div>
-            <div class="project-content">
-              <h3>Game Jam Collection</h3>
-              <p class="project-tech">Various Engines • Team • Assets</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+          <!-- AI/ML Projects -->
+          <div class="project-card" data-category="ai-ml">
+            <h3>Credit Card Fraud Detection</h3>
+            <p class="project-tech">Python • Machine Learning • Data Analysis</p>
+            <div class="project-description">
+              <p class="project-description-short">One-week sprint to build a fraud detection system</p>
+              <p class="project-description-full">
+                This was a final project with just one week to complete. Originally I wanted to analyze endgame gamemodes character usage databases for gacha games. unfortunately, those databases aren't open to the public, I ended up settling on a credit card fraud database.
+                <br><br>
+                The goal was to build a machine learning model that could detect fraudulent transactions. Conceptually it wasn't too difficult overall, but thats because the information needed to categorize the transacations were already available.
+                <br><br>
+                If I had picked a different topic I might've had to do more research and data collection to find more custom parameters to analyze with. machine learning is conceptualy not too complicated, but it requires a lot of data and math to do. Dont get me started on the syntax use.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button primary" target="_blank">View All Jams</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Game Jam Collection</h3>
-              <p class="details-tech">Various Engines • Team Collaboration • Asset Creation</p>
-              <div class="details-description">
-                <p>Contributing team member in multiple game jams: Cat Fight Tactics, Frank's Big Day (Global Game Jam), Pub Puzzlers (49er Kickoff), and 2025 Spring Jam.</p>
-                <p>Focused on asset creation and behind-the-scenes support while balancing academic coursework commitments.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button primary" target="_blank">View All Jams</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="https://github.com/KwissSummers/CreditCardFraudDetection" class="project-button" target="_blank">View GitHub</a>
             </div>
           </div>
 
-          <!-- Project 10: Client Website -->
-          <div class="project-card" data-category="general">
-            <div class="project-image">
-              <img src="images/client-website-placeholder.png" alt="Client Website Project">
-            </div>
-            <div class="project-content">
-              <h3>Client Website</h3>
-              <p class="project-tech">HTML • CSS • JavaScript</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
-            </div>
-            <div class="project-actions">
-              <a href="https://github.com/KwissSummers/ClientWebsite" class="project-button primary" target="_blank">View GitHub</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>Client Website</h3>
-              <p class="details-tech">HTML • CSS • JavaScript • Client Work</p>
-              <div class="details-description">
-                <p>Final Web Development project - professional website for showcasing game development portfolio. Foundation for my current personal website.</p>
-                <p>Adapted and enhanced for specific client needs, demonstrating professional web development skills.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://github.com/KwissSummers/ClientWebsite" class="project-button primary" target="_blank">View GitHub</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
-            </div>
-          </div>
-          <!-- Project 11: KarpTime App Concept -->
+          <!-- Design Projects -->
           <div class="project-card" data-category="design">
-            <div class="project-image">
-              <img src="images/karptime-placeholder.png" alt="KarpTime Mobile App">
-            </div>
-            <div class="project-content">
-              <h3>KarpTime App Concept</h3>
-              <p class="project-tech">UX/UI • Business • Figma</p>
-              <div class="project-description">
-                <button class="details-btn" onclick="toggleDetails(this)">View Project Details</button>
-              </div>
+            <h3>KarpTime App Concept</h3>
+            <p class="project-tech">UX/UI Design • Business Strategy • Figma</p>
+            <div class="project-description">
+              <p class="project-description-short">Social media time management app idea</p>
+              <p class="project-description-full">
+                This was a full app concept we developed as a team around gamifying social media time management. The idea was to help people manage their screen time through game-like rewards and social features. We created a complete business model with user accounts, coin systems, avatar customization, leaderboards, even premium subscriptions.
+                <br><br>
+                Made Figma mockups, put together presentations, researched the ethics and social impact. It was fun thinking through all the business and design challenges, we ended doing a little presentation for the class shark tank style.
+                <br><br>
+                The basis of the project was something similar to sweatcoin, a app that tracks the number of steps you take and turns it into a digital currency to spend. It's pretty interesting overall, honestly I could probably use a app like this with how much I scroll haha.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
             </div>
             <div class="project-actions">
-              <a href="https://docs.google.com/presentation/d/1xvqI9zfezQkyePArEaUebEh80aONrKfHAVreKETGPsM/edit?usp=sharing"
-                 class="project-button primary" target="_blank">View Presentation</a>
-            </div>
-            
-            <!-- Details View -->
-            <div class="project-details-view">
-              <h3>KarpTime App Concept</h3>
-              <p class="details-tech">UX/UI Design • Business Strategy • Figma</p>
-              <div class="details-description">
-                <p>Comprehensive mobile app concept for social media time management through gamification. Complete business model with user accounts, rewards, and subscriptions.</p>
-                <p>Created Figma mockups, presentations, and conducted research on ethics, analytics, and social impact.</p>
-              </div>
-              <div class="details-actions">
-                <a href="https://docs.google.com/presentation/d/1xvqI9zfezQkyePArEaUebEh80aONrKfHAVreKETGPsM/edit?usp=sharing"
-                 class="project-button primary" target="_blank">View Presentation</a>
-                <button class="back-btn" onclick="toggleDetails(this)">Back to Overview</button>
-              </div>
+              <a href="#" class="project-button concept" onclick="alert('Concept project - no live demo available')">Concept Only</a>
             </div>
           </div>
 
+          <div class="project-card" data-category="game">
+            <h3>Game Jam Collection</h3>
+            <p class="project-tech">Various Engines • Team Collaboration • Asset Creation</p>
+            <div class="project-description">
+              <p class="project-description-short">A bunch of game jams where I mostly did behind-the-scenes work while juggling school.</p>
+              <p class="project-description-full">
+                Game jams are really fun to do when you have an idea of what you're doing and the people you're working with are talented. I participated in a couple during my time in college - Cat Fight Tactics, Frank's Big Day for Global Game Jam, Pub Puzzlers for the 49er Kickoff Game Jam, and the 2025 Spring Jam.
+                <br><br>
+                I mostly did asset creation, design and concept art. I did mostly behind-the-scenes support since I was usually drowning in coursework at the same time. (college was a hectic time)
+                <br><br>
+                Each jam taught me something new about working under pressure and collaborating with different people. Probably my favorite part about my time in college if I'm being honest. Getting to talk to and meet so many talented, likeminded individuals.
+                <br><br>
+                I really hope one day I can work with people like that again, I want to be passionate about what I'm working on and create things with people.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button" target="_blank">View All Jams</a>
+            </div>
+          </div>
+
+          <!-- Placeholder for future projects -->
+          <div class="project-card" data-category="all">
+            <h3>Stay Tuned!</h3>
+            <p class="project-tech">Coming Soon...</p>
+            <div class="project-description">
+              <p>More exciting projects coming soon! I'm always working on something new, so check back regularly for updates.</p>
+            </div>
+            <div class="project-actions">
+              <!-- No button for placeholder -->
+            </div>
+          </div>
         </div>
       </section>
 
@@ -428,7 +319,7 @@
           projectCards.forEach(card => {
             const category = card.getAttribute('data-category');
             
-            if (filter === 'all' || category === filter) {
+            if (filter === 'all' || category === filter || category === 'all') {
               card.style.display = 'block';
               card.classList.remove('hiding');
               card.classList.add('showing');
@@ -446,17 +337,40 @@
       });
     });
 
-    // Toggle details view functionality
-    function toggleDetails(button) {
-      const card = button.closest('.project-card');
-      const isDetailsView = card.classList.contains('details-view');
+    // Toggle description functionality
+    function toggleDescription(button) {
+      const description = button.closest('.project-description');
+      const isExpanded = description.classList.contains('expanded');
       
-      if (isDetailsView) {
-        card.classList.remove('details-view');
+      if (isExpanded) {
+        description.classList.remove('expanded');
+        button.textContent = 'Read More';
       } else {
-        card.classList.add('details-view');
+        description.classList.add('expanded');
+        button.textContent = 'Show Less';
       }
     }
+
+    // Navigation arrows functionality
+    function scrollProjects(direction) {
+      const gallery = document.querySelector('.projects-grid');
+      const scrollAmount = 300;
+      
+      if (direction === -1) {
+        gallery.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        gallery.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        scrollProjects(-1);
+      } else if (e.key === 'ArrowRight') {
+        scrollProjects(1);
+      }
+    });
   </script>
 
 </body>
