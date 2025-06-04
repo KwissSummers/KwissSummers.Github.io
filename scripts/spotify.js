@@ -1,35 +1,41 @@
-// spotify.js - Fixed Spotify Web API Integration with Deezer preview fallback
+// spotify.js - Frontend code that uses Vercel serverless functions
 
 class SpotifyPlayer {
     constructor() {
         this.clientId = '8c6c27e0178f4ade956817d9ba7c8d69';
-        // Set specific redirect URI based on current domain
+        
+        // Set API base URL based on environment
         if (window.location.hostname === 'chrissummers.dev') {
+            this.apiBase = 'https://chrissummers.dev/api';
             this.redirectUri = 'https://chrissummers.dev';
         } else if (window.location.hostname === 'kwisssummers.github.io') {
+            // You'll need to update this to your Vercel deployment URL
+            this.apiBase = 'https://your-vercel-app.vercel.app/api';
             this.redirectUri = 'https://kwisssummers.github.io';
         } else {
-            // Fallback for local testing
+            // For local development
+            this.apiBase = 'http://localhost:3000/api';
             this.redirectUri = window.location.origin;
         }
+        
         this.scopes = 'user-read-recently-played';
         this.accessToken = localStorage.getItem('spotify_access_token');
         this.refreshToken = localStorage.getItem('spotify_refresh_token');
         this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
         this.currentAudio = null;
         this.updateInterval = null;
-        this.tokenCheckInterval = null; // New: Regular token checking
+        this.tokenCheckInterval = null;
     }
 
-    // Initialize the Spotify player
+    // Initialize the Spotify Player
     init() {
         console.log('Initializing Spotify Player...');
-
-        // Check if we have a valid token
+        console.log('API Base:', this.apiBase);
+        
         if (this.accessToken && this.isTokenValid()) {
             console.log('Valid token found, starting updates');
             this.startUpdating();
-            this.startTokenMonitoring(); // New: Monitor token expiry
+            this.startTokenMonitoring();
         } else if (this.refreshToken && !this.isTokenValid()) {
             console.log('Token expired, attempting refresh');
             this.attemptTokenRefresh();
@@ -42,22 +48,20 @@ class SpotifyPlayer {
         }
     }
 
-    // NEW: Monitor token expiry and refresh automatically
+    // Start monitoring the token validity every 5 minutes
     startTokenMonitoring() {
-        // Check token every 5 minutes
         this.tokenCheckInterval = setInterval(() => {
-            console.log('Checking token validity...');
             if (!this.isTokenValid()) {
                 console.log('Token expired, attempting refresh');
                 this.attemptTokenRefresh();
             }
-        }, 5 * 60 * 1000); // 5 minutes
+        }, 5 * 60 * 1000);
     }
 
-    // NEW: Attempt to refresh token
+    // Attempt to refresh the access token using the stored refresh token
     async attemptTokenRefresh() {
         if (!this.refreshToken) {
-            console.log('No refresh token available, showing connect button');
+            console.log('No refresh token available');
             this.showConnectButton();
             return;
         }
@@ -68,13 +72,12 @@ class SpotifyPlayer {
             this.startUpdating();
         } catch (error) {
             console.error('Failed to refresh token:', error);
-            // Clear invalid tokens and show connect button
             this.clearTokens();
             this.showConnectButton();
         }
     }
 
-    // NEW: Clear all stored tokens
+    // Clear all stored tokens and cached tracks
     clearTokens() {
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_refresh_token');
@@ -85,17 +88,15 @@ class SpotifyPlayer {
         this.tokenExpiry = null;
     }
 
-    // Check if we have an auth code in the URL
+    // Check if the URL has an auth code
     hasAuthCode() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.has('code');
+        return new URLSearchParams(window.location.search).has('code');
     }
 
     // IMPROVED: Check if current token is still valid (with buffer)
     isTokenValid() {
         if (!this.tokenExpiry || !this.accessToken) return false;
-        // Add 5-minute buffer before expiry
-        const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+        const bufferTime = 5 * 60 * 1000;
         return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
     }
 
@@ -119,7 +120,7 @@ class SpotifyPlayer {
         `;
     }
 
-    // NEW: Stop token monitoring
+    // Stop monitoring the token validity
     stopTokenMonitoring() {
         if (this.tokenCheckInterval) {
             clearInterval(this.tokenCheckInterval);
@@ -127,7 +128,7 @@ class SpotifyPlayer {
         }
     }
 
-    // Start Spotify authentication
+    // Authenticate with Spotify
     authenticate() {
         const authUrl = new URL('https://accounts.spotify.com/authorize');
         const params = {
@@ -145,7 +146,7 @@ class SpotifyPlayer {
         window.location.href = authUrl.toString();
     }
 
-    // Handle the auth callback
+    // Handle the Spotify auth callback
     async handleAuthCallback() {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -160,10 +161,9 @@ class SpotifyPlayer {
         if (code) {
             try {
                 await this.getAccessToken(code);
-                // Clean up URL
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
-                this.startTokenMonitoring(); // Start monitoring after successful auth
+                this.startTokenMonitoring();
             } catch (error) {
                 console.error('Failed to get access token:', error);
                 this.showConnectButton();
@@ -171,26 +171,29 @@ class SpotifyPlayer {
         }
     }
 
-    // Exchange auth code for access token
+    // Use Vercel serverless function for token exchange
     async getAccessToken(code) {
-        const response = await fetch('https://accounts.spotify.com/api/token', {
+        console.log('Exchanging code for token via Vercel API...');
+        
+        const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: new URLSearchParams({
-                grant_type: 'authorization_code',
+            body: JSON.stringify({
                 code: code,
-                redirect_uri: this.redirectUri,
-                client_id: this.clientId,
-                client_secret: '3247a84d5f754d9ab3464ff4848c41a8'
+                redirect_uri: this.redirectUri
             })
         });
 
-        if (!response.ok) throw new Error('Failed to get access token');
+        if (!response.ok) {
+            const errorData = await response.text();
+            console.error('Token exchange failed:', errorData);
+            throw new Error('Failed to get access token');
+        }
 
         const data = await response.json();
-
+        
         this.accessToken = data.access_token;
         this.refreshToken = data.refresh_token;
         this.tokenExpiry = Date.now() + (data.expires_in * 1000);
@@ -199,9 +202,49 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
+        
+        console.log('Tokens stored successfully');
     }
 
-    // Get recently played tracks
+    // Use Vercel serverless function for token refresh
+    async refreshAccessToken() {
+        if (!this.refreshToken) throw new Error('No refresh token');
+
+        console.log('Refreshing access token via Vercel API...');
+
+        const response = await fetch(`${this.apiBase}/spotify-refresh`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                refresh_token: this.refreshToken
+            })
+        });
+
+        if (!response.ok) {
+            console.error('Refresh failed:', response.status);
+            const errorData = await response.text();
+            console.error('Error details:', errorData);
+            throw new Error('Failed to refresh token');
+        }
+
+        const data = await response.json();
+        
+        this.accessToken = data.access_token;
+        this.tokenExpiry = Date.now() + (data.expires_in * 1000);
+
+        if (data.refresh_token) {
+            this.refreshToken = data.refresh_token;
+            localStorage.setItem('spotify_refresh_token', this.refreshToken);
+        }
+
+        localStorage.setItem('spotify_access_token', this.accessToken);
+        localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
+        
+        console.log('Token refreshed successfully');
+    }
+
     async getRecentTracks() {
         if (!this.accessToken) throw new Error('No access token');
 
@@ -222,21 +265,76 @@ class SpotifyPlayer {
         return data.items;
     }
 
-    // Get 30-second preview from Deezer if Spotify doesn't have one
-    async getDeezerPreview(trackName, artistName) {
+    async getAlternativePreview(trackName, artistName) {
         try {
             const query = encodeURIComponent(`${trackName} ${artistName}`);
-            const res = await fetch(`https://api.deezer.com/search?q=${query}`);
-            const data = await res.json();
-            return data?.data?.[0]?.preview || null;
-        } catch (err) {
-            console.warn('Deezer preview fetch failed:', err);
-            return null;
+            const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
+            const data = await response.json();
+            
+            if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
+                console.log('Found iTunes preview for:', trackName);
+                return data.results[0].previewUrl;
+            }
+        } catch (error) {
+            console.warn('iTunes preview search failed:', error);
+        }
+        return null;
+    }
+
+    async updateDisplay() {
+        const container = document.getElementById('spotify-widget');
+        if (!container) return;
+
+        try {
+            const tracks = await this.getRecentTracks();
+            
+            if (tracks && tracks.length > 0) {
+                localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
+                await this.renderTracks(tracks);
+            } else {
+                this.showNoTracks();
+            }
+        } catch (error) {
+            console.error('Failed to update Spotify display:', error);
+            this.showCachedTracks();
         }
     }
 
-    // Render the UI with recent tracks and previews
-    async renderTracks(tracks) {
+    showCachedTracks() {
+        const cachedTracks = localStorage.getItem('spotify_cached_tracks');
+        if (cachedTracks) {
+            try {
+                const tracks = JSON.parse(cachedTracks);
+                this.renderTracks(tracks, true);
+            } catch (error) {
+                this.showNoTracks();
+            }
+        } else {
+            this.showNoTracks();
+        }
+    }
+
+    showNoTracks() {
+        const container = document.getElementById('spotify-widget');
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="spotify-tracks">
+                <h3>🎵 Recently Played</h3>
+                <div class="track-item">
+                    <div class="track-artwork">
+                        <div class="no-artwork">♪</div>
+                    </div>
+                    <div class="track-info">
+                        <div class="track-title">No recent tracks</div>
+                        <div class="track-artist">Play some music on Spotify!</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderTracks(tracks, isCached = false) {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
@@ -244,17 +342,18 @@ class SpotifyPlayer {
             const track = item.track;
             const artwork = track.album.images[0]?.url || '';
             let previewUrl = track.preview_url;
-
+            
             if (!previewUrl) {
-                previewUrl = await this.getDeezerPreview(track.name, track.artists[0].name);
+                previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
             }
-
+            
             const trackUrl = track.external_urls.spotify;
-
+            
             return `
                 <div class="track-item current-track">
-                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')">
+                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
                         ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
+                        <div class="spotify-overlay">🎵</div>
                     </div>
                     <div class="track-info">
                         <div class="track-title">${this.truncateText(track.name, 25)}</div>
@@ -279,41 +378,78 @@ class SpotifyPlayer {
 
         container.innerHTML = `
             <div class="spotify-tracks">
-                <h3>🎵 Recently Played</h3>
+                <h3>🎵 Recently Played ${isCached ? '(Cached)' : ''}</h3>
                 ${tracksHtml.join('')}
             </div>
         `;
     }
 
-    // Play and toggle 30-second preview audio
-    togglePreview(previewUrl, button) {
+    togglePreview(previewUrl, button, trackIndex) {
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
             document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
+            
             if (this.currentAudio.src === previewUrl) {
                 this.currentAudio = null;
+                this.clearProgress(trackIndex);
                 return;
             }
         }
 
         this.currentAudio = new Audio(previewUrl);
         this.currentAudio.volume = 0.5;
+        
         this.currentAudio.play().then(() => {
             button.textContent = '⏸';
+            this.trackProgress(trackIndex);
+            
             this.currentAudio.onended = () => {
                 button.textContent = '▶';
+                this.clearProgress(trackIndex);
             };
         }).catch(error => {
             console.error('Failed to play preview:', error);
+            button.textContent = '❌';
+            setTimeout(() => button.textContent = '▶', 2000);
         });
     }
 
-    // Utility: shorten text
+    trackProgress(trackIndex) {
+        const progressBar = document.getElementById(`progress-${trackIndex}`);
+        const timeDisplay = document.getElementById(`time-${trackIndex}`);
+        
+        if (!progressBar || !timeDisplay || !this.currentAudio) return;
+
+        const updateProgress = () => {
+            if (this.currentAudio && !this.currentAudio.paused) {
+                const progress = (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
+                progressBar.style.width = progress + '%';
+                
+                const currentTime = Math.floor(this.currentAudio.currentTime);
+                const minutes = Math.floor(currentTime / 60);
+                const seconds = currentTime % 60;
+                timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                requestAnimationFrame(updateProgress);
+            }
+        };
+        
+        updateProgress();
+    }
+
+    clearProgress(trackIndex) {
+        const progressBar = document.getElementById(`progress-${trackIndex}`);
+        const timeDisplay = document.getElementById(`time-${trackIndex}`);
+        
+        if (progressBar) progressBar.style.width = '0%';
+        if (timeDisplay) timeDisplay.textContent = '0:00';
+    }
+
     truncateText(text, maxLength) {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
-    // Update the widget every 60 seconds
+    // Start updating the display every minute
     startUpdating() {
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
@@ -321,7 +457,7 @@ class SpotifyPlayer {
         }, 60000);
     }
 
-    // Stop periodic updates
+    // Stop updating the display
     stopUpdating() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
@@ -330,7 +466,7 @@ class SpotifyPlayer {
     }
 }
 
-// Initialize Spotify player when DOM is loaded
+// spotify.js - Frontend code that uses Vercel serverless functions
 let spotifyPlayer;
 document.addEventListener('DOMContentLoaded', function() {
     spotifyPlayer = new SpotifyPlayer();
