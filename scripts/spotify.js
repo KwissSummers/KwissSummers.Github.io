@@ -1,22 +1,33 @@
-// spotify.js - Frontend code that uses Vercel serverless functions
+// spotify.js - Smart routing for both chrissummers.dev and GitHub Pages
 
 class SpotifyPlayer {
     constructor() {
         this.clientId = '8c6c27e0178f4ade956817d9ba7c8d69';
         
-        // Set API base URL based on environment
-        if (window.location.hostname === 'chrissummers.dev') {
+        // Smart routing for API calls
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // Local development
+            this.apiBase = 'http://localhost:3000/api';
+            this.redirectUri = window.location.origin;
+        } else if (window.location.hostname === 'chrissummers.dev') {
+            // Main domain - use its own API (Vercel)
             this.apiBase = 'https://chrissummers.dev/api';
             this.redirectUri = 'https://chrissummers.dev';
         } else if (window.location.hostname === 'kwisssummers.github.io') {
-            // You'll need to update this to your Vercel deployment URL
-            this.apiBase = 'https://your-vercel-app.vercel.app/api';
+            // GitHub Pages - route to Vercel API since GitHub Pages doesn't support serverless functions
+            this.apiBase = 'https://kwiss-summers-github-io-wci4.vercel.app/api';
             this.redirectUri = 'https://kwisssummers.github.io';
         } else {
-            // For local development
-            this.apiBase = 'http://localhost:3000/api';
+            // Fallback for any other domain
+            this.apiBase = `${window.location.origin}/api`;
             this.redirectUri = window.location.origin;
         }
+        
+        console.log('Environment detected:', {
+            hostname: window.location.hostname,
+            apiBase: this.apiBase,
+            redirectUri: this.redirectUri
+        });
         
         this.scopes = 'user-read-recently-played';
         this.accessToken = localStorage.getItem('spotify_access_token');
@@ -27,10 +38,8 @@ class SpotifyPlayer {
         this.tokenCheckInterval = null;
     }
 
-    // Initialize the Spotify Player
     init() {
         console.log('Initializing Spotify Player...');
-        console.log('API Base:', this.apiBase);
         
         if (this.accessToken && this.isTokenValid()) {
             console.log('Valid token found, starting updates');
@@ -48,7 +57,6 @@ class SpotifyPlayer {
         }
     }
 
-    // Start monitoring the token validity every 5 minutes
     startTokenMonitoring() {
         this.tokenCheckInterval = setInterval(() => {
             if (!this.isTokenValid()) {
@@ -58,7 +66,6 @@ class SpotifyPlayer {
         }, 5 * 60 * 1000);
     }
 
-    // Attempt to refresh the access token using the stored refresh token
     async attemptTokenRefresh() {
         if (!this.refreshToken) {
             console.log('No refresh token available');
@@ -77,7 +84,6 @@ class SpotifyPlayer {
         }
     }
 
-    // Clear all stored tokens and cached tracks
     clearTokens() {
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_refresh_token');
@@ -88,24 +94,20 @@ class SpotifyPlayer {
         this.tokenExpiry = null;
     }
 
-    // Check if the URL has an auth code
     hasAuthCode() {
         return new URLSearchParams(window.location.search).has('code');
     }
 
-    // IMPROVED: Check if current token is still valid (with buffer)
     isTokenValid() {
         if (!this.tokenExpiry || !this.accessToken) return false;
         const bufferTime = 5 * 60 * 1000;
         return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
     }
 
-    // Show connect to Spotify button
     showConnectButton() {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
-        // Stop any running intervals
         this.stopUpdating();
         this.stopTokenMonitoring();
 
@@ -120,7 +122,6 @@ class SpotifyPlayer {
         `;
     }
 
-    // Stop monitoring the token validity
     stopTokenMonitoring() {
         if (this.tokenCheckInterval) {
             clearInterval(this.tokenCheckInterval);
@@ -128,7 +129,6 @@ class SpotifyPlayer {
         }
     }
 
-    // Authenticate with Spotify
     authenticate() {
         const authUrl = new URL('https://accounts.spotify.com/authorize');
         const params = {
@@ -143,10 +143,10 @@ class SpotifyPlayer {
             authUrl.searchParams.append(key, params[key])
         );
 
+        console.log('Redirecting to Spotify auth with:', params);
         window.location.href = authUrl.toString();
     }
 
-    // Handle the Spotify auth callback
     async handleAuthCallback() {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -160,6 +160,7 @@ class SpotifyPlayer {
 
         if (code) {
             try {
+                console.log('Handling auth callback with code:', code.substring(0, 10) + '...');
                 await this.getAccessToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
@@ -173,7 +174,7 @@ class SpotifyPlayer {
 
     // Use Vercel serverless function for token exchange
     async getAccessToken(code) {
-        console.log('Exchanging code for token via Vercel API...');
+        console.log('Exchanging code for token via API:', this.apiBase);
         
         const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
@@ -188,8 +189,8 @@ class SpotifyPlayer {
 
         if (!response.ok) {
             const errorData = await response.text();
-            console.error('Token exchange failed:', errorData);
-            throw new Error('Failed to get access token');
+            console.error('Token exchange failed:', response.status, errorData);
+            throw new Error(`Failed to get access token: ${response.status}`);
         }
 
         const data = await response.json();
@@ -198,19 +199,18 @@ class SpotifyPlayer {
         this.refreshToken = data.refresh_token;
         this.tokenExpiry = Date.now() + (data.expires_in * 1000);
 
-        // Store tokens
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Tokens stored successfully');
+        console.log('Tokens stored successfully. Expires in:', data.expires_in, 'seconds');
     }
 
     // Use Vercel serverless function for token refresh
     async refreshAccessToken() {
         if (!this.refreshToken) throw new Error('No refresh token');
 
-        console.log('Refreshing access token via Vercel API...');
+        console.log('Refreshing access token via API:', this.apiBase);
 
         const response = await fetch(`${this.apiBase}/spotify-refresh`, {
             method: 'POST',
@@ -223,10 +223,9 @@ class SpotifyPlayer {
         });
 
         if (!response.ok) {
-            console.error('Refresh failed:', response.status);
             const errorData = await response.text();
-            console.error('Error details:', errorData);
-            throw new Error('Failed to refresh token');
+            console.error('Refresh failed:', response.status, errorData);
+            throw new Error(`Failed to refresh token: ${response.status}`);
         }
 
         const data = await response.json();
@@ -254,14 +253,16 @@ class SpotifyPlayer {
 
         if (!response.ok) {
             if (response.status === 401) {
+                console.log('Spotify API returned 401, attempting token refresh');
                 await this.attemptTokenRefresh();
                 if (this.accessToken) return this.getRecentTracks();
                 throw new Error('Failed to refresh token');
             }
-            throw new Error(`API request failed: ${response.status}`);
+            throw new Error(`Spotify API request failed: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('Retrieved', data.items.length, 'recent tracks');
         return data.items;
     }
 
@@ -305,6 +306,7 @@ class SpotifyPlayer {
         if (cachedTracks) {
             try {
                 const tracks = JSON.parse(cachedTracks);
+                console.log('Showing cached tracks');
                 this.renderTracks(tracks, true);
             } catch (error) {
                 this.showNoTracks();
@@ -343,6 +345,7 @@ class SpotifyPlayer {
             const artwork = track.album.images[0]?.url || '';
             let previewUrl = track.preview_url;
             
+            // Try to get alternative preview if Spotify doesn't provide one
             if (!previewUrl) {
                 previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
             }
@@ -385,10 +388,12 @@ class SpotifyPlayer {
     }
 
     togglePreview(previewUrl, button, trackIndex) {
+        // Stop current audio if playing
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
             document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
             
+            // If clicking same track, just stop
             if (this.currentAudio.src === previewUrl) {
                 this.currentAudio = null;
                 this.clearProgress(trackIndex);
@@ -396,6 +401,7 @@ class SpotifyPlayer {
             }
         }
 
+        // Start new audio
         this.currentAudio = new Audio(previewUrl);
         this.currentAudio.volume = 0.5;
         
@@ -449,7 +455,6 @@ class SpotifyPlayer {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
-    // Start updating the display every minute
     startUpdating() {
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
@@ -457,7 +462,6 @@ class SpotifyPlayer {
         }, 60000);
     }
 
-    // Stop updating the display
     stopUpdating() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
@@ -466,7 +470,7 @@ class SpotifyPlayer {
     }
 }
 
-// spotify.js - Frontend code that uses Vercel serverless functions
+// Initialize when DOM is ready
 let spotifyPlayer;
 document.addEventListener('DOMContentLoaded', function() {
     spotifyPlayer = new SpotifyPlayer();
