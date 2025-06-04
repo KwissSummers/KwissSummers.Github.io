@@ -1,4 +1,4 @@
-// spotify.js - Fixed Spotify Web API Integration
+// spotify.js - Fixed Spotify Web API Integration with Deezer preview fallback
 
 class SpotifyPlayer {
     constructor() {
@@ -24,7 +24,7 @@ class SpotifyPlayer {
     // Initialize the Spotify player
     init() {
         console.log('Initializing Spotify Player...');
-        
+
         // Check if we have a valid token
         if (this.accessToken && this.isTokenValid()) {
             console.log('Valid token found, starting updates');
@@ -187,12 +187,10 @@ class SpotifyPlayer {
             })
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to get access token');
-        }
+        if (!response.ok) throw new Error('Failed to get access token');
 
         const data = await response.json();
-        
+
         this.accessToken = data.access_token;
         this.refreshToken = data.refresh_token;
         this.tokenExpiry = Date.now() + (data.expires_in * 1000);
@@ -201,31 +199,20 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
-        
-        console.log('Tokens stored successfully. Expires in:', data.expires_in, 'seconds');
     }
 
     // Get recently played tracks
     async getRecentTracks() {
-        if (!this.accessToken) {
-            throw new Error('No access token');
-        }
+        if (!this.accessToken) throw new Error('No access token');
 
         const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
-            headers: {
-                'Authorization': `Bearer ${this.accessToken}`
-            }
+            headers: { 'Authorization': `Bearer ${this.accessToken}` }
         });
 
         if (!response.ok) {
             if (response.status === 401) {
-                console.log('401 error - token expired, attempting refresh');
-                // Token expired, try to refresh
                 await this.attemptTokenRefresh();
-                // Retry the request if refresh was successful
-                if (this.accessToken) {
-                    return this.getRecentTracks();
-                }
+                if (this.accessToken) return this.getRecentTracks();
                 throw new Error('Failed to refresh token');
             }
             throw new Error(`API request failed: ${response.status}`);
@@ -235,122 +222,39 @@ class SpotifyPlayer {
         return data.items;
     }
 
-    // IMPROVED: Refresh access token with better error handling
-    async refreshAccessToken() {
-        if (!this.refreshToken) {
-            throw new Error('No refresh token');
-        }
-
-        console.log('Attempting to refresh access token...');
-
-        const response = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                grant_type: 'refresh_token',
-                refresh_token: this.refreshToken,
-                client_id: this.clientId,
-                client_secret: '3247a84d5f754d9ab3464ff4848c41a8'
-            })
-        });
-
-        if (!response.ok) {
-            console.error('Refresh token request failed:', response.status);
-            throw new Error('Failed to refresh token');
-        }
-
-        const data = await response.json();
-        
-        this.accessToken = data.access_token;
-        this.tokenExpiry = Date.now() + (data.expires_in * 1000);
-
-        // Update refresh token if a new one is provided
-        if (data.refresh_token) {
-            this.refreshToken = data.refresh_token;
-            localStorage.setItem('spotify_refresh_token', this.refreshToken);
-        }
-
-        localStorage.setItem('spotify_access_token', this.accessToken);
-        localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
-        
-        console.log('Token refreshed successfully. New expiry:', new Date(this.tokenExpiry));
-    }
-
-    // Update the display with recent tracks
-    async updateDisplay() {
-        const container = document.getElementById('spotify-widget');
-        if (!container) return;
-
+    // Get 30-second preview from Deezer if Spotify doesn't have one
+    async getDeezerPreview(trackName, artistName) {
         try {
-            const tracks = await this.getRecentTracks();
-            
-            if (tracks && tracks.length > 0) {
-                // Cache the tracks
-                localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
-                this.renderTracks(tracks);
-            } else {
-                this.showNoTracks();
-            }
-        } catch (error) {
-            console.error('Failed to update Spotify display:', error);
-            this.showCachedTracks();
+            const query = encodeURIComponent(`${trackName} ${artistName}`);
+            const res = await fetch(`https://api.deezer.com/search?q=${query}`);
+            const data = await res.json();
+            return data?.data?.[0]?.preview || null;
+        } catch (err) {
+            console.warn('Deezer preview fetch failed:', err);
+            return null;
         }
     }
 
-    // Show cached tracks if API fails
-    showCachedTracks() {
-        const cachedTracks = localStorage.getItem('spotify_cached_tracks');
-        if (cachedTracks) {
-            try {
-                const tracks = JSON.parse(cachedTracks);
-                this.renderTracks(tracks, true);
-            } catch (error) {
-                this.showNoTracks();
-            }
-        } else {
-            this.showNoTracks();
-        }
-    }
-
-    // Show no tracks message
-    showNoTracks() {
+    // Render the UI with recent tracks and previews
+    async renderTracks(tracks) {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
-        container.innerHTML = `
-            <div class="spotify-tracks">
-                <h3>🎵 Recently Played</h3>
-                <div class="track-item">
-                    <div class="track-artwork">
-                        <div class="no-artwork">♪</div>
-                    </div>
-                    <div class="track-info">
-                        <div class="track-title">No recent tracks</div>
-                        <div class="track-artist">Play some music on Spotify!</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    // Render tracks in the UI
-    renderTracks(tracks, isCached = false) {
-        const container = document.getElementById('spotify-widget');
-        if (!container) return;
-
-        const tracksHtml = tracks.map((item, index) => {
+        const tracksHtml = await Promise.all(tracks.map(async (item, index) => {
             const track = item.track;
             const artwork = track.album.images[0]?.url || '';
-            const previewUrl = track.preview_url;
+            let previewUrl = track.preview_url;
+
+            if (!previewUrl) {
+                previewUrl = await this.getDeezerPreview(track.name, track.artists[0].name);
+            }
+
             const trackUrl = track.external_urls.spotify;
-            
+
             return `
                 <div class="track-item current-track">
-                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
+                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')">
                         ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
-                        <div class="spotify-overlay">🎵</div>
                     </div>
                     <div class="track-info">
                         <div class="track-title">${this.truncateText(track.name, 25)}</div>
@@ -365,39 +269,27 @@ class SpotifyPlayer {
                         </div>
                         ` : `
                         <div class="track-controls">
-                            <span class="no-preview">Click the icon to listen on Spotify!</span>
+                            <span class="no-preview">Click artwork to listen on Spotify</span>
                         </div>
                         `}
                     </div>
                 </div>
             `;
-        }).join('');
+        }));
 
         container.innerHTML = `
             <div class="spotify-tracks">
-                <h3>🎵 Recently Played ${isCached ? '(Cached)' : ''}</h3>
-                ${tracksHtml}
+                <h3>🎵 Recently Played</h3>
+                ${tracksHtml.join('')}
             </div>
         `;
     }
 
-    // Handle play button - either preview or open Spotify
-    handlePlay(previewUrl, spotifyUrl, button) {
-        // If it's a Spotify URL (no preview), open in new tab
-        if (previewUrl === spotifyUrl) {
-            window.open(spotifyUrl, '_blank');
-            return;
-        }
-        
-        // Otherwise, toggle preview playback
-        this.togglePreview(previewUrl, button);
-    }
-
+    // Play and toggle 30-second preview audio
     togglePreview(previewUrl, button) {
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
             document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
-            
             if (this.currentAudio.src === previewUrl) {
                 this.currentAudio = null;
                 return;
@@ -406,10 +298,8 @@ class SpotifyPlayer {
 
         this.currentAudio = new Audio(previewUrl);
         this.currentAudio.volume = 0.5;
-        
         this.currentAudio.play().then(() => {
             button.textContent = '⏸';
-            
             this.currentAudio.onended = () => {
                 button.textContent = '▶';
             };
@@ -418,20 +308,20 @@ class SpotifyPlayer {
         });
     }
 
-    // Truncate text to fit display
+    // Utility: shorten text
     truncateText(text, maxLength) {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
-    // Start automatic updates
+    // Update the widget every 60 seconds
     startUpdating() {
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
             this.updateDisplay();
-        }, 60000); // Update every minute
+        }, 60000);
     }
 
-    // Stop automatic updates
+    // Stop periodic updates
     stopUpdating() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
