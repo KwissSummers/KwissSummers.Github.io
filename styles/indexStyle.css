@@ -201,7 +201,7 @@
 
 .homepage-sidepanel {
   flex: 1;
-  background-color: #2e2e2e; /* Back to version 13 gray */
+  background-color: #0e0e0e; /* Back to version 13 gray */
   padding: 1rem;
   display: flex;
   flex-direction: column;
