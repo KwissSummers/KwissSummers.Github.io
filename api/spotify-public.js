@@ -23,8 +23,8 @@ module.exports = async function handler(req, res) {
 
         // Try Upstash Redis first
         try {
-            const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
-            const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+            const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+            const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
             
             if (UPSTASH_URL && UPSTASH_TOKEN) {
                 const response = await fetch(`${UPSTASH_URL}/get/spotify:tracks`, {
