@@ -1,11 +1,12 @@
-// 02-audio-firefly.js - Audio Manager VOLUME CONTROLS REMOVED & 25% Volume
+// 02-audio-firefly.js - Audio Manager and Firefly Effects - FIXED AUDIO VERSION
 
-// === GLOBAL AUDIO INSTANCE - 25% VOLUME ===
+// === GLOBAL AUDIO INSTANCE - CREATED IMMEDIATELY ===
+// This ensures audio survives page navigation
 if (!window.globalAudioInstance) {
     window.globalAudioInstance = {
         audio: null,
         isPlaying: false,
-        volume: 0.25, // CHANGED: Set to 25% volume
+        volume: 0.3,
         audioFile: 'audio/ambient-loop.mp3',
         
         // Initialize the actual audio object
@@ -13,14 +14,14 @@ if (!window.globalAudioInstance) {
             if (!this.audio) {
                 this.audio = new Audio(this.audioFile);
                 this.audio.loop = true;
-                this.audio.volume = this.volume; // Set to 25%
+                this.audio.volume = this.volume;
                 this.audio.preload = 'auto';
                 
                 // Store reference globally to prevent garbage collection
                 window.persistentAudioElement = this.audio;
                 
                 this.audio.addEventListener('loadeddata', () => {
-                    console.log('🎵 Global audio loaded at 25% volume');
+                    console.log('🎵 Global audio loaded');
                 });
                 
                 this.audio.addEventListener('error', (e) => {
@@ -36,7 +37,7 @@ if (!window.globalAudioInstance) {
             return {
                 playing: !this.audio.paused && !this.audio.ended,
                 time: this.audio.currentTime || 0,
-                volume: this.audio.volume || 0.25
+                volume: this.audio.volume || 0.3
             };
         },
         
@@ -44,9 +45,10 @@ if (!window.globalAudioInstance) {
         setState: function(playing, time, volume) {
             if (!this.audio) this.init();
             
-            // VOLUME IS ALWAYS 25% - IGNORE VOLUME PARAMETER
-            this.audio.volume = 0.25;
-            this.volume = 0.25;
+            if (typeof volume !== 'undefined') {
+                this.audio.volume = volume;
+                this.volume = volume;
+            }
             
             if (typeof time !== 'undefined' && !isNaN(time)) {
                 this.audio.currentTime = time;
@@ -66,12 +68,12 @@ if (!window.globalAudioInstance) {
     window.globalAudioInstance.init();
 }
 
-// === PERSISTENT AUDIO MANAGER CLASS - NO VOLUME CONTROLS ===
+// === PERSISTENT AUDIO MANAGER CLASS ===
 class PersistentAudioManager {
     constructor() {
         this.storageKey = 'audio_settings';
         this.stateKey = 'audio_current_state';
-        this.volume = 0.25; // FIXED: Always 25% volume
+        this.volume = 0.3;
         this.isEnabled = false;
         
         // Use the global audio instance
@@ -82,18 +84,17 @@ class PersistentAudioManager {
         this.setupStateTracking();
     }
 
-    // Load user preferences (volume setting removed)
+    // Load user preferences
     loadSettings() {
         try {
             const settings = localStorage.getItem(this.storageKey);
             if (settings) {
                 const parsed = JSON.parse(settings);
                 this.isEnabled = parsed.audioEnabled || false;
-                // VOLUME ALWAYS 25% - DON'T LOAD FROM STORAGE
-                this.volume = 0.25;
+                this.volume = parsed.volume || 0.3;
                 
                 if (this.audio) {
-                    this.audio.volume = 0.25; // FIXED: Always 25%
+                    this.audio.volume = this.volume;
                 }
             }
         } catch (e) {
@@ -101,12 +102,12 @@ class PersistentAudioManager {
         }
     }
 
-    // Save user preferences (no volume saving)
+    // Save user preferences
     saveSettings() {
         try {
             const settings = {
-                audioEnabled: this.isEnabled
-                // NO VOLUME SETTING SAVED
+                audioEnabled: this.isEnabled,
+                volume: this.volume
             };
             localStorage.setItem(this.storageKey, JSON.stringify(settings));
         } catch (e) {
@@ -114,14 +115,14 @@ class PersistentAudioManager {
         }
     }
 
-    // Save current audio state (volume always 25%)
+    // Save current audio state
     saveAudioState() {
         try {
             if (this.audio) {
                 const state = {
                     playing: this.isEnabled && !this.audio.paused,
                     time: this.audio.currentTime || 0,
-                    volume: 0.25, // FIXED: Always save as 25%
+                    volume: this.audio.volume || 0.3,
                     timestamp: Date.now()
                 };
                 localStorage.setItem(this.stateKey, JSON.stringify(state));
@@ -141,11 +142,10 @@ class PersistentAudioManager {
                 
                 // Only restore if the state is recent (within 1 hour)
                 if (Date.now() - state.timestamp < 3600000) {
-                    // VOLUME ALWAYS 25% - IGNORE STORED VOLUME
-                    this.volume = 0.25;
+                    this.volume = state.volume || 0.3;
                     
                     if (this.audio) {
-                        this.audio.volume = 0.25; // FIXED: Always 25%
+                        this.audio.volume = this.volume;
                         
                         // Restore playback position
                         if (state.time && !isNaN(state.time)) {
@@ -208,9 +208,6 @@ class PersistentAudioManager {
         if (!this.audio) return;
         
         try {
-            // ALWAYS SET TO 25% VOLUME
-            this.audio.volume = 0.25;
-            
             // Don't restart if already playing
             if (!this.audio.paused) {
                 this.isEnabled = true;
@@ -225,7 +222,7 @@ class PersistentAudioManager {
             this.saveSettings();
             this.saveAudioState();
             this.updateButtons();
-            console.log('🎵 Audio started at 25% volume');
+            console.log('🎵 Audio started');
         } catch (error) {
             console.warn('Audio play failed:', error);
             // Reset state on failure
@@ -255,11 +252,14 @@ class PersistentAudioManager {
         }
     }
 
-    // VOLUME CONTROL METHODS REMOVED
-    // setVolume() - REMOVED
-    // showVolumeControl() - REMOVED
-    // hideVolumeControl() - REMOVED
-    // updateVolumeDisplay() - REMOVED
+    setVolume(newVolume) {
+        this.volume = Math.max(0, Math.min(1, newVolume));
+        if (this.audio) {
+            this.audio.volume = this.volume;
+        }
+        this.saveSettings();
+        this.saveAudioState();
+    }
 
     // Sync button state with actual audio state
     syncButtonState() {
@@ -279,18 +279,18 @@ class PersistentAudioManager {
         document.querySelectorAll('.audio-toggle, .persistent-audio-toggle').forEach(button => {
             if (this.isEnabled) {
                 button.innerHTML = '🔊';
-                button.title = 'Turn off ambient music (25% volume)';
+                button.title = 'Turn off ambient music';
                 button.classList.add('active');
             } else {
                 button.innerHTML = '🎵';
-                button.title = 'Turn on ambient music (25% volume)';
+                button.title = 'Turn on ambient music';
                 button.classList.remove('active');
             }
         });
     }
 }
 
-// === ENHANCED FIREFLY EFFECT CLASS ===
+// === ENHANCED FIREFLY EFFECT CLASS - FIXED AUDIO ===
 class EnhancedFireflyEffect {
     constructor() {
         this.fireflyContainer = document.getElementById('rainContainer');
@@ -302,7 +302,22 @@ class EnhancedFireflyEffect {
         this.fireflyElements = new Set();
         this.storageKey = 'firefly_settings';
         
+        // FIXED: Single AudioContext for all firefly sounds
+        this.audioContext = null;
+        this.initAudioContext();
+        
         this.loadSettings();
+    }
+
+    // FIXED: Initialize AudioContext once
+    initAudioContext() {
+        try {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            console.log('🔊 Firefly AudioContext initialized');
+        } catch (error) {
+            console.log('🔇 AudioContext not available - firefly sounds disabled');
+            this.audioContext = null;
+        }
     }
 
     loadSettings() {
@@ -461,38 +476,64 @@ class EnhancedFireflyEffect {
         return items[0];
     }
 
+    // FIXED: Use single AudioContext
     playFireflyChime() {
-        if (window.persistentAudioManager && window.persistentAudioManager.isEnabled) {
-            this.createTone(800, 0.1, 0.03);
+        if (window.persistentAudioManager && 
+            window.persistentAudioManager.isEnabled && 
+            this.audioContext) {
+            this.createTone(800, 0.1, 0.02);
         }
     }
 
+    // FIXED: Use single AudioContext
     playFireflyPop() {
-        if (window.persistentAudioManager && window.persistentAudioManager.isEnabled) {
-            this.createTone(400, 0.05, 0.02);
+        if (window.persistentAudioManager && 
+            window.persistentAudioManager.isEnabled && 
+            this.audioContext) {
+            this.createTone(400, 0.05, 0.015);
         }
     }
 
-    createTone(frequency, duration, volume = 0.1) {
+    // FIXED: Reuse AudioContext and proper cleanup
+    createTone(frequency, duration, volume = 0.02) {
+        if (!this.audioContext) return;
+        
         try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            // Resume context if suspended (required for some browsers)
+            if (this.audioContext.state === 'suspended') {
+                this.audioContext.resume().catch(() => {
+                    // Silently fail if resume doesn't work
+                });
+            }
+
+            const oscillator = this.audioContext.createOscillator();
+            const gainNode = this.audioContext.createGain();
 
             oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            gainNode.connect(this.audioContext.destination);
 
             oscillator.frequency.value = frequency;
             oscillator.type = 'sine';
 
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            const currentTime = this.audioContext.currentTime;
+            gainNode.gain.setValueAtTime(0, currentTime);
+            gainNode.gain.linearRampToValueAtTime(volume, currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration);
 
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
+            oscillator.start(currentTime);
+            oscillator.stop(currentTime + duration);
+
+            // FIXED: Proper cleanup to prevent AudioContext errors
+            oscillator.onended = () => {
+                try {
+                    oscillator.disconnect();
+                    gainNode.disconnect();
+                } catch (e) {
+                    // Already disconnected, ignore
+                }
+            };
         } catch (error) {
-            console.warn('Could not create audio tone:', error);
+            // Silently fail - don't spam console with audio errors
         }
     }
 
@@ -534,13 +575,28 @@ class EnhancedFireflyEffect {
         });
     }
 
+    // FIXED: Proper cleanup with AudioContext management
     stop() {
         this.isActive = false;
         this.stopFireflies();
+        
+        // Clean up audio context
+        if (this.audioContext && this.audioContext.state !== 'closed') {
+            this.audioContext.close().catch(() => {
+                // Ignore cleanup errors
+            });
+            this.audioContext = null;
+        }
     }
 
     restart() {
         this.isActive = true;
+        
+        // Reinitialize audio context if needed
+        if (!this.audioContext) {
+            this.initAudioContext();
+        }
+        
         if (this.isEnabled) {
             this.startFireflies();
         }
