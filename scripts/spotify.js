@@ -1,4 +1,4 @@
-// spotify.js - Fixed timing issues and infinite loading
+// spotify.js - QUICK FIX: Immediate loading, no waiting
 
 class SpotifyPlayer {
     constructor() {
@@ -19,128 +19,138 @@ class SpotifyPlayer {
             this.redirectUri = window.location.origin;
         }
         
-        console.log('🎵 Spotify Player initializing...', {
-            hostname: window.location.hostname,
-            apiBase: this.apiBase
-        });
-        
         this.scopes = 'user-read-recently-played';
-        this.isOwner = false; // Will be set after admin check
-        this.accessToken = null;
-        this.refreshToken = null;
-        this.tokenExpiry = null;
         this.currentAudio = null;
         this.updateInterval = null;
         this.tokenCheckInterval = null;
-        this.maxRetries = 3;
-        this.retryCount = 0;
+        
+        console.log('🎵 Spotify Player created');
     }
 
-    // Check admin status with fallback
+    // SIMPLIFIED: Check admin status without waiting
     checkIfOwner() {
-        // First, check if admin protection is available
-        if (typeof window.adminProtection !== 'undefined') {
-            const isAdmin = window.adminProtection.isAdmin() && 
-                           window.adminProtection.hasAdminFeature('spotify');
-            
-            if (isAdmin) {
-                console.log('🔑 Spotify admin mode via protection system');
-                localStorage.setItem('spotify_owner_mode', 'true');
-                this.loadAdminTokens();
+        // Method 1: Check admin protection if available
+        if (window.adminProtection && window.adminProtection.isAdmin()) {
+            console.log('🔑 Admin detected via protection system');
+            return true;
+        }
+        
+        // Method 2: Check localStorage (backup)
+        if (localStorage.getItem('admin_authenticated') === 'true') {
+            const timestamp = localStorage.getItem('admin_timestamp');
+            if (timestamp && (Date.now() - parseInt(timestamp)) < 24 * 60 * 60 * 1000) {
+                console.log('🔑 Admin detected via localStorage');
                 return true;
             }
         }
         
-        // Fallback: check old localStorage method
-        const oldMethod = localStorage.getItem('spotify_owner_mode') === 'true';
-        if (oldMethod) {
-            console.log('🔑 Spotify admin mode via legacy storage');
-            this.loadAdminTokens();
+        // Method 3: Check old Spotify flag
+        if (localStorage.getItem('spotify_owner_mode') === 'true') {
+            console.log('🔑 Admin detected via legacy flag');
             return true;
         }
         
-        // Clear admin tokens if not admin
-        localStorage.removeItem('spotify_owner_mode');
+        console.log('👥 Visitor mode detected');
         return false;
-    }
-
-    loadAdminTokens() {
-        this.accessToken = localStorage.getItem('spotify_access_token');
-        this.refreshToken = localStorage.getItem('spotify_refresh_token');
-        this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
     }
 
     init() {
         console.log('🎵 Initializing Spotify Player...');
         
-        // Check admin status
-        this.isOwner = this.checkIfOwner();
+        // IMMEDIATE: Check admin status and proceed
+        const isOwner = this.checkIfOwner();
         
-        if (this.isOwner) {
-            console.log('🎵 Admin mode - checking authentication...');
+        if (isOwner) {
+            console.log('🎵 Admin mode - checking authentication');
             this.handleAdminMode();
         } else {
-            console.log('🎵 Visitor mode - loading public tracks...');
+            console.log('🎵 Visitor mode - showing cached tracks');
             this.handleVisitorMode();
         }
     }
 
     handleAdminMode() {
-        if (this.accessToken && this.isTokenValid()) {
-            console.log('🎵 Valid admin token found');
+        const accessToken = localStorage.getItem('spotify_access_token');
+        const refreshToken = localStorage.getItem('spotify_refresh_token');
+        const tokenExpiry = localStorage.getItem('spotify_token_expiry');
+        
+        // Check if we have a valid token
+        if (accessToken && this.isTokenValid(tokenExpiry)) {
+            console.log('🎵 Valid token found - starting updates');
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
+            this.tokenExpiry = tokenExpiry;
             this.startUpdating();
             this.startTokenMonitoring();
-        } else if (this.refreshToken && !this.isTokenValid()) {
-            console.log('🎵 Admin token expired, refreshing...');
+        } else if (refreshToken) {
+            console.log('🎵 Token expired - attempting refresh');
+            this.refreshToken = refreshToken;
             this.attemptTokenRefresh();
         } else if (this.hasAuthCode()) {
-            console.log('🎵 Processing admin auth callback...');
+            console.log('🎵 Processing auth callback');
             this.handleAuthCallback();
         } else {
-            console.log('🎵 Admin needs Spotify authentication');
+            console.log('🎵 Need Spotify authentication');
             this.showOwnerAuthButton();
         }
     }
 
     handleVisitorMode() {
-        // Show cached tracks immediately
-        this.showCachedTracks();
+        // IMMEDIATE: Show cached tracks first
+        this.showCachedTracksImmediate();
         
-        // Try to fetch fresh public data (with timeout)
-        this.fetchPublicTracksWithTimeout();
+        // OPTIONAL: Try to fetch fresh data in background
+        this.tryFetchPublicTracks();
     }
 
-    async fetchPublicTracksWithTimeout() {
-        const timeout = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 5000)
-        );
+    showCachedTracksImmediate() {
+        const cachedTracks = localStorage.getItem('spotify_cached_tracks');
         
+        if (cachedTracks) {
+            try {
+                const tracks = JSON.parse(cachedTracks);
+                if (tracks && tracks.length > 0) {
+                    console.log('🎵 Displaying cached tracks immediately');
+                    this.renderTracks(tracks, true);
+                    return;
+                }
+            } catch (error) {
+                console.error('🎵 Cache error:', error);
+            }
+        }
+        
+        // No cache available
+        this.showNoTracks('visitor');
+    }
+
+    async tryFetchPublicTracks() {
         try {
-            const fetchPromise = fetch(`${this.apiBase}/spotify-public`);
-            const response = await Promise.race([fetchPromise, timeout]);
+            console.log('🎵 Trying to fetch fresh public tracks...');
+            const response = await fetch(`${this.apiBase}/spotify-public`, {
+                signal: AbortSignal.timeout(3000) // 3 second timeout
+            });
             
             if (response.ok) {
                 const data = await response.json();
                 if (data.tracks && data.tracks.length > 0) {
-                    console.log('🎵 Loaded fresh public tracks');
-                    await this.renderTracks(data.tracks, false);
-                    return;
+                    console.log('🎵 Fresh public tracks loaded');
+                    this.renderTracks(data.tracks, false);
                 }
             }
         } catch (error) {
-            console.log('🎵 No public API available, using cached tracks');
+            console.log('🎵 Public API unavailable:', error.message);
+            // Keep showing cached tracks - don't change display
         }
-        
-        // Ensure we show something
-        this.ensureTracksDisplayed();
     }
 
-    ensureTracksDisplayed() {
-        const container = document.getElementById('spotify-widget');
-        if (!container || container.innerHTML.includes('Loading')) {
-            console.log('🎵 Ensuring tracks are displayed...');
-            this.showCachedTracks();
-        }
+    isTokenValid(tokenExpiry) {
+        if (!tokenExpiry) return false;
+        const bufferTime = 5 * 60 * 1000; // 5 minutes
+        return Date.now() < (parseInt(tokenExpiry) - bufferTime);
+    }
+
+    hasAuthCode() {
+        return new URLSearchParams(window.location.search).has('code');
     }
 
     showOwnerAuthButton() {
@@ -152,87 +162,38 @@ class SpotifyPlayer {
                 <h3>🎵 Admin Setup</h3>
                 <p>Connect your Spotify to share music with visitors!</p>
                 <button onclick="spotifyPlayer.authenticate()" class="spotify-btn">
-                    Setup Spotify
+                    Connect Spotify
                 </button>
             </div>
         `;
     }
 
-    async fetchPublicTracks() {
-        try {
-            const response = await fetch(`${this.apiBase}/spotify-public`, {
-                timeout: 5000
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                if (data.tracks && data.tracks.length > 0) {
-                    console.log('🎵 Loaded public tracks');
-                    await this.renderTracks(data.tracks, false);
-                    return;
-                }
-            }
-        } catch (error) {
-            console.log('🎵 Public tracks unavailable:', error.message);
-        }
-        
-        // Always fall back to cached
-        this.showCachedTracks();
-    }
+    showNoTracks(mode = 'visitor') {
+        const container = document.getElementById('spotify-widget');
+        if (!container) return;
 
-    startTokenMonitoring() {
-        if (!this.isOwner) return;
-        
-        this.tokenCheckInterval = setInterval(() => {
-            if (!this.isTokenValid()) {
-                console.log('🎵 Admin token expired, refreshing...');
-                this.attemptTokenRefresh();
-            }
-        }, 5 * 60 * 1000);
-    }
+        const message = mode === 'admin' ? 
+            'Play some music on Spotify to get started!' :
+            'Music will appear here soon!';
 
-    async attemptTokenRefresh() {
-        if (!this.isOwner || !this.refreshToken) {
-            console.log('🎵 No refresh token for admin');
-            this.showOwnerAuthButton();
-            return;
-        }
-
-        try {
-            await this.refreshAccessToken();
-            console.log('🎵 Admin token refreshed');
-            this.startUpdating();
-        } catch (error) {
-            console.error('🎵 Token refresh failed:', error);
-            this.clearTokens();
-            this.showOwnerAuthButton();
-        }
-    }
-
-    clearTokens() {
-        if (!this.isOwner) return;
-        
-        localStorage.removeItem('spotify_access_token');
-        localStorage.removeItem('spotify_refresh_token');
-        localStorage.removeItem('spotify_token_expiry');
-        this.accessToken = null;
-        this.refreshToken = null;
-        this.tokenExpiry = null;
-    }
-
-    hasAuthCode() {
-        return new URLSearchParams(window.location.search).has('code');
-    }
-
-    isTokenValid() {
-        if (!this.tokenExpiry || !this.accessToken) return false;
-        const bufferTime = 5 * 60 * 1000;
-        return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
+        container.innerHTML = `
+            <div class="spotify-tracks">
+                <h3>🎵 Recently Played</h3>
+                <div class="track-item">
+                    <div class="track-artwork">
+                        <div class="no-artwork">♪</div>
+                    </div>
+                    <div class="track-info">
+                        <div class="track-title">No tracks yet</div>
+                        <div class="track-artist">${message}</div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     authenticate() {
-        if (!this.isOwner) {
-            console.log('🚨 Unauthorized Spotify auth attempt');
+        if (!this.checkIfOwner()) {
             alert('Admin access required for Spotify setup.');
             return;
         }
@@ -250,16 +211,11 @@ class SpotifyPlayer {
             authUrl.searchParams.append(key, params[key])
         );
 
-        console.log('🎵 Redirecting admin to Spotify auth');
+        console.log('🎵 Redirecting to Spotify auth');
         window.location.href = authUrl.toString();
     }
 
     async handleAuthCallback() {
-        if (!this.isOwner) {
-            console.log('🚨 Unauthorized callback attempt');
-            return;
-        }
-        
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const error = urlParams.get('error');
@@ -272,23 +228,18 @@ class SpotifyPlayer {
 
         if (code) {
             try {
-                console.log('🎵 Processing admin callback...');
                 await this.getAccessToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
                 this.startTokenMonitoring();
             } catch (error) {
-                console.error('🎵 Callback failed:', error);
+                console.error('🎵 Auth callback failed:', error);
                 this.showOwnerAuthButton();
             }
         }
     }
 
     async getAccessToken(code) {
-        if (!this.isOwner) return;
-        
-        console.log('🎵 Exchanging code for tokens...');
-        
         const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -312,49 +263,45 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('🎵 Admin tokens saved');
+        console.log('🎵 Tokens saved successfully');
     }
 
-    async refreshAccessToken() {
-        if (!this.isOwner || !this.refreshToken) {
-            throw new Error('No refresh token available');
+    async attemptTokenRefresh() {
+        try {
+            const response = await fetch(`${this.apiBase}/spotify-refresh`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    refresh_token: this.refreshToken
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Refresh failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            this.accessToken = data.access_token;
+            this.tokenExpiry = Date.now() + (data.expires_in * 1000);
+
+            if (data.refresh_token) {
+                this.refreshToken = data.refresh_token;
+                localStorage.setItem('spotify_refresh_token', this.refreshToken);
+            }
+
+            localStorage.setItem('spotify_access_token', this.accessToken);
+            localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
+            
+            console.log('🎵 Token refreshed successfully');
+            this.startUpdating();
+        } catch (error) {
+            console.error('🎵 Token refresh failed:', error);
+            this.showOwnerAuthButton();
         }
-
-        console.log('🎵 Refreshing admin token...');
-
-        const response = await fetch(`${this.apiBase}/spotify-refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                refresh_token: this.refreshToken
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Token refresh failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        this.accessToken = data.access_token;
-        this.tokenExpiry = Date.now() + (data.expires_in * 1000);
-
-        if (data.refresh_token) {
-            this.refreshToken = data.refresh_token;
-            localStorage.setItem('spotify_refresh_token', this.refreshToken);
-        }
-
-        localStorage.setItem('spotify_access_token', this.accessToken);
-        localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
-        
-        console.log('🎵 Token refreshed');
     }
 
     async getRecentTracks() {
-        if (!this.isOwner || !this.accessToken) {
-            throw new Error('No admin access token');
-        }
-
         const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
             headers: { 'Authorization': `Bearer ${this.accessToken}` }
         });
@@ -362,26 +309,16 @@ class SpotifyPlayer {
         if (!response.ok) {
             if (response.status === 401) {
                 await this.attemptTokenRefresh();
-                if (this.accessToken) return this.getRecentTracks();
-                throw new Error('Token refresh failed');
+                return this.getRecentTracks();
             }
             throw new Error(`Spotify API error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('🎵 Retrieved', data.items.length, 'tracks');
         return data.items;
     }
 
     async updateDisplay() {
-        const container = document.getElementById('spotify-widget');
-        if (!container) return;
-
-        if (!this.isOwner) {
-            this.fetchPublicTracks();
-            return;
-        }
-
         try {
             const tracks = await this.getRecentTracks();
             
@@ -390,11 +327,11 @@ class SpotifyPlayer {
                 await this.renderTracks(tracks);
                 this.cacheTracksPublicly(tracks);
             } else {
-                this.showNoTracks();
+                this.showNoTracks('admin');
             }
         } catch (error) {
             console.error('🎵 Update failed:', error);
-            this.showCachedTracks();
+            this.showCachedTracksImmediate();
         }
     }
 
@@ -405,72 +342,17 @@ class SpotifyPlayer {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tracks })
             });
-            console.log('🎵 Tracks cached publicly');
         } catch (error) {
-            console.log('🎵 Public caching unavailable');
+            // Silently fail - not critical
         }
-    }
-
-    showCachedTracks() {
-        const cachedTracks = localStorage.getItem('spotify_cached_tracks');
-        if (cachedTracks) {
-            try {
-                const tracks = JSON.parse(cachedTracks);
-                console.log('🎵 Showing cached tracks');
-                this.renderTracks(tracks, true);
-                return;
-            } catch (error) {
-                console.error('🎵 Cache parse error:', error);
-            }
-        }
-        
-        this.showNoTracks();
-    }
-
-    showNoTracks() {
-        const container = document.getElementById('spotify-widget');
-        if (!container) return;
-
-        const message = this.isOwner ? 
-            'Play some music on Spotify to get started!' :
-            'Music will appear here soon!';
-
-        container.innerHTML = `
-            <div class="spotify-tracks">
-                <h3>🎵 Recently Played</h3>
-                <div class="track-item">
-                    <div class="track-artwork">
-                        <div class="no-artwork">♪</div>
-                    </div>
-                    <div class="track-info">
-                        <div class="track-title">No tracks yet</div>
-                        <div class="track-artist">${message}</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    async getAlternativePreview(trackName, artistName) {
-        try {
-            const query = encodeURIComponent(`${trackName} ${artistName}`);
-            const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
-            const data = await response.json();
-            
-            if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
-                return data.results[0].previewUrl;
-            }
-        } catch (error) {
-            console.warn('🎵 iTunes search failed:', error);
-        }
-        return null;
     }
 
     async renderTracks(tracks, isCached = false) {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
-        const statusText = this.isOwner ? 
+        const isAdmin = this.checkIfOwner();
+        const statusText = isAdmin ? 
             (isCached ? ' (Cached)' : '') : 
             " (Chris's Music)";
 
@@ -478,12 +360,7 @@ class SpotifyPlayer {
             const tracksHtml = await Promise.all(tracks.map(async (item, index) => {
                 const track = item.track;
                 const artwork = track.album.images[0]?.url || '';
-                let previewUrl = track.preview_url;
-                
-                if (!previewUrl) {
-                    previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
-                }
-                
+                const previewUrl = track.preview_url || await this.getAlternativePreview(track.name, track.artists[0].name);
                 const trackUrl = track.external_urls.spotify;
                 
                 return `
@@ -525,6 +402,21 @@ class SpotifyPlayer {
         }
     }
 
+    async getAlternativePreview(trackName, artistName) {
+        try {
+            const query = encodeURIComponent(`${trackName} ${artistName}`);
+            const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
+            const data = await response.json();
+            
+            if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
+                return data.results[0].previewUrl;
+            }
+        } catch (error) {
+            // Silently fail
+        }
+        return null;
+    }
+
     togglePreview(previewUrl, button, trackIndex) {
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
@@ -549,7 +441,6 @@ class SpotifyPlayer {
                 this.clearProgress(trackIndex);
             };
         }).catch(error => {
-            console.error('🎵 Preview failed:', error);
             button.textContent = '❌';
             setTimeout(() => button.textContent = '▶', 2000);
         });
@@ -591,12 +482,18 @@ class SpotifyPlayer {
     }
 
     startUpdating() {
-        if (!this.isOwner) return;
-        
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
             this.updateDisplay();
         }, 60000);
+    }
+
+    startTokenMonitoring() {
+        this.tokenCheckInterval = setInterval(() => {
+            if (!this.isTokenValid(this.tokenExpiry)) {
+                this.attemptTokenRefresh();
+            }
+        }, 5 * 60 * 1000);
     }
 
     stopUpdating() {
@@ -612,24 +509,12 @@ class SpotifyPlayer {
     }
 }
 
-// Initialize with proper timing
-let spotifyPlayer;
+// IMMEDIATE INITIALIZATION - No delays or waiting
+let spotifyPlayer = new SpotifyPlayer();
 
-function initializeSpotify() {
-    if (spotifyPlayer) return; // Already initialized
-    
-    console.log('🎵 Creating Spotify Player...');
-    spotifyPlayer = new SpotifyPlayer();
-    
-    // Small delay to ensure everything is ready
-    setTimeout(() => {
-        spotifyPlayer.init();
-    }, 100);
+// Initialize as soon as possible
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => spotifyPlayer.init());
+} else {
+    spotifyPlayer.init();
 }
-
-// Multiple initialization triggers to ensure it loads
-document.addEventListener('DOMContentLoaded', initializeSpotify);
-window.addEventListener('load', initializeSpotify);
-
-// Fallback initialization after a delay
-setTimeout(initializeSpotify, 1000);
