@@ -1,4 +1,4 @@
-/* 01-base-reset.css - Global Reset & Base Styles - MOBILE ALWAYS DESKTOP VIEW */
+/* 01-base-reset.css - Global Reset & Base Styles */
 
 /* === Global Reset & Base Styles === */
 * {
@@ -58,42 +58,6 @@ body {
     overflow-y: auto;
 }
 
-/* FORCE MOBILE TO LOOK LIKE DESKTOP - ADD VIEWPORT META OVERRIDE */
-html {
-    /* Force desktop-like viewport on all devices */
-    min-width: 1200px;
-    width: 100%;
-}
-
-/* Force mobile to render like desktop by setting minimum viewport */
-@media (max-width: 1200px) {
-    html {
-        zoom: 1;
-        min-width: 1200px;
-        width: 100%;
-    }
-    
-    body {
-        min-width: 1200px;
-        width: 100%;
-        transform-origin: top left;
-        /* Small devices will need to zoom out to see full content */
-    }
-}
-
-/* For very small screens, make everything smaller but maintain desktop layout */
-@media (max-width: 480px) {
-    html {
-        /* Let the browser handle zooming out automatically */
-        min-width: 1200px;
-    }
-    
-    body {
-        min-width: 1200px;
-        /* Browser will automatically scale down to fit */
-    }
-}
-
 /* Wooden Frame Container - No border, just content area */
 .wooden-frame-container {
     width: 100%;
@@ -113,7 +77,7 @@ html {
     /* Remove scroll containment */
 }
 
-/* Fixed Video Background with rounded corners - RESPONSIVE BACKGROUND ONLY */
+/* Fixed Video Background with rounded corners */
 .video-background-framed {
     position: fixed;
     top: 30px;
@@ -144,37 +108,6 @@ html {
     pointer-events: none;
 }
 
-/* Background responsiveness - only the background adapts */
-@media (max-width: 1024px) {
-    .video-background-framed {
-        top: 20px;
-        left: 20px;
-        width: calc(100% - 40px);
-        height: calc(100% - 40px);
-        border-radius: 10px;
-    }
-}
-
-@media (max-width: 768px) {
-    .video-background-framed {
-        top: 15px;
-        left: 15px;
-        width: calc(100% - 30px);
-        height: calc(100% - 30px);
-        border-radius: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    .video-background-framed {
-        top: 10px;
-        left: 10px;
-        width: calc(100% - 20px);
-        height: calc(100% - 20px);
-        border-radius: 6px;
-    }
-}
-
 /* Remove the old video background styles */
 .video-background {
     display: none;
@@ -184,8 +117,6 @@ html {
 body::before {
     display: none;
 }
-
-/* Light Rays Completely Removed - All Code Eradicated */
 
 /* Hanging Elements - Now positioned relative to frame */
 .hanging-elements {
