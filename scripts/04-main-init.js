@@ -1,4 +1,4 @@
-// 04-main-init.js - Enhanced Main Initialization with Video Background and Enhanced Hanging Lights
+// 04-main-init.js - Enhanced Main Initialization - NO VOLUME CONTROLS
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded - Initializing enhanced systems...');
@@ -6,12 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize video background
     initVideoBackground();
     
-    // Light rays removed as requested
-    
     // Initialize simple hanging lights (no animation)
     initSimpleHangingLights();
     
-    // Initialize persistent audio manager with enhanced features
+    // Initialize persistent audio manager with enhanced features - NO VOLUME CONTROLS
     window.persistentAudioManager = new EnhancedPersistentAudioManager();
     
     // Initialize firefly effect
@@ -30,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initBlogFiltering();
     initSmoothScroll();
     
-    // Add enhanced control buttons
-    addEnhancedControlButtons();
+    // Add enhanced control buttons - NO VOLUME CONTROLS
+    addSimpleControlButtons();
     
     // Initialize credits modal
     initCreditsModal();
@@ -106,9 +104,6 @@ function initVideoBackground() {
     });
 }
 
-// === LIGHT RAYS COMPLETELY REMOVED ===
-// All light rays functionality has been eradicated as requested
-
 // === SIMPLE HANGING LIGHTS (NO ANIMATION) ===
 function initSimpleHangingLights() {
     const hangingContainer = document.createElement('div');
@@ -170,17 +165,17 @@ function initSimpleHangingLights() {
     console.log('💡 Simple hanging lights initialized with spacing');
 }
 
-// === ENHANCED PERSISTENT AUDIO MANAGER ===
+// === ENHANCED PERSISTENT AUDIO MANAGER - 25% VOLUME & NO VOLUME CONTROLS ===
 class EnhancedPersistentAudioManager extends PersistentAudioManager {
     constructor() {
         super();
-        this.defaultVolume = 0.5; // Start at 50% volume
-        this.volume = this.defaultVolume;
+        this.defaultVolume = 0.25; // CHANGED: Set to 25% volume
+        this.volume = 0.25; // FIXED: Always 25%
         this.isEnabled = true; // Auto-enable audio
         
-        // Set initial volume
+        // Set initial volume to 25%
         if (this.audio) {
-            this.audio.volume = this.defaultVolume;
+            this.audio.volume = 0.25;
         }
         
         // Auto-start audio immediately
@@ -190,10 +185,10 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
     setupAutoStart() {
         // Try to start audio immediately on page load
         const startAudio = () => {
-            this.volume = this.defaultVolume;
-            this.setVolume(this.defaultVolume);
+            this.volume = 0.25; // FIXED: Always 25%
+            this.setVolume(0.25); // FIXED: Always 25%
             this.startAudio();
-            console.log('🎵 Auto-started ambient audio at 50% volume');
+            console.log('🎵 Auto-started ambient audio at 25% volume');
         };
         
         // Try immediate start
@@ -216,15 +211,14 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
         if (!this.audio) return;
         
         try {
-            // Set volume before starting
-            this.audio.volume = this.volume;
+            // ALWAYS set volume to 25% before starting
+            this.audio.volume = 0.25;
             
             // Don't restart if already playing
             if (!this.audio.paused) {
                 this.isEnabled = true;
                 this.saveSettings();
                 this.updateButtons();
-                this.updateVolumeDisplay();
                 return;
             }
 
@@ -234,54 +228,29 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             this.saveSettings();
             this.saveAudioState();
             this.updateButtons();
-            this.updateVolumeDisplay();
-            console.log('🎵 Audio started at volume:', Math.round(this.volume * 100) + '%');
+            console.log('🎵 Audio started at 25% volume');
         } catch (error) {
             console.warn('Audio play failed (will retry on user interaction):', error);
             // Keep enabled state for retry on interaction
             this.isEnabled = true;
             this.updateButtons();
-            this.updateVolumeDisplay();
         }
     }
     
-    showVolumeControl() {
-        const volumeControl = document.querySelector('.volume-control');
-        if (volumeControl) {
-            volumeControl.classList.add('show');
-            // Update display when showing
-            this.updateVolumeDisplay();
-        }
-    }
-    
-    hideVolumeControl() {
-        const volumeControl = document.querySelector('.volume-control');
-        if (volumeControl) {
-            volumeControl.classList.remove('show');
-        }
-    }
+    // VOLUME CONTROL METHODS COMPLETELY REMOVED
+    // showVolumeControl() - REMOVED
+    // hideVolumeControl() - REMOVED
+    // updateVolumeDisplay() - REMOVED
     
     setVolume(newVolume) {
-        this.volume = Math.max(0, Math.min(1, newVolume));
+        // IGNORE INPUT - ALWAYS SET TO 25%
+        this.volume = 0.25;
         if (this.audio) {
-            this.audio.volume = this.volume;
+            this.audio.volume = 0.25;
         }
         this.saveSettings();
         this.saveAudioState();
-        this.updateVolumeDisplay();
-        console.log('🔊 Volume set to:', Math.round(this.volume * 100) + '%');
-    }
-    
-    updateVolumeDisplay() {
-        const volumeValue = document.querySelector('.volume-value');
-        if (volumeValue) {
-            volumeValue.textContent = Math.round(this.volume * 100) + '%';
-        }
-        
-        const volumeSlider = document.querySelector('.volume-slider');
-        if (volumeSlider) {
-            volumeSlider.value = this.volume * 100;
-        }
+        console.log('🔊 Volume fixed at 25%');
     }
     
     updateButtons() {
@@ -291,51 +260,59 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
         document.querySelectorAll('.audio-toggle, .persistent-audio-toggle').forEach(button => {
             if (this.isEnabled && this.audio && !this.audio.paused) {
                 button.innerHTML = '🔊';
-                button.title = 'Turn off ambient music';
+                button.title = 'Turn off ambient music (25% volume)';
                 button.classList.add('active');
             } else {
                 button.innerHTML = '🎵';
-                button.title = 'Turn on ambient music';
+                button.title = 'Turn on ambient music (25% volume)';
                 button.classList.remove('active');
             }
         });
-        
-        // Update volume display
-        this.updateVolumeDisplay();
     }
 }
 
-// === ENHANCED CONTROL BUTTONS ===
-function addEnhancedControlButtons() {
+// === SIMPLE CONTROL BUTTONS - NO VOLUME CONTROLS ===
+function addSimpleControlButtons() {
     if (document.querySelector('.persistent-controls')) return;
     
     const controlsContainer = document.createElement('div');
     controlsContainer.className = 'persistent-controls';
-    controlsContainer.innerHTML = `
-        <div class="controls-label">Toggle :)</div>
-        <div class="controls-row">
-            <button class="persistent-audio-toggle control-button" title="Toggle ambient music">
-                🎵
-                <div class="volume-control">
-                    <div class="volume-label">volume</div>
-                    <input type="range" class="volume-slider" min="0" max="100" value="50">
-                    <div class="volume-value">50%</div>
-                </div>
-            </button>
-            <button class="persistent-firefly-toggle control-button" title="Toggle firefly particles">
-                ✨
-            </button>
-        </div>
-    `;
     
+    // Create controls label
+    const controlsLabel = document.createElement('div');
+    controlsLabel.className = 'controls-label';
+    controlsLabel.textContent = 'Toggles!';
+    
+    // Create controls row
+    const controlsRow = document.createElement('div');
+    controlsRow.className = 'controls-row';
+    
+    // Create audio button (NO volume control)
+    const audioButton = document.createElement('button');
+    audioButton.className = 'persistent-audio-toggle control-button';
+    audioButton.title = 'Toggle ambient music (25% volume)';
+    audioButton.innerHTML = '🎵';
+    
+    // Create firefly button
+    const fireflyButton = document.createElement('button');
+    fireflyButton.className = 'persistent-firefly-toggle control-button';
+    fireflyButton.title = 'Toggle firefly particles';
+    fireflyButton.innerHTML = '✨';
+    
+    // Append buttons to row
+    controlsRow.appendChild(audioButton);
+    controlsRow.appendChild(fireflyButton);
+    
+    // Append to container
+    controlsContainer.appendChild(controlsLabel);
+    controlsContainer.appendChild(controlsRow);
+    
+    // Add to body
     document.body.appendChild(controlsContainer);
     
-    // Setup volume control functionality
-    const audioButton = controlsContainer.querySelector('.persistent-audio-toggle');
-    const volumeControl = controlsContainer.querySelector('.volume-control');
-    const volumeSlider = controlsContainer.querySelector('.volume-slider');
+    // NO VOLUME CONTROL CREATION - COMPLETELY REMOVED
     
-    // Toggle audio on click (not just show volume)
+    // Toggle audio on click
     audioButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -344,52 +321,9 @@ function addEnhancedControlButtons() {
         }
     });
     
-    // Show volume control on hover
-    audioButton.addEventListener('mouseenter', () => {
-        if (window.persistentAudioManager) {
-            window.persistentAudioManager.showVolumeControl();
-        }
-    });
-    
-    // Hide volume control when mouse leaves button
-    audioButton.addEventListener('mouseleave', (e) => {
-        // Small delay to allow moving to volume control
-        setTimeout(() => {
-            if (!volumeControl.matches(':hover') && !audioButton.matches(':hover')) {
-                if (window.persistentAudioManager) {
-                    window.persistentAudioManager.hideVolumeControl();
-                }
-            }
-        }, 150);
-    });
-    
-    // Keep volume control open when hovering over it
-    volumeControl.addEventListener('mouseenter', () => {
-        // Keep it open
-    });
-    
-    // Hide when leaving volume control
-    volumeControl.addEventListener('mouseleave', () => {
-        if (window.persistentAudioManager) {
-            window.persistentAudioManager.hideVolumeControl();
-        }
-    });
-    
-    // Volume slider functionality
-    volumeSlider.addEventListener('input', (e) => {
-        const volume = e.target.value / 100;
-        if (window.persistentAudioManager) {
-            window.persistentAudioManager.setVolume(volume);
-        }
-    });
-    
-    // Prevent volume control clicks from bubbling
-    volumeControl.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+    // NO VOLUME CONTROL EVENT LISTENERS - ALL REMOVED
     
     // Firefly toggle
-    const fireflyButton = controlsContainer.querySelector('.persistent-firefly-toggle');
     fireflyButton.addEventListener('click', () => {
         if (window.enhancedFireflyEffect) {
             window.enhancedFireflyEffect.toggle();
@@ -399,13 +333,14 @@ function addEnhancedControlButtons() {
     // Update button states
     if (window.persistentAudioManager) {
         window.persistentAudioManager.updateButtons();
-        window.persistentAudioManager.updateVolumeDisplay();
+        console.log('Audio manager buttons updated');
     }
     if (window.enhancedFireflyEffect) {
         window.enhancedFireflyEffect.updateButtons();
+        console.log('Firefly effect buttons updated');
     }
     
-    console.log('Enhanced control buttons added');
+    console.log('Simple control buttons added - NO volume controls');
 }
 
 // === CREDITS MODAL ===

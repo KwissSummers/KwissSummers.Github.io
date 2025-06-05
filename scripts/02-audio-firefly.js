@@ -1,12 +1,11 @@
-// 02-audio-firefly.js - Audio Manager and Firefly Effects
+// 02-audio-firefly.js - Audio Manager VOLUME CONTROLS REMOVED & 25% Volume
 
-// === GLOBAL AUDIO INSTANCE - CREATED IMMEDIATELY ===
-// This ensures audio survives page navigation
+// === GLOBAL AUDIO INSTANCE - 25% VOLUME ===
 if (!window.globalAudioInstance) {
     window.globalAudioInstance = {
         audio: null,
         isPlaying: false,
-        volume: 0.3,
+        volume: 0.25, // CHANGED: Set to 25% volume
         audioFile: 'audio/ambient-loop.mp3',
         
         // Initialize the actual audio object
@@ -14,14 +13,14 @@ if (!window.globalAudioInstance) {
             if (!this.audio) {
                 this.audio = new Audio(this.audioFile);
                 this.audio.loop = true;
-                this.audio.volume = this.volume;
+                this.audio.volume = this.volume; // Set to 25%
                 this.audio.preload = 'auto';
                 
                 // Store reference globally to prevent garbage collection
                 window.persistentAudioElement = this.audio;
                 
                 this.audio.addEventListener('loadeddata', () => {
-                    console.log('🎵 Global audio loaded');
+                    console.log('🎵 Global audio loaded at 25% volume');
                 });
                 
                 this.audio.addEventListener('error', (e) => {
@@ -37,7 +36,7 @@ if (!window.globalAudioInstance) {
             return {
                 playing: !this.audio.paused && !this.audio.ended,
                 time: this.audio.currentTime || 0,
-                volume: this.audio.volume || 0.3
+                volume: this.audio.volume || 0.25
             };
         },
         
@@ -45,10 +44,9 @@ if (!window.globalAudioInstance) {
         setState: function(playing, time, volume) {
             if (!this.audio) this.init();
             
-            if (typeof volume !== 'undefined') {
-                this.audio.volume = volume;
-                this.volume = volume;
-            }
+            // VOLUME IS ALWAYS 25% - IGNORE VOLUME PARAMETER
+            this.audio.volume = 0.25;
+            this.volume = 0.25;
             
             if (typeof time !== 'undefined' && !isNaN(time)) {
                 this.audio.currentTime = time;
@@ -68,12 +66,12 @@ if (!window.globalAudioInstance) {
     window.globalAudioInstance.init();
 }
 
-// === PERSISTENT AUDIO MANAGER CLASS ===
+// === PERSISTENT AUDIO MANAGER CLASS - NO VOLUME CONTROLS ===
 class PersistentAudioManager {
     constructor() {
         this.storageKey = 'audio_settings';
         this.stateKey = 'audio_current_state';
-        this.volume = 0.3;
+        this.volume = 0.25; // FIXED: Always 25% volume
         this.isEnabled = false;
         
         // Use the global audio instance
@@ -84,17 +82,18 @@ class PersistentAudioManager {
         this.setupStateTracking();
     }
 
-    // Load user preferences
+    // Load user preferences (volume setting removed)
     loadSettings() {
         try {
             const settings = localStorage.getItem(this.storageKey);
             if (settings) {
                 const parsed = JSON.parse(settings);
                 this.isEnabled = parsed.audioEnabled || false;
-                this.volume = parsed.volume || 0.3;
+                // VOLUME ALWAYS 25% - DON'T LOAD FROM STORAGE
+                this.volume = 0.25;
                 
                 if (this.audio) {
-                    this.audio.volume = this.volume;
+                    this.audio.volume = 0.25; // FIXED: Always 25%
                 }
             }
         } catch (e) {
@@ -102,12 +101,12 @@ class PersistentAudioManager {
         }
     }
 
-    // Save user preferences
+    // Save user preferences (no volume saving)
     saveSettings() {
         try {
             const settings = {
-                audioEnabled: this.isEnabled,
-                volume: this.volume
+                audioEnabled: this.isEnabled
+                // NO VOLUME SETTING SAVED
             };
             localStorage.setItem(this.storageKey, JSON.stringify(settings));
         } catch (e) {
@@ -115,14 +114,14 @@ class PersistentAudioManager {
         }
     }
 
-    // Save current audio state
+    // Save current audio state (volume always 25%)
     saveAudioState() {
         try {
             if (this.audio) {
                 const state = {
                     playing: this.isEnabled && !this.audio.paused,
                     time: this.audio.currentTime || 0,
-                    volume: this.audio.volume || 0.3,
+                    volume: 0.25, // FIXED: Always save as 25%
                     timestamp: Date.now()
                 };
                 localStorage.setItem(this.stateKey, JSON.stringify(state));
@@ -142,10 +141,11 @@ class PersistentAudioManager {
                 
                 // Only restore if the state is recent (within 1 hour)
                 if (Date.now() - state.timestamp < 3600000) {
-                    this.volume = state.volume || 0.3;
+                    // VOLUME ALWAYS 25% - IGNORE STORED VOLUME
+                    this.volume = 0.25;
                     
                     if (this.audio) {
-                        this.audio.volume = this.volume;
+                        this.audio.volume = 0.25; // FIXED: Always 25%
                         
                         // Restore playback position
                         if (state.time && !isNaN(state.time)) {
@@ -208,6 +208,9 @@ class PersistentAudioManager {
         if (!this.audio) return;
         
         try {
+            // ALWAYS SET TO 25% VOLUME
+            this.audio.volume = 0.25;
+            
             // Don't restart if already playing
             if (!this.audio.paused) {
                 this.isEnabled = true;
@@ -222,7 +225,7 @@ class PersistentAudioManager {
             this.saveSettings();
             this.saveAudioState();
             this.updateButtons();
-            console.log('🎵 Audio started');
+            console.log('🎵 Audio started at 25% volume');
         } catch (error) {
             console.warn('Audio play failed:', error);
             // Reset state on failure
@@ -252,14 +255,11 @@ class PersistentAudioManager {
         }
     }
 
-    setVolume(newVolume) {
-        this.volume = Math.max(0, Math.min(1, newVolume));
-        if (this.audio) {
-            this.audio.volume = this.volume;
-        }
-        this.saveSettings();
-        this.saveAudioState();
-    }
+    // VOLUME CONTROL METHODS REMOVED
+    // setVolume() - REMOVED
+    // showVolumeControl() - REMOVED
+    // hideVolumeControl() - REMOVED
+    // updateVolumeDisplay() - REMOVED
 
     // Sync button state with actual audio state
     syncButtonState() {
@@ -279,11 +279,11 @@ class PersistentAudioManager {
         document.querySelectorAll('.audio-toggle, .persistent-audio-toggle').forEach(button => {
             if (this.isEnabled) {
                 button.innerHTML = '🔊';
-                button.title = 'Turn off ambient music';
+                button.title = 'Turn off ambient music (25% volume)';
                 button.classList.add('active');
             } else {
                 button.innerHTML = '🎵';
-                button.title = 'Turn on ambient music';
+                button.title = 'Turn on ambient music (25% volume)';
                 button.classList.remove('active');
             }
         });

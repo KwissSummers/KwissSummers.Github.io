@@ -1,8 +1,10 @@
-/* 07-responsive-design.css - RESPONSIVE DESIGN (itch.io style) */
+/* 07-responsive-design.css - MOBILE RESPONSIVE REMOVED - ALWAYS DESKTOP */
 
-/* === RESPONSIVE DESIGN === */
+/* === FORCE DESKTOP LAYOUT ON ALL DEVICES === */
 
-/* Mobile responsive for rain */
+/* Remove all mobile responsive styles - everything stays desktop sized */
+
+/* Keep ONLY rain responsiveness */
 @media (max-width: 768px) {
     .rain-drop {
         width: 1px;
@@ -20,263 +22,194 @@
         height: 10px; 
         width: 2px;
     }
-
-    /* Mobile responsive for persistent controls */
-    .persistent-controls {
-        bottom: 8px;
-        right: 8px;
-        gap: 3px;
-    }
-    
-    .control-button {
-        width: 22px;
-        height: 22px;
-        font-size: 0.65rem;
-    }
 }
 
-/* Large Tablet & Small Desktop */
-@media (max-width: 1024px) {
-    .homepage-container {
-        min-width: unset;
-        max-width: 100%;
-        padding: 0 1.5rem 1.5rem 1.5rem;
-        margin: 0 auto 1.5rem auto;
-        background: #1a1a1a;
-        border-radius: 12px;
-        box-shadow: 
-            0 6px 20px rgba(0, 0, 0, 0.25),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-    
-    .nav-divider {
-        padding: 0 1.5rem;
-    }
-    
-    #homepage-main {
-        padding: 1.5rem;
-    }
+/* ALL OTHER RESPONSIVE STYLES REMOVED - FORCE DESKTOP LAYOUT */
+
+/* Container Layout - NO RESPONSIVE CHANGES */
+.homepage-container {
+    min-width: 896px;
+    max-width: 960px;
+    margin: 0 auto 2rem auto;
+    padding: 0 2rem 2rem 2rem;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Tablet */
-@media (max-width: 768px) {
-    .homepage-container {
-        padding: 0 1rem 1rem 1rem;
-        margin: 0 auto 1rem auto;
-        background: #1a1a1a;
-        border-radius: 8px;
-        box-shadow: 
-            0 4px 15px rgba(0, 0, 0, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* Navigation - NO RESPONSIVE CHANGES */
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0;
+    margin: 1.5rem 0 3rem 0;
+    list-style: none;
+    flex-wrap: nowrap;
+    position: relative;
+}
+
+.nav-tabs li a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    width: 90px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-sizing: border-box;
+    padding: 0;
+    white-space: nowrap;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+    position: relative;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    transform: perspective(100px) rotateX(5deg);
+}
+
+/* Banner - NO RESPONSIVE CHANGES */
+.homepage-banner {
+    padding: 2rem;
+    background: 
+      radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+      radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+      radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+      radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+      radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+      linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+    background-size: 
+      300px 300px,
+      250px 250px,
+      400px 400px,
+      180px 180px,
+      320px 320px,
+      200px 200px,
+      150px 150px,
+      280px 280px,
+      220px 220px,
+      100% 100%;
+    animation: starfield 120s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin: 1rem 2rem;
+    box-shadow: 
+      0 0 40px rgba(10, 15, 28, 0.8),
+      0 0 80px rgba(20, 31, 58, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-logo {
+    width: 115px;
+    height: 115px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Typography - NO RESPONSIVE CHANGES */
+.homepage-title {
+    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.homepage-tagline {
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}
+
+/* Social icons - NO RESPONSIVE CHANGES */
+.homepage-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+}
+
+.homepage-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background-color: rgba(46, 46, 46, 0.8);
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.homepage-socials img {
+    width: 36px !important;
+    height: 36px !important;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 4px;
+    filter: grayscale(100%) brightness(0.8);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
     
-    .nav-divider {
-        padding: 0 1rem;
-    }
-    
+    .page-transition-fade,
+    .page-transition-slide,
+    .page-transition-scale,
+    .page-transition-slide-up,
+    .page-transition-glitch,
     #homepage-main {
-        padding: 1rem;
-        gap: 1.5rem;
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
     }
     
-    /* Navigation adjustments for hanging lights */
-    .nav-tabs {
-        gap: 0.5rem;
-        margin: 1rem 0 2.5rem 0; /* Maintain hanging space */
+    .homepage-banner,
+    .homepage-banner::before,
+    .homepage-banner::after {
+        animation: none !important;
     }
     
-    .nav-tabs li a {
-        width: 75px;
-        height: 45px;
-        font-size: 1rem;
-    }
-    
-    .nav-tabs li::before {
-        top: -1.5rem;
-        height: 1.5rem;
-    }
-    
-    /* Banner adjustments */
     .homepage-banner {
-        padding: 1.5rem 1rem;
-        margin: 1rem;
-        background-size: 
-            150px 150px,
-            120px 120px,
-            200px 200px,
-            90px 90px,
-            160px 160px,
-            100px 100px,
-            75px 75px,
-            140px 140px,
-            110px 110px,
-            100% 100%;
-    }
-    
-    .banner-inline {
-        gap: 1rem;
-    }
-    
-    .banner-logo {
-        width: 80px;
-        height: 80px;
-    }
-    
-    /* Typography scaling */
-    .homepage-title {
-        font-size: 2.5rem;
-    }
-    
-    .homepage-tagline {
-        font-size: 1.1rem;
-    }
-    
-    h1 { font-size: 3rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
-    
-    /* Social icons */
-    .homepage-socials {
-        gap: 1rem;
-        padding: 1rem 0;
-    }
-    
-    .homepage-socials a {
-        width: 48px;
-        height: 48px;
-    }
-    
-    .homepage-socials img {
-        width: 32px !important;
-        height: 32px !important;
+        background: linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 50%, #080b14 100%);
     }
 }
 
-/* Mobile */
-@media (max-width: 640px) {
-    .homepage-container {
-        padding: 0 0.75rem 0.75rem 0.75rem;
-        margin: 0 auto 0.75rem auto;
-        background: #1a1a1a;
-        border-radius: 6px;
-        box-shadow: 
-            0 3px 12px rgba(0, 0, 0, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-    
-    .nav-divider {
-        padding: 0 0.75rem;
-    }
-    
-    #homepage-main {
-        padding: 0.75rem;
-        gap: 1rem;
-    }
-    
-    /* Navigation - smaller hanging light bulbs */
-    .nav-tabs {
-        gap: 0.25rem;
-        flex-wrap: wrap; /* Allow wrapping on very small screens */
-        justify-content: center;
-        margin: 0.8rem 0 2rem 0;
-    }
-    
-    .nav-tabs li a {
-        width: 65px;
-        height: 42px;
-        font-size: 0.9rem;
-    }
-    
-    .nav-tabs li::before {
-        top: -1.2rem;
-        height: 1.2rem;
-        width: 1.5px;
-    }
-    
-    /* Banner - stack vertically on very small screens */
-    .banner-inline {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.75rem;
-    }
-    
-    .banner-logo {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .homepage-banner {
-        padding: 1rem 0.75rem;
-        margin: 0.5rem;
-        background-size: 
-            100px 100px,
-            80px 80px,
-            120px 120px,
-            60px 60px,
-            90px 90px,
-            70px 70px,
-            50px 50px,
-            85px 85px,
-            75px 75px,
-            100% 100%;
-    }
-    
-    /* Typography - mobile optimized */
-    .homepage-title {
-        font-size: 2rem;
-    }
-    
-    .homepage-tagline {
-        font-size: 1rem;
-    }
-    
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 1.75rem; }
-    h3 { font-size: 1.25rem; }
-    h4 { font-size: 1.1rem; }
-    
-    /* Social icons - more compact */
-    .homepage-socials {
-        gap: 0.75rem;
-        padding: 0.75rem 0;
-    }
-    
-    .homepage-socials a {
-        width: 44px;
-        height: 44px;
-    }
-    
-    .homepage-socials img {
-        width: 28px !important;
-        height: 28px !important;
-    }
-}
-
-/* Extra Small Mobile */
-@media (max-width: 480px) {
-    .nav-tabs li a {
-        width: 55px;
-        height: 38px;
-        font-size: 0.8rem;
-    }
-    
-    .nav-tabs li::before {
-        top: -1rem;
-        height: 1rem;
-        width: 1px;
-    }
-    
-    .homepage-title {
-        font-size: 1.75rem;
-    }
-    
-    .homepage-tagline {
-        font-size: 0.9rem;
-    }
-
-    .control-button {
-        width: 20px;
-        height: 20px;
-        font-size: 0.6rem;
-    }
-}
+/* ALL OTHER RESPONSIVE CSS REMOVED TO FORCE DESKTOP LAYOUT ON MOBILE */
