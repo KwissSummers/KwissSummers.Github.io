@@ -1,4 +1,4 @@
-// spotify.js - Now uses secure admin protection
+// spotify.js - Fixed timing issues and infinite loading
 
 class SpotifyPlayer {
     constructor() {
@@ -19,132 +19,173 @@ class SpotifyPlayer {
             this.redirectUri = window.location.origin;
         }
         
-        console.log('Environment detected:', {
+        console.log('🎵 Spotify Player initializing...', {
             hostname: window.location.hostname,
-            apiBase: this.apiBase,
-            redirectUri: this.redirectUri
+            apiBase: this.apiBase
         });
         
         this.scopes = 'user-read-recently-played';
-        
-        // SECURE: Use the admin protection system
-        this.isOwner = this.checkIfOwner();
-        
-        if (this.isOwner) {
-            // Owner mode: normal authentication
-            this.accessToken = localStorage.getItem('spotify_access_token');
-            this.refreshToken = localStorage.getItem('spotify_refresh_token');
-            this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
-        } else {
-            // Visitor mode: no authentication needed
-            this.accessToken = null;
-            this.refreshToken = null;
-            this.tokenExpiry = null;
-        }
-        
+        this.isOwner = false; // Will be set after admin check
+        this.accessToken = null;
+        this.refreshToken = null;
+        this.tokenExpiry = null;
         this.currentAudio = null;
         this.updateInterval = null;
         this.tokenCheckInterval = null;
+        this.maxRetries = 3;
+        this.retryCount = 0;
     }
 
-    // SECURE: Check admin status through protection system
+    // Check admin status with fallback
     checkIfOwner() {
-        // Wait for admin protection to be available
-        if (typeof window.adminProtection === 'undefined') {
-            console.log('⏳ Waiting for admin protection...');
-            return false;
+        // First, check if admin protection is available
+        if (typeof window.adminProtection !== 'undefined') {
+            const isAdmin = window.adminProtection.isAdmin() && 
+                           window.adminProtection.hasAdminFeature('spotify');
+            
+            if (isAdmin) {
+                console.log('🔑 Spotify admin mode via protection system');
+                localStorage.setItem('spotify_owner_mode', 'true');
+                this.loadAdminTokens();
+                return true;
+            }
         }
         
-        const isAdmin = window.adminProtection.isAdmin() && 
-                       window.adminProtection.hasAdminFeature('spotify');
-        
-        if (isAdmin) {
-            console.log('🔑 Spotify owner mode activated via admin protection');
-            // Set the old localStorage for compatibility
-            localStorage.setItem('spotify_owner_mode', 'true');
-        } else {
-            // Clear old localStorage if not admin
-            localStorage.removeItem('spotify_owner_mode');
+        // Fallback: check old localStorage method
+        const oldMethod = localStorage.getItem('spotify_owner_mode') === 'true';
+        if (oldMethod) {
+            console.log('🔑 Spotify admin mode via legacy storage');
+            this.loadAdminTokens();
+            return true;
         }
         
-        return isAdmin;
+        // Clear admin tokens if not admin
+        localStorage.removeItem('spotify_owner_mode');
+        return false;
+    }
+
+    loadAdminTokens() {
+        this.accessToken = localStorage.getItem('spotify_access_token');
+        this.refreshToken = localStorage.getItem('spotify_refresh_token');
+        this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
     }
 
     init() {
-        console.log('Initializing Spotify Player...');
+        console.log('🎵 Initializing Spotify Player...');
         
-        // Re-check admin status in case it changed
+        // Check admin status
         this.isOwner = this.checkIfOwner();
         
         if (this.isOwner) {
-            // OWNER MODE: Handle authentication
-            if (this.accessToken && this.isTokenValid()) {
-                console.log('Valid owner token found, starting updates');
-                this.startUpdating();
-                this.startTokenMonitoring();
-            } else if (this.refreshToken && !this.isTokenValid()) {
-                console.log('Owner token expired, attempting refresh');
-                this.attemptTokenRefresh();
-            } else if (this.hasAuthCode()) {
-                console.log('Owner auth code found, handling callback');
-                this.handleAuthCallback();
-            } else {
-                console.log('Owner needs to authenticate');
-                this.showOwnerAuthButton();
-            }
+            console.log('🎵 Admin mode - checking authentication...');
+            this.handleAdminMode();
         } else {
-            // VISITOR MODE: Just try to load your cached music
-            console.log('Visitor mode - loading cached tracks');
-            this.showCachedTracks();
-            
-            // Try to fetch fresh data without authentication
-            this.fetchPublicTracks();
+            console.log('🎵 Visitor mode - loading public tracks...');
+            this.handleVisitorMode();
         }
     }
 
-    // Show admin authentication button only for authenticated admin
+    handleAdminMode() {
+        if (this.accessToken && this.isTokenValid()) {
+            console.log('🎵 Valid admin token found');
+            this.startUpdating();
+            this.startTokenMonitoring();
+        } else if (this.refreshToken && !this.isTokenValid()) {
+            console.log('🎵 Admin token expired, refreshing...');
+            this.attemptTokenRefresh();
+        } else if (this.hasAuthCode()) {
+            console.log('🎵 Processing admin auth callback...');
+            this.handleAuthCallback();
+        } else {
+            console.log('🎵 Admin needs Spotify authentication');
+            this.showOwnerAuthButton();
+        }
+    }
+
+    handleVisitorMode() {
+        // Show cached tracks immediately
+        this.showCachedTracks();
+        
+        // Try to fetch fresh public data (with timeout)
+        this.fetchPublicTracksWithTimeout();
+    }
+
+    async fetchPublicTracksWithTimeout() {
+        const timeout = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout')), 5000)
+        );
+        
+        try {
+            const fetchPromise = fetch(`${this.apiBase}/spotify-public`);
+            const response = await Promise.race([fetchPromise, timeout]);
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.tracks && data.tracks.length > 0) {
+                    console.log('🎵 Loaded fresh public tracks');
+                    await this.renderTracks(data.tracks, false);
+                    return;
+                }
+            }
+        } catch (error) {
+            console.log('🎵 No public API available, using cached tracks');
+        }
+        
+        // Ensure we show something
+        this.ensureTracksDisplayed();
+    }
+
+    ensureTracksDisplayed() {
+        const container = document.getElementById('spotify-widget');
+        if (!container || container.innerHTML.includes('Loading')) {
+            console.log('🎵 Ensuring tracks are displayed...');
+            this.showCachedTracks();
+        }
+    }
+
     showOwnerAuthButton() {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
         container.innerHTML = `
             <div class="spotify-connect">
-                <h3>🎵 Owner Setup</h3>
-                <p>Authenticate your Spotify to share your music with visitors!</p>
+                <h3>🎵 Admin Setup</h3>
+                <p>Connect your Spotify to share music with visitors!</p>
                 <button onclick="spotifyPlayer.authenticate()" class="spotify-btn">
-                    Setup Spotify (Admin)
+                    Setup Spotify
                 </button>
             </div>
         `;
     }
 
-    // Try to fetch public/cached tracks for visitors
     async fetchPublicTracks() {
         try {
-            // Try to fetch from your API endpoint that serves cached data
-            const response = await fetch(`${this.apiBase}/spotify-public`);
+            const response = await fetch(`${this.apiBase}/spotify-public`, {
+                timeout: 5000
+            });
+            
             if (response.ok) {
                 const data = await response.json();
                 if (data.tracks && data.tracks.length > 0) {
-                    console.log('Loaded public tracks for visitor');
+                    console.log('🎵 Loaded public tracks');
                     await this.renderTracks(data.tracks, false);
                     return;
                 }
             }
         } catch (error) {
-            console.log('No public tracks available:', error);
+            console.log('🎵 Public tracks unavailable:', error.message);
         }
         
-        // Fallback to any cached tracks in localStorage
+        // Always fall back to cached
         this.showCachedTracks();
     }
 
     startTokenMonitoring() {
-        if (!this.isOwner) return; // Only monitor tokens for admin
+        if (!this.isOwner) return;
         
         this.tokenCheckInterval = setInterval(() => {
             if (!this.isTokenValid()) {
-                console.log('Owner token expired, attempting refresh');
+                console.log('🎵 Admin token expired, refreshing...');
                 this.attemptTokenRefresh();
             }
         }, 5 * 60 * 1000);
@@ -152,29 +193,28 @@ class SpotifyPlayer {
 
     async attemptTokenRefresh() {
         if (!this.isOwner || !this.refreshToken) {
-            console.log('No refresh token available for admin');
+            console.log('🎵 No refresh token for admin');
             this.showOwnerAuthButton();
             return;
         }
 
         try {
             await this.refreshAccessToken();
-            console.log('Admin token refreshed successfully');
+            console.log('🎵 Admin token refreshed');
             this.startUpdating();
         } catch (error) {
-            console.error('Failed to refresh admin token:', error);
+            console.error('🎵 Token refresh failed:', error);
             this.clearTokens();
             this.showOwnerAuthButton();
         }
     }
 
     clearTokens() {
-        if (!this.isOwner) return; // Only clear admin tokens
+        if (!this.isOwner) return;
         
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_refresh_token');
         localStorage.removeItem('spotify_token_expiry');
-        localStorage.removeItem('spotify_cached_tracks');
         this.accessToken = null;
         this.refreshToken = null;
         this.tokenExpiry = null;
@@ -190,17 +230,10 @@ class SpotifyPlayer {
         return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
     }
 
-    stopTokenMonitoring() {
-        if (this.tokenCheckInterval) {
-            clearInterval(this.tokenCheckInterval);
-            this.tokenCheckInterval = null;
-        }
-    }
-
     authenticate() {
         if (!this.isOwner) {
-            console.log('🚨 Unauthorized Spotify authentication attempt blocked');
-            alert('Access denied. Admin authentication required.');
+            console.log('🚨 Unauthorized Spotify auth attempt');
+            alert('Admin access required for Spotify setup.');
             return;
         }
         
@@ -217,13 +250,13 @@ class SpotifyPlayer {
             authUrl.searchParams.append(key, params[key])
         );
 
-        console.log('Redirecting authenticated admin to Spotify auth');
+        console.log('🎵 Redirecting admin to Spotify auth');
         window.location.href = authUrl.toString();
     }
 
     async handleAuthCallback() {
         if (!this.isOwner) {
-            console.log('🚨 Unauthorized Spotify callback attempt blocked');
+            console.log('🚨 Unauthorized callback attempt');
             return;
         }
         
@@ -232,38 +265,33 @@ class SpotifyPlayer {
         const error = urlParams.get('error');
 
         if (error) {
-            console.error('Spotify auth error:', error);
+            console.error('🎵 Spotify auth error:', error);
             this.showOwnerAuthButton();
             return;
         }
 
         if (code) {
             try {
-                console.log('Handling admin auth callback');
+                console.log('🎵 Processing admin callback...');
                 await this.getAccessToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
                 this.startTokenMonitoring();
             } catch (error) {
-                console.error('Failed to get access token:', error);
+                console.error('🎵 Callback failed:', error);
                 this.showOwnerAuthButton();
             }
         }
     }
 
     async getAccessToken(code) {
-        if (!this.isOwner) {
-            console.log('🚨 Unauthorized token request blocked');
-            return;
-        }
+        if (!this.isOwner) return;
         
-        console.log('Exchanging admin code for token via API:', this.apiBase);
+        console.log('🎵 Exchanging code for tokens...');
         
         const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 code: code,
                 redirect_uri: this.redirectUri
@@ -271,9 +299,7 @@ class SpotifyPlayer {
         });
 
         if (!response.ok) {
-            const errorData = await response.text();
-            console.error('Token exchange failed:', response.status, errorData);
-            throw new Error(`Failed to get access token: ${response.status}`);
+            throw new Error(`Token exchange failed: ${response.status}`);
         }
 
         const data = await response.json();
@@ -286,28 +312,26 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Admin tokens stored successfully');
+        console.log('🎵 Admin tokens saved');
     }
 
     async refreshAccessToken() {
-        if (!this.isOwner || !this.refreshToken) throw new Error('No refresh token');
+        if (!this.isOwner || !this.refreshToken) {
+            throw new Error('No refresh token available');
+        }
 
-        console.log('Refreshing admin access token via API:', this.apiBase);
+        console.log('🎵 Refreshing admin token...');
 
         const response = await fetch(`${this.apiBase}/spotify-refresh`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 refresh_token: this.refreshToken
             })
         });
 
         if (!response.ok) {
-            const errorData = await response.text();
-            console.error('Refresh failed:', response.status, errorData);
-            throw new Error(`Failed to refresh token: ${response.status}`);
+            throw new Error(`Token refresh failed: ${response.status}`);
         }
 
         const data = await response.json();
@@ -323,11 +347,13 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Admin token refreshed successfully');
+        console.log('🎵 Token refreshed');
     }
 
     async getRecentTracks() {
-        if (!this.isOwner || !this.accessToken) throw new Error('No access token for admin');
+        if (!this.isOwner || !this.accessToken) {
+            throw new Error('No admin access token');
+        }
 
         const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
             headers: { 'Authorization': `Bearer ${this.accessToken}` }
@@ -335,33 +361,16 @@ class SpotifyPlayer {
 
         if (!response.ok) {
             if (response.status === 401) {
-                console.log('Spotify API returned 401, attempting token refresh');
                 await this.attemptTokenRefresh();
                 if (this.accessToken) return this.getRecentTracks();
-                throw new Error('Failed to refresh token');
+                throw new Error('Token refresh failed');
             }
-            throw new Error(`Spotify API request failed: ${response.status}`);
+            throw new Error(`Spotify API error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Retrieved', data.items.length, 'recent tracks for admin');
+        console.log('🎵 Retrieved', data.items.length, 'tracks');
         return data.items;
-    }
-
-    async getAlternativePreview(trackName, artistName) {
-        try {
-            const query = encodeURIComponent(`${trackName} ${artistName}`);
-            const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
-            const data = await response.json();
-            
-            if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
-                console.log('Found iTunes preview for:', trackName);
-                return data.results[0].previewUrl;
-            }
-        } catch (error) {
-            console.warn('iTunes preview search failed:', error);
-        }
-        return null;
     }
 
     async updateDisplay() {
@@ -369,7 +378,6 @@ class SpotifyPlayer {
         if (!container) return;
 
         if (!this.isOwner) {
-            // Visitors just see cached/public tracks
             this.fetchPublicTracks();
             return;
         }
@@ -378,22 +386,18 @@ class SpotifyPlayer {
             const tracks = await this.getRecentTracks();
             
             if (tracks && tracks.length > 0) {
-                // Cache tracks for visitors
                 localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
                 await this.renderTracks(tracks);
-                
-                // OPTIONAL: Send to your API to cache publicly
                 this.cacheTracksPublicly(tracks);
             } else {
                 this.showNoTracks();
             }
         } catch (error) {
-            console.error('Failed to update Spotify display:', error);
+            console.error('🎵 Update failed:', error);
             this.showCachedTracks();
         }
     }
 
-    // Cache tracks publicly for visitors
     async cacheTracksPublicly(tracks) {
         try {
             await fetch(`${this.apiBase}/spotify-cache`, {
@@ -401,9 +405,9 @@ class SpotifyPlayer {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tracks })
             });
-            console.log('Tracks cached publicly for visitors');
+            console.log('🎵 Tracks cached publicly');
         } catch (error) {
-            console.log('Could not cache tracks publicly:', error);
+            console.log('🎵 Public caching unavailable');
         }
     }
 
@@ -412,14 +416,15 @@ class SpotifyPlayer {
         if (cachedTracks) {
             try {
                 const tracks = JSON.parse(cachedTracks);
-                console.log('Showing cached tracks to visitor');
+                console.log('🎵 Showing cached tracks');
                 this.renderTracks(tracks, true);
+                return;
             } catch (error) {
-                this.showNoTracks();
+                console.error('🎵 Cache parse error:', error);
             }
-        } else {
-            this.showNoTracks();
         }
+        
+        this.showNoTracks();
     }
 
     showNoTracks() {
@@ -427,8 +432,8 @@ class SpotifyPlayer {
         if (!container) return;
 
         const message = this.isOwner ? 
-            'No recent tracks found. Play some music on Spotify!' :
-            'No music data available yet. Check back soon!';
+            'Play some music on Spotify to get started!' :
+            'Music will appear here soon!';
 
         container.innerHTML = `
             <div class="spotify-tracks">
@@ -438,12 +443,27 @@ class SpotifyPlayer {
                         <div class="no-artwork">♪</div>
                     </div>
                     <div class="track-info">
-                        <div class="track-title">No recent tracks</div>
+                        <div class="track-title">No tracks yet</div>
                         <div class="track-artist">${message}</div>
                     </div>
                 </div>
             </div>
         `;
+    }
+
+    async getAlternativePreview(trackName, artistName) {
+        try {
+            const query = encodeURIComponent(`${trackName} ${artistName}`);
+            const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
+            const data = await response.json();
+            
+            if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
+                return data.results[0].previewUrl;
+            }
+        } catch (error) {
+            console.warn('🎵 iTunes search failed:', error);
+        }
+        return null;
     }
 
     async renderTracks(tracks, isCached = false) {
@@ -454,50 +474,55 @@ class SpotifyPlayer {
             (isCached ? ' (Cached)' : '') : 
             " (Chris's Music)";
 
-        const tracksHtml = await Promise.all(tracks.map(async (item, index) => {
-            const track = item.track;
-            const artwork = track.album.images[0]?.url || '';
-            let previewUrl = track.preview_url;
-            
-            if (!previewUrl) {
-                previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
-            }
-            
-            const trackUrl = track.external_urls.spotify;
-            
-            return `
-                <div class="track-item current-track">
-                    <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
-                        ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
-                        <div class="spotify-overlay">🎵</div>
-                    </div>
-                    <div class="track-info">
-                        <div class="track-title">${this.truncateText(track.name, 25)}</div>
-                        <div class="track-artist">${this.truncateText(track.artists[0].name, 20)}</div>
-                        ${previewUrl ? `
-                        <div class="track-controls">
-                            <button onclick="spotifyPlayer.togglePreview('${previewUrl}', this, '${index}')" class="play-btn" id="play-btn-${index}">▶</button>
-                            <div class="progress-container">
-                                <div class="progress-bar" id="progress-${index}"></div>
+        try {
+            const tracksHtml = await Promise.all(tracks.map(async (item, index) => {
+                const track = item.track;
+                const artwork = track.album.images[0]?.url || '';
+                let previewUrl = track.preview_url;
+                
+                if (!previewUrl) {
+                    previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
+                }
+                
+                const trackUrl = track.external_urls.spotify;
+                
+                return `
+                    <div class="track-item current-track">
+                        <div class="track-artwork" onclick="window.open('${trackUrl}', '_blank')" title="Open in Spotify">
+                            ${artwork ? `<img src="${artwork}" alt="${track.album.name}">` : '<div class="no-artwork">♪</div>'}
+                            <div class="spotify-overlay">🎵</div>
+                        </div>
+                        <div class="track-info">
+                            <div class="track-title">${this.truncateText(track.name, 25)}</div>
+                            <div class="track-artist">${this.truncateText(track.artists[0].name, 20)}</div>
+                            ${previewUrl ? `
+                            <div class="track-controls">
+                                <button onclick="spotifyPlayer.togglePreview('${previewUrl}', this, '${index}')" class="play-btn" id="play-btn-${index}">▶</button>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="progress-${index}"></div>
+                                </div>
+                                <span class="time-display" id="time-${index}">0:00</span>
                             </div>
-                            <span class="time-display" id="time-${index}">0:00</span>
+                            ` : `
+                            <div class="track-controls">
+                                <span class="no-preview">Click artwork for Spotify</span>
+                            </div>
+                            `}
                         </div>
-                        ` : `
-                        <div class="track-controls">
-                            <span class="no-preview">Click artwork to listen on Spotify</span>
-                        </div>
-                        `}
                     </div>
+                `;
+            }));
+
+            container.innerHTML = `
+                <div class="spotify-tracks">
+                    <h3>🎵 Recently Played${statusText}</h3>
+                    ${tracksHtml.join('')}
                 </div>
             `;
-        }));
-
-        container.innerHTML = `
-            <div class="spotify-tracks">
-                <h3>🎵 Recently Played${statusText}</h3>
-                ${tracksHtml.join('')}
-            </div>
-        `;
+        } catch (error) {
+            console.error('🎵 Render error:', error);
+            this.showNoTracks();
+        }
     }
 
     togglePreview(previewUrl, button, trackIndex) {
@@ -524,7 +549,7 @@ class SpotifyPlayer {
                 this.clearProgress(trackIndex);
             };
         }).catch(error => {
-            console.error('Failed to play preview:', error);
+            console.error('🎵 Preview failed:', error);
             button.textContent = '❌';
             setTimeout(() => button.textContent = '▶', 2000);
         });
@@ -566,7 +591,7 @@ class SpotifyPlayer {
     }
 
     startUpdating() {
-        if (!this.isOwner) return; // Only admin updates actively
+        if (!this.isOwner) return;
         
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
@@ -579,22 +604,32 @@ class SpotifyPlayer {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
+        
+        if (this.tokenCheckInterval) {
+            clearInterval(this.tokenCheckInterval);
+            this.tokenCheckInterval = null;
+        }
     }
 }
 
-// Initialize when DOM is ready
+// Initialize with proper timing
 let spotifyPlayer;
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait for admin protection to be ready before initializing Spotify
-    const initSpotify = () => {
-        if (typeof window.adminProtection !== 'undefined') {
-            spotifyPlayer = new SpotifyPlayer();
-            spotifyPlayer.init();
-        } else {
-            // Wait a bit more for admin protection
-            setTimeout(initSpotify, 100);
-        }
-    };
+
+function initializeSpotify() {
+    if (spotifyPlayer) return; // Already initialized
     
-    initSpotify();
-});
+    console.log('🎵 Creating Spotify Player...');
+    spotifyPlayer = new SpotifyPlayer();
+    
+    // Small delay to ensure everything is ready
+    setTimeout(() => {
+        spotifyPlayer.init();
+    }, 100);
+}
+
+// Multiple initialization triggers to ensure it loads
+document.addEventListener('DOMContentLoaded', initializeSpotify);
+window.addEventListener('load', initializeSpotify);
+
+// Fallback initialization after a delay
+setTimeout(initializeSpotify, 1000);
