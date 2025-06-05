@@ -1,4 +1,4 @@
-/* 01-base-reset.css - Global Reset & Base Styles */
+/* 01-base-reset.css - Global Reset & Base Styles with Enhanced Hanging Lights */
 
 /* === Global Reset & Base Styles === */
 * {
@@ -11,45 +11,245 @@ body {
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     line-height: 1.6;
+    color: #aeaeae;
     background: 
-      /* Enhanced wooden panel texture - spaced out by 30% */
-      repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.03) 0px,
-        rgba(255, 255, 255, 0.015) 3px,
-        transparent 6px,
-        rgba(0, 0, 0, 0.04) 9px,
-        transparent 12px,
-        rgba(255, 255, 255, 0.02) 130px,
-        rgba(255, 255, 255, 0.04) 133px,
-        rgba(0, 0, 0, 0.06) 136px,
-        transparent 139px,
-        rgba(255, 255, 255, 0.01) 260px
-      ),
-      /* Spaced out vertical wood grain */
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        rgba(255, 255, 255, 0.015) 1.5px,
-        transparent 3px,
-        rgba(0, 0, 0, 0.02) 4.5px,
-        transparent 6px,
-        rgba(255, 255, 255, 0.008) 7.5px,
-        transparent 9px
-      ),
-      /* Wood panel separators - spaced out */
-      repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        transparent 154px,
-        rgba(0, 0, 0, 0.1) 156px,
-        rgba(255, 255, 255, 0) 158px,
-        transparent 161px
-      ),
-      /* Base gradient - lighter for better contrast */
-      linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
-      color: #aeaeae;
-      background-attachment: fixed;
+        /* Much darker wooden panel texture - almost pitch black */
+        repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.003) 0px,
+            rgba(255, 255, 255, 0.001) 3px,
+            transparent 6px,
+            rgba(0, 0, 0, 0.15) 9px,
+            transparent 12px,
+            rgba(255, 255, 255, 0.002) 130px,
+            rgba(255, 255, 255, 0.004) 133px,
+            rgba(0, 0, 0, 0.2) 136px,
+            transparent 139px,
+            rgba(255, 255, 255, 0.001) 260px
+        ),
+        /* Much darker vertical wood grain */
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            rgba(255, 255, 255, 0.002) 1.5px,
+            transparent 3px,
+            rgba(0, 0, 0, 0.08) 4.5px,
+            transparent 6px,
+            rgba(255, 255, 255, 0.001) 7.5px,
+            transparent 9px
+        ),
+        /* Much darker wood panel separators */
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 154px,
+            rgba(0, 0, 0, 0.3) 156px,
+            rgba(255, 255, 255, 0) 158px,
+            transparent 161px
+        ),
+        /* PITCH BLACK base gradient like Steam */
+        linear-gradient(135deg, #020202 0%, #060606 25%, #030303 50%, #080808 75%, #020202 100%);
+    margin: 0;
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Wooden Frame Container - No border, just content area */
+.wooden-frame-container {
+    width: 100%;
+    min-height: calc(100vh - 60px); /* Account for body padding */
+    position: relative;
+    background: transparent;
+    /* Remove border and frame styling */
+    overflow: visible; /* Allow normal scrolling */
+}
+
+/* Inner Content Area - Normal scrolling */
+.frame-inner-content {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    background: transparent;
+    /* Remove scroll containment */
+}
+
+/* Fixed Video Background with rounded corners */
+.video-background-framed {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
+    z-index: -2;
+    border-radius: 12px; /* Match other container rounded corners */
+    overflow: hidden; /* Ensure video respects rounded corners */
+}
+
+.video-background-framed video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Enhanced monochrome grey filter to match wooden frame */
+    filter: brightness(0.3) contrast(1.1) saturate(0.2) grayscale(0.7) sepia(0.1) hue-rotate(20deg);
+}
+
+.video-background-framed::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(25, 20, 15, 0.3); /* Darker overlay to maintain contrast */
+    pointer-events: none;
+}
+
+/* Remove the old video background styles */
+.video-background {
+    display: none;
+}
+
+/* Remove the old fallback background */
+body::before {
+    display: none;
+}
+
+/* Light Rays Completely Removed - All Code Eradicated */
+
+/* Hanging Elements - Now positioned relative to frame */
+.hanging-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+    z-index: 10; /* Above the frame content */
+}
+
+.hanging-element {
+    position: absolute;
+    transform-origin: top center;
+    animation: hangingSwing ease-in-out infinite;
+}
+
+.hanging-cord {
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(
+        to bottom, 
+        rgba(200, 200, 210, 0.9) 0%, 
+        rgba(180, 180, 190, 0.8) 25%, 
+        rgba(160, 160, 170, 0.7) 50%, 
+        rgba(140, 140, 150, 0.6) 75%, 
+        rgba(120, 120, 130, 0.5) 100%
+    );
+    margin: 0 auto 5px auto;
+    border-radius: 1px;
+    box-shadow: 
+        inset 1px 0 0 rgba(255, 255, 255, 0.3),
+        inset -1px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.hanging-light {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle at 30% 30%, 
+        rgba(255, 235, 120, 0.95) 0%, 
+        rgba(255, 215, 100, 0.9) 30%, 
+        rgba(255, 180, 60, 0.8) 70%, 
+        rgba(200, 150, 50, 0.6) 100%
+    );
+    margin: 0 auto;
+    box-shadow: 
+        0 0 12px rgba(255, 215, 100, 0.7),
+        0 0 25px rgba(255, 180, 80, 0.4);
+    border: 1px solid rgba(255, 200, 80, 0.3);
+}
+
+@keyframes hangingSwing {
+    0%, 100% {
+        transform: rotate(-1deg);
+    }
+    50% {
+        transform: rotate(1deg);
+    }
+}
+
+/* Responsive Frame Adjustments - No borders, with control button positioning */
+@media (max-width: 1024px) {
+    body {
+        padding: 20px;
+    }
+    
+    .video-background-framed {
+        top: 20px;
+        left: 20px;
+        width: calc(100% - 40px);
+        height: calc(100% - 40px);
+        border-radius: 10px;
+    }
+    
+    .wooden-frame-container {
+        min-height: calc(100vh - 40px);
+    }
+    
+    .persistent-controls {
+        bottom: 30px;
+        right: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .video-background-framed {
+        top: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+        height: calc(100% - 30px);
+        border-radius: 8px;
+    }
+    
+    .wooden-frame-container {
+        min-height: calc(100vh - 30px);
+    }
+    
+    .persistent-controls {
+        bottom: 25px;
+        right: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .video-background-framed {
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        border-radius: 6px;
+    }
+    
+    .wooden-frame-container {
+        min-height: calc(100vh - 20px);
+    }
+    
+    .persistent-controls {
+        bottom: 20px;
+        right: 20px;
+    }
 }
 
 a {
@@ -85,6 +285,7 @@ h6 { font-size: 1rem; }
     opacity: 0.6;
     padding: 1rem 0;
     margin-top: 2rem;
+    position: relative;
 }
 
 .site-footer a {
@@ -95,4 +296,134 @@ h6 { font-size: 1rem; }
 
 .site-footer a:hover {
     opacity: 1;
+}
+
+/* Credits Button */
+.credits-button {
+    background: rgba(255, 200, 100, 0.8);
+    color: #1a1a1a;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.credits-button:hover {
+    background: rgba(255, 200, 100, 1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 200, 100, 0.4);
+}
+
+/* Credits Modal */
+.credits-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.credits-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.credits-content {
+    background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 200, 100, 0.6);
+    box-shadow: 
+        0 0 30px rgba(255, 200, 100, 0.4),
+        0 0 60px rgba(255, 180, 80, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    max-width: 400px;
+    width: 90%;
+    max-height: 70vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.credits-modal.show .credits-content {
+    transform: scale(1);
+}
+
+.credits-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 200, 100, 0.8);
+    color: #1a1a1a;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credits-close:hover {
+    background: rgba(255, 200, 100, 1);
+    transform: scale(1.1);
+}
+
+.credits-content h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.credits-list {
+    list-style: none;
+    padding: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.credits-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+    color: #ffffff;
+}
+
+.credits-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 200, 100, 0.8);
+    font-weight: bold;
+}
+
+.credits-list a {
+    color: rgba(255, 200, 100, 0.9);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.credits-list a:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }
