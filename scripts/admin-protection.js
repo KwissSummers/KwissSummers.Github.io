@@ -65,7 +65,7 @@ class AdminProtection {
 
         if (isSessionValid) {
             console.log('🔑 Valid admin session found');
-            this.activateAdminMode();
+            this.activateAdminModeQuiet();
             return;
         }
 
@@ -452,6 +452,18 @@ class AdminProtection {
             console.error('Password validation error:', error);
             return false;
         }
+    }
+
+    // Activate admin mode without showing success message (for existing sessions)
+    activateAdminModeQuiet() {
+        this.isAdminMode = true;
+        
+        // Enable all admin features
+        Object.keys(this.adminFeatures).forEach(feature => {
+            this.adminFeatures[feature] = true;
+        });
+
+        console.log('🔑 Admin session restored');
     }
 
     authenticateAdmin() {
