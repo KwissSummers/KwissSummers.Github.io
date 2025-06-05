@@ -4,7 +4,7 @@
   "description": "Chris Summers personal website with secure authentication",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Static site - no build needed'",
+    "build": "exit 0",
     "start": "vercel dev"
   },
   "dependencies": {
