@@ -1,4 +1,4 @@
-// spotify.js - Fixed to show YOUR music to all visitors
+// spotify.js - Now uses secure admin protection
 
 class SpotifyPlayer {
     constructor() {
@@ -27,7 +27,7 @@ class SpotifyPlayer {
         
         this.scopes = 'user-read-recently-played';
         
-        // ADMIN MODE: Check if this is YOU (the owner) accessing
+        // SECURE: Use the admin protection system
         this.isOwner = this.checkIfOwner();
         
         if (this.isOwner) {
@@ -47,17 +47,24 @@ class SpotifyPlayer {
         this.tokenCheckInterval = null;
     }
 
-    // Check if current user is the website owner
+    // SECURE: Check admin status through protection system
     checkIfOwner() {
-        // Simple check - you can add a password or special URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const isAdmin = urlParams.has('admin') || 
-                       localStorage.getItem('spotify_owner_mode') === 'true' ||
-                       window.location.hostname === 'localhost'; // Auto-admin on localhost
+        // Wait for admin protection to be available
+        if (typeof window.adminProtection === 'undefined') {
+            console.log('⏳ Waiting for admin protection...');
+            return false;
+        }
+        
+        const isAdmin = window.adminProtection.isAdmin() && 
+                       window.adminProtection.hasAdminFeature('spotify');
         
         if (isAdmin) {
+            console.log('🔑 Spotify owner mode activated via admin protection');
+            // Set the old localStorage for compatibility
             localStorage.setItem('spotify_owner_mode', 'true');
-            console.log('🔑 Owner mode activated');
+        } else {
+            // Clear old localStorage if not admin
+            localStorage.removeItem('spotify_owner_mode');
         }
         
         return isAdmin;
@@ -65,6 +72,9 @@ class SpotifyPlayer {
 
     init() {
         console.log('Initializing Spotify Player...');
+        
+        // Re-check admin status in case it changed
+        this.isOwner = this.checkIfOwner();
         
         if (this.isOwner) {
             // OWNER MODE: Handle authentication
@@ -92,7 +102,7 @@ class SpotifyPlayer {
         }
     }
 
-    // NEW: Show admin authentication button only for owner
+    // Show admin authentication button only for authenticated admin
     showOwnerAuthButton() {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
@@ -102,13 +112,13 @@ class SpotifyPlayer {
                 <h3>🎵 Owner Setup</h3>
                 <p>Authenticate your Spotify to share your music with visitors!</p>
                 <button onclick="spotifyPlayer.authenticate()" class="spotify-btn">
-                    Setup Spotify (Owner Only)
+                    Setup Spotify (Admin)
                 </button>
             </div>
         `;
     }
 
-    // NEW: Try to fetch public/cached tracks for visitors
+    // Try to fetch public/cached tracks for visitors
     async fetchPublicTracks() {
         try {
             // Try to fetch from your API endpoint that serves cached data
@@ -130,7 +140,7 @@ class SpotifyPlayer {
     }
 
     startTokenMonitoring() {
-        if (!this.isOwner) return; // Only monitor tokens for owner
+        if (!this.isOwner) return; // Only monitor tokens for admin
         
         this.tokenCheckInterval = setInterval(() => {
             if (!this.isTokenValid()) {
@@ -142,24 +152,24 @@ class SpotifyPlayer {
 
     async attemptTokenRefresh() {
         if (!this.isOwner || !this.refreshToken) {
-            console.log('No refresh token available for owner');
+            console.log('No refresh token available for admin');
             this.showOwnerAuthButton();
             return;
         }
 
         try {
             await this.refreshAccessToken();
-            console.log('Owner token refreshed successfully');
+            console.log('Admin token refreshed successfully');
             this.startUpdating();
         } catch (error) {
-            console.error('Failed to refresh owner token:', error);
+            console.error('Failed to refresh admin token:', error);
             this.clearTokens();
             this.showOwnerAuthButton();
         }
     }
 
     clearTokens() {
-        if (!this.isOwner) return; // Only clear owner tokens
+        if (!this.isOwner) return; // Only clear admin tokens
         
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_refresh_token');
@@ -189,7 +199,8 @@ class SpotifyPlayer {
 
     authenticate() {
         if (!this.isOwner) {
-            console.log('Only owner can authenticate');
+            console.log('🚨 Unauthorized Spotify authentication attempt blocked');
+            alert('Access denied. Admin authentication required.');
             return;
         }
         
@@ -206,12 +217,15 @@ class SpotifyPlayer {
             authUrl.searchParams.append(key, params[key])
         );
 
-        console.log('Redirecting owner to Spotify auth');
+        console.log('Redirecting authenticated admin to Spotify auth');
         window.location.href = authUrl.toString();
     }
 
     async handleAuthCallback() {
-        if (!this.isOwner) return;
+        if (!this.isOwner) {
+            console.log('🚨 Unauthorized Spotify callback attempt blocked');
+            return;
+        }
         
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -225,7 +239,7 @@ class SpotifyPlayer {
 
         if (code) {
             try {
-                console.log('Handling owner auth callback');
+                console.log('Handling admin auth callback');
                 await this.getAccessToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
@@ -238,9 +252,12 @@ class SpotifyPlayer {
     }
 
     async getAccessToken(code) {
-        if (!this.isOwner) return;
+        if (!this.isOwner) {
+            console.log('🚨 Unauthorized token request blocked');
+            return;
+        }
         
-        console.log('Exchanging owner code for token via API:', this.apiBase);
+        console.log('Exchanging admin code for token via API:', this.apiBase);
         
         const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
@@ -269,13 +286,13 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Owner tokens stored successfully');
+        console.log('Admin tokens stored successfully');
     }
 
     async refreshAccessToken() {
         if (!this.isOwner || !this.refreshToken) throw new Error('No refresh token');
 
-        console.log('Refreshing owner access token via API:', this.apiBase);
+        console.log('Refreshing admin access token via API:', this.apiBase);
 
         const response = await fetch(`${this.apiBase}/spotify-refresh`, {
             method: 'POST',
@@ -306,11 +323,11 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Owner token refreshed successfully');
+        console.log('Admin token refreshed successfully');
     }
 
     async getRecentTracks() {
-        if (!this.isOwner || !this.accessToken) throw new Error('No access token for owner');
+        if (!this.isOwner || !this.accessToken) throw new Error('No access token for admin');
 
         const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
             headers: { 'Authorization': `Bearer ${this.accessToken}` }
@@ -327,7 +344,7 @@ class SpotifyPlayer {
         }
 
         const data = await response.json();
-        console.log('Retrieved', data.items.length, 'recent tracks for owner');
+        console.log('Retrieved', data.items.length, 'recent tracks for admin');
         return data.items;
     }
 
@@ -376,7 +393,7 @@ class SpotifyPlayer {
         }
     }
 
-    // NEW: Cache tracks publicly for visitors
+    // Cache tracks publicly for visitors
     async cacheTracksPublicly(tracks) {
         try {
             await fetch(`${this.apiBase}/spotify-cache`, {
@@ -549,7 +566,7 @@ class SpotifyPlayer {
     }
 
     startUpdating() {
-        if (!this.isOwner) return; // Only owner updates actively
+        if (!this.isOwner) return; // Only admin updates actively
         
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
@@ -568,6 +585,16 @@ class SpotifyPlayer {
 // Initialize when DOM is ready
 let spotifyPlayer;
 document.addEventListener('DOMContentLoaded', function() {
-    spotifyPlayer = new SpotifyPlayer();
-    spotifyPlayer.init();
+    // Wait for admin protection to be ready before initializing Spotify
+    const initSpotify = () => {
+        if (typeof window.adminProtection !== 'undefined') {
+            spotifyPlayer = new SpotifyPlayer();
+            spotifyPlayer.init();
+        } else {
+            // Wait a bit more for admin protection
+            setTimeout(initSpotify, 100);
+        }
+    };
+    
+    initSpotify();
 });
