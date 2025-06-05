@@ -1,0 +1,16 @@
+{
+  "name": "chrissummers-website",
+  "version": "1.0.0",
+  "description": "Chris Summers personal website with secure authentication",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

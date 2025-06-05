@@ -1,6 +1,6 @@
-// admin-protection.js - FIXED VERSION (Handles DOM timing issues)
+// admin-protection.js - SECURE SERVER-SIDE VERSION
 
-class AdminProtection {
+class SecureAdminProtection {
     constructor() {
         this.isAdminMode = false;
         this.adminFeatures = {
@@ -11,10 +11,7 @@ class AdminProtection {
             general: false
         };
         
-        this.passwordHash = this.getPasswordHash();
-        this.pendingModal = null;
-        
-        // Wait for DOM to be ready before initializing
+        // Initialize protection
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.init());
         } else {
@@ -22,26 +19,8 @@ class AdminProtection {
         }
     }
 
-    getPasswordHash() {
-        return localStorage.getItem('admin_password_hash') || null;
-    }
-
-    async hashPassword(password) {
-        try {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        } catch (error) {
-            console.error('Hashing error:', error);
-            // Fallback for browsers without crypto.subtle
-            return btoa(password); // Simple base64 encoding as fallback
-        }
-    }
-
     init() {
-        console.log('🔐 Admin protection initializing...');
+        console.log('🔐 Secure admin protection initializing...');
         this.checkAdminAttempt();
         this.setupProtection();
         this.cleanUrl();
@@ -54,230 +33,42 @@ class AdminProtection {
                              urlParams.has('secret') ||
                              window.location.hostname === 'localhost';
         
-        // Check existing session
-        const storedAuth = localStorage.getItem('admin_authenticated');
-        const storedTimestamp = localStorage.getItem('admin_timestamp');
+        // First, check if already authenticated via server
+        const isAuthenticated = await this.verifyServerAuth();
         
-        const sessionExpiry = 24 * 60 * 60 * 1000; // 24 hours
-        const isSessionValid = storedAuth === 'true' && 
-                               storedTimestamp && 
-                               (Date.now() - parseInt(storedTimestamp)) < sessionExpiry;
-
-        if (isSessionValid) {
-            console.log('🔑 Valid admin session found');
+        if (isAuthenticated) {
+            console.log('🔑 Valid server session found');
             this.activateAdminModeQuiet();
             return;
         }
 
         if (hasAdminParam) {
             console.log('🚨 Admin access attempt detected');
-            
-            // Wait a bit for DOM to be fully ready
-            setTimeout(() => {
-                if (!this.passwordHash) {
-                    this.setupInitialPassword();
-                } else {
-                    this.promptForPassword();
-                }
-            }, 100);
+            this.promptForPassword();
         }
     }
 
-    async setupInitialPassword() {
-        // Ensure DOM is ready
-        if (!document.body) {
-            setTimeout(() => this.setupInitialPassword(), 100);
-            return;
-        }
-
-        const modal = this.createSetupModal();
-        document.body.appendChild(modal);
-        
-        setTimeout(() => {
-            const passwordInput = modal.querySelector('.setup-password-input');
-            if (passwordInput) passwordInput.focus();
-        }, 100);
-    }
-
-    createSetupModal() {
-        const modal = document.createElement('div');
-        modal.className = 'admin-setup-modal';
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            font-family: 'Work Sans', sans-serif;
-        `;
-
-        modal.innerHTML = `
-            <div style="
-                background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
-                padding: 2rem;
-                border-radius: 12px;
-                border: 2px solid rgba(255, 200, 100, 0.6);
-                box-shadow: 0 0 30px rgba(255, 200, 100, 0.4);
-                text-align: center;
-                max-width: 450px;
-                width: 90%;
-            ">
-                <h3 style="
-                    color: #ffffff;
-                    margin-bottom: 1rem;
-                    font-family: 'Bebas Neue', Arial, sans-serif;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                ">🔐 First Time Setup</h3>
-                
-                <p style="
-                    color: rgba(255, 255, 255, 0.8);
-                    margin-bottom: 1.5rem;
-                    font-size: 0.9rem;
-                    line-height: 1.4;
-                ">Set your admin password for this website.<br>
-                <strong>Choose something secure!</strong></p>
-                
-                <input type="password" class="setup-password-input" style="
-                    width: 100%;
-                    padding: 0.75rem;
-                    border: 1px solid rgba(255, 200, 100, 0.3);
-                    border-radius: 6px;
-                    background: #1a1a1a;
-                    color: #ffffff;
-                    font-size: 1rem;
-                    margin-bottom: 0.5rem;
-                    box-sizing: border-box;
-                " placeholder="Enter new admin password...">
-                
-                <input type="password" class="setup-confirm-input" style="
-                    width: 100%;
-                    padding: 0.75rem;
-                    border: 1px solid rgba(255, 200, 100, 0.3);
-                    border-radius: 6px;
-                    background: #1a1a1a;
-                    color: #ffffff;
-                    font-size: 1rem;
-                    margin-bottom: 1rem;
-                    box-sizing: border-box;
-                " placeholder="Confirm password...">
-                
-                <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                    <button class="setup-submit-btn" style="
-                        background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
-                        color: #ffffff;
-                        border: none;
-                        padding: 0.75rem 1.5rem;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-weight: 600;
-                        transition: all 0.3s ease;
-                    ">Set Password</button>
-                    
-                    <button class="setup-cancel-btn" style="
-                        background: rgba(255, 255, 255, 0.1);
-                        color: #ffffff;
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        padding: 0.75rem 1.5rem;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                    ">Cancel</button>
-                </div>
-                
-                <div class="setup-error-msg" style="
-                    color: #ff6b6b;
-                    margin-top: 1rem;
-                    font-size: 0.85rem;
-                    display: none;
-                "></div>
-                
-                <div style="
-                    background: rgba(255, 200, 100, 0.1);
-                    border: 1px solid rgba(255, 200, 100, 0.3);
-                    border-radius: 6px;
-                    padding: 0.75rem;
-                    margin-top: 1rem;
-                    font-size: 0.8rem;
-                    color: rgba(255, 255, 255, 0.8);
-                    line-height: 1.3;
-                ">
-                    💡 <strong>Tips:</strong><br>
-                    • Use 8+ characters<br>
-                    • Mix letters, numbers & symbols<br>
-                    • This is stored securely in your browser
-                </div>
-            </div>
-        `;
-
-        this.attachSetupEventListeners(modal);
-        return modal;
-    }
-
-    attachSetupEventListeners(modal) {
-        const passwordInput = modal.querySelector('.setup-password-input');
-        const confirmInput = modal.querySelector('.setup-confirm-input');
-        const submitBtn = modal.querySelector('.setup-submit-btn');
-        const cancelBtn = modal.querySelector('.setup-cancel-btn');
-        const errorMsg = modal.querySelector('.setup-error-msg');
-
-        const attemptSetup = async () => {
-            const password = passwordInput.value;
-            const confirm = confirmInput.value;
-            
-            if (password.length < 8) {
-                this.showError(errorMsg, 'Password must be at least 8 characters long');
-                return;
-            }
-            
-            if (password !== confirm) {
-                this.showError(errorMsg, 'Passwords do not match');
-                return;
-            }
-            
-            try {
-                this.passwordHash = await this.hashPassword(password);
-                localStorage.setItem('admin_password_hash', this.passwordHash);
-                
-                if (modal.parentNode) {
-                    modal.parentNode.removeChild(modal);
-                }
-                this.authenticateAdmin();
-                
-                console.log('🔐 Admin password set successfully');
-            } catch (error) {
-                this.showError(errorMsg, 'Failed to set password. Please try again.');
-                console.error('Password setup error:', error);
-            }
-        };
-
-        if (submitBtn) submitBtn.addEventListener('click', attemptSetup);
-        
-        [passwordInput, confirmInput].forEach(input => {
-            if (input) {
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') attemptSetup();
-                });
-            }
-        });
-
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', () => {
-                if (modal.parentNode) {
-                    modal.parentNode.removeChild(modal);
-                }
-                this.redirectToHome();
+    // Check authentication status with server
+    async verifyServerAuth() {
+        try {
+            const response = await fetch('/api/admin-verify', {
+                method: 'GET',
+                credentials: 'include' // Include cookies
             });
+            
+            if (response.ok) {
+                const data = await response.json();
+                return data.admin === true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.log('🔐 Server auth check failed:', error);
+            return false;
         }
     }
 
     promptForPassword() {
-        // Ensure DOM is ready
         if (!document.body) {
             setTimeout(() => this.promptForPassword(), 100);
             return;
@@ -332,7 +123,7 @@ class AdminProtection {
                     color: rgba(255, 255, 255, 0.8);
                     margin-bottom: 1.5rem;
                     font-size: 0.9rem;
-                ">Enter your admin password:</p>
+                ">Enter admin password:</p>
                 
                 <input type="password" class="admin-password-input" style="
                     width: 100%;
@@ -375,6 +166,20 @@ class AdminProtection {
                     font-size: 0.85rem;
                     display: none;
                 "></div>
+                
+                <div style="
+                    background: rgba(255, 200, 100, 0.1);
+                    border: 1px solid rgba(255, 200, 100, 0.3);
+                    border-radius: 6px;
+                    padding: 0.75rem;
+                    margin-top: 1rem;
+                    font-size: 0.8rem;
+                    color: rgba(255, 255, 255, 0.8);
+                    line-height: 1.3;
+                ">
+                    🔐 <strong>Secure Authentication</strong><br>
+                    Password verified server-side for maximum security
+                </div>
             </div>
         `;
 
@@ -390,24 +195,53 @@ class AdminProtection {
 
         const attemptLogin = async () => {
             const password = passwordInput.value;
-            const isValid = await this.validatePassword(password);
             
-            if (isValid) {
-                this.authenticateAdmin();
-                if (modal.parentNode) {
-                    modal.parentNode.removeChild(modal);
-                }
-            } else {
-                this.logFailedAttempt();
-                this.showError(errorMsg, 'Incorrect password. Access denied.');
-                passwordInput.value = '';
-                passwordInput.style.borderColor = '#ff6b6b';
-                
-                setTimeout(() => {
-                    passwordInput.style.borderColor = 'rgba(255, 200, 100, 0.3)';
-                    errorMsg.style.display = 'none';
-                }, 2000);
+            if (!password) {
+                this.showError(errorMsg, 'Password required');
+                return;
             }
+            
+            // Disable button during request
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying...';
+            
+            try {
+                const response = await fetch('/api/admin-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include', // Include cookies
+                    body: JSON.stringify({ password })
+                });
+                
+                if (response.ok) {
+                    // Success!
+                    this.authenticateAdmin();
+                    if (modal.parentNode) {
+                        modal.parentNode.removeChild(modal);
+                    }
+                } else {
+                    // Failed
+                    const data = await response.json();
+                    this.logFailedAttempt();
+                    this.showError(errorMsg, data.error || 'Authentication failed');
+                    passwordInput.value = '';
+                    passwordInput.style.borderColor = '#ff6b6b';
+                    
+                    setTimeout(() => {
+                        passwordInput.style.borderColor = 'rgba(255, 200, 100, 0.3)';
+                        errorMsg.style.display = 'none';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                this.showError(errorMsg, 'Network error. Please try again.');
+            }
+            
+            // Re-enable button
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enter';
         };
 
         if (submitBtn) submitBtn.addEventListener('click', attemptLogin);
@@ -442,19 +276,6 @@ class AdminProtection {
         }
     }
 
-    async validatePassword(inputPassword) {
-        if (!this.passwordHash) return false;
-        
-        try {
-            const inputHash = await this.hashPassword(inputPassword);
-            return inputHash === this.passwordHash;
-        } catch (error) {
-            console.error('Password validation error:', error);
-            return false;
-        }
-    }
-
-    // Activate admin mode without showing success message (for existing sessions)
     activateAdminModeQuiet() {
         this.isAdminMode = true;
         
@@ -469,9 +290,7 @@ class AdminProtection {
     authenticateAdmin() {
         this.isAdminMode = true;
         
-        localStorage.setItem('admin_authenticated', 'true');
-        localStorage.setItem('admin_timestamp', Date.now().toString());
-        
+        // Enable all admin features
         Object.keys(this.adminFeatures).forEach(feature => {
             this.adminFeatures[feature] = true;
         });
@@ -485,7 +304,6 @@ class AdminProtection {
     }
 
     showSuccessMessage() {
-        // Ensure DOM is ready
         if (!document.body) return;
 
         const successDiv = document.createElement('div');
@@ -514,6 +332,7 @@ class AdminProtection {
     }
 
     logFailedAttempt() {
+        // Client-side logging for rate limiting
         const attempts = parseInt(localStorage.getItem('admin_failed_attempts') || '0') + 1;
         localStorage.setItem('admin_failed_attempts', attempts.toString());
         localStorage.setItem('admin_last_attempt', Date.now().toString());
@@ -565,14 +384,23 @@ class AdminProtection {
         return this.isAdminMode && this.adminFeatures[feature];
     }
 
-    logout() {
+    // Server-side logout
+    async logout() {
+        try {
+            await fetch('/api/admin-logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+        
         this.isAdminMode = false;
         Object.keys(this.adminFeatures).forEach(feature => {
             this.adminFeatures[feature] = false;
         });
         
-        localStorage.removeItem('admin_authenticated');
-        localStorage.removeItem('admin_timestamp');
+        // Clear any local storage
         localStorage.removeItem('spotify_owner_mode');
         
         console.log('🔓 Admin logged out');
@@ -604,7 +432,7 @@ class AdminProtection {
             cursor: pointer;
             user-select: none;
         `;
-        indicator.innerHTML = '🔑 ADMIN MODE';
+        indicator.innerHTML = '🔑 ADMIN MODE (SECURE)';
         indicator.title = 'Click to logout';
         
         indicator.addEventListener('click', () => {
@@ -617,8 +445,8 @@ class AdminProtection {
     }
 }
 
-// Initialize admin protection
-const adminProtection = new AdminProtection();
+// Initialize secure admin protection
+const adminProtection = new SecureAdminProtection();
 window.adminProtection = adminProtection;
 
 // Add admin indicator after everything loads
@@ -630,5 +458,5 @@ window.addEventListener('load', () => {
 
 // Export for modules
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AdminProtection;
+    module.exports = SecureAdminProtection;
 }
