@@ -288,24 +288,64 @@
   h5 { font-size: 1.25rem; }
   h6 { font-size: 1rem; }
   
-  /* === Homepage Banner (Logo + Title + Tagline) - Enhanced with Permanent Golden Glow === */
+  /* === DEEP BLUE STARRY NIGHT BANNER === */
   .homepage-banner {
     padding: 2rem;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    background: 
+      /* Animated stars - multiple layers for depth */
+      radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+      radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+      radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+      radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+      radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+      /* Deep space gradient - very dark blues like reference images */
+      linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+    
+    background-size: 
+      300px 300px,
+      250px 250px,
+      400px 400px,
+      180px 180px,
+      320px 320px,
+      200px 200px,
+      150px 150px,
+      280px 280px,
+      220px 220px,
+      100% 100%;
+    
+    animation: starfield 120s linear infinite;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgba(255, 200, 100, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     margin: 1rem 2rem;
     box-shadow: 
-      0 0 30px rgba(255, 200, 100, 0.4),
-      0 0 60px rgba(255, 180, 80, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 0 40px rgba(10, 15, 28, 0.8),
+      0 0 80px rgba(20, 31, 58, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
   }
   
+  /* Enhanced starfield animation */
+  @keyframes starfield {
+    0% {
+      background-position:
+        0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+    100% {
+      background-position:
+        -300px 0, 250px 0, -400px 0, 180px 0, -320px 0, 
+        200px 0, -150px 0, -280px 0, 220px 0, 0 0;
+    }
+  }
+  
+  /* Milky way effect overlay */
   .homepage-banner::before {
     content: '';
     position: absolute;
@@ -313,19 +353,52 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, transparent 0%, rgba(255, 200, 100, 0.1) 50%, transparent 100%);
-    animation: banner-glow 3s ease-in-out infinite alternate;
+    background: 
+      radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.02) 50%, transparent 60%);
+    animation: milkyway 180s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 1;
   }
   
-  @keyframes banner-glow {
-    0% {
-      opacity: 0.3;
+  @keyframes milkyway {
+    0% { 
+      opacity: 0.2;
+      transform: translateX(-30px) rotate(0deg);
     }
-    100% {
-      opacity: 0.6;
+    100% { 
+      opacity: 0.5;
+      transform: translateX(30px) rotate(2deg);
     }
   }
   
+  /* Twinkling stars overlay */
+  .homepage-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 20% 80%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5), transparent);
+    background-size: 200px 200px, 350px 350px, 180px 180px, 250px 250px, 300px 300px;
+    animation: twinkle 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  @keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; }
+  }
+  
+  /* Ensure banner content is above all overlays */
   .banner-inline {
     display: flex;
     align-items: center;
@@ -333,7 +406,7 @@
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 1;
+    z-index: 3;
   }
   
   .banner-logo {
@@ -564,6 +637,17 @@
     .homepage-banner {
       padding: 1.5rem 1rem;
       margin: 1rem;
+      background-size: 
+        150px 150px,
+        120px 120px,
+        200px 200px,
+        90px 90px,
+        160px 160px,
+        100px 100px,
+        75px 75px,
+        140px 140px,
+        110px 110px,
+        100% 100%;
     }
     
     .banner-inline {
@@ -661,6 +745,17 @@
     .homepage-banner {
       padding: 1rem 0.75rem;
       margin: 0.5rem;
+      background-size: 
+        100px 100px,
+        80px 80px,
+        120px 120px,
+        60px 60px,
+        90px 90px,
+        70px 70px,
+        50px 50px,
+        85px 85px,
+        75px 75px,
+        100% 100%;
     }
     
     /* Typography - mobile optimized */
@@ -895,6 +990,16 @@
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+  
+  .homepage-banner,
+  .homepage-banner::before,
+  .homepage-banner::after {
+    animation: none !important;
+  }
+  
+  .homepage-banner {
+    background: linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 50%, #080b14 100%);
   }
 }
 
@@ -1223,13 +1328,78 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .rain-drop {
-        animation: none !important;
-    }
-    
-    .window-effect,
-    .ambient-light {
-        display: none;
-    }
+/* === TINY PERSISTENT CONTROL BUTTONS === */
+.persistent-controls {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  z-index: 1000;
+}
+
+.control-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}
+
+.control-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.control-button.active {
+  background: rgba(102, 217, 166, 0.7);
+  border-color: rgba(102, 217, 166, 0.6);
+  opacity: 0.9;
+}
+
+.control-button.active:hover {
+  background: rgba(102, 217, 166, 0.9);
+  border-color: rgba(102, 217, 166, 0.8);
+  opacity: 1;
+}
+
+/* Hide the old larger audio toggle */
+.audio-toggle {
+  display: none !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .persistent-controls {
+    bottom: 8px;
+    right: 8px;
+    gap: 3px;
+  }
+  
+  .control-button {
+    width: 22px;
+    height: 22px;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .control-button {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+  }
 }

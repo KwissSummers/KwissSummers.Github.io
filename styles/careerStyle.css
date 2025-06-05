@@ -172,7 +172,7 @@
 }
 
 .career-summary h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -225,7 +225,7 @@
 }
 
 .career-highlights h3 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -255,7 +255,7 @@
 }
 
 .career-timeline h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -415,7 +415,7 @@
 }
 
 .skills-column h3 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -495,7 +495,7 @@
 }
 
 .career-education h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -548,7 +548,7 @@
 }
 
 .education-column h3 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 1.5rem;
@@ -651,7 +651,7 @@
 }
 
 .career-coursework h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #186a3b 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
