@@ -461,34 +461,70 @@ class SpotifyPlayer {
         return data.items;
     }
 
-    async updateDisplay() {
-        try {
-            const tracks = await this.getRecentTracks();
-            
-            if (tracks && tracks.length > 0) {
-                localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
-                await this.renderTracks(tracks);
-                this.cacheTracksPublicly(tracks);
-            } else {
-                this.showNoTracks('admin');
-            }
-        } catch (error) {
-            console.error('🎵 Update failed:', error);
-            this.forceShowCachedTracks();
-        }
-    }
+    // Fixed updateDisplay method for spotify.js
+// Replace your existing updateDisplay method with this:
 
-    async cacheTracksPublicly(tracks) {
-        try {
-            await fetch(`${this.apiBase}/spotify-cache`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tracks })
-            });
-        } catch (error) {
-            // Silently fail - not critical
+async updateDisplay() {
+    try {
+        console.log('🔑 📡 Fetching recent tracks from Spotify...');
+        const tracks = await this.getRecentTracks();
+        
+        if (tracks && tracks.length > 0) {
+            console.log(`🔑 ✅ Got ${tracks.length} tracks from Spotify`);
+            
+            // Cache locally first
+            localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
+            
+            // Render tracks
+            await this.renderTracks(tracks);
+            
+            // CRITICAL: Cache tracks to server for visitors
+            console.log('🔑 💾 Caching tracks to server...');
+            await this.cacheTracksPublicly(tracks);
+            console.log('🔑 ✅ Tracks cached to server successfully');
+            
+        } else {
+            console.log('🔑 📭 No tracks found');
+            this.showNoTracks('admin');
         }
+    } catch (error) {
+        console.error('🔑 ❌ Update failed:', error);
+        this.forceShowCachedTracks();
     }
+}
+
+// Also make sure your cacheTracksPublicly method is correct:
+async cacheTracksPublicly(tracks) {
+    try {
+        console.log('🔑 🌐 Calling cache API with', tracks.length, 'tracks');
+        
+        const response = await fetch(`${this.apiBase}/spotify-cache`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                // Include cookies for admin authentication
+                'credentials': 'include'
+            },
+            credentials: 'include', // Important for admin auth
+            body: JSON.stringify({ tracks })
+        });
+        
+        console.log('🔑 📡 Cache API response:', response.status, response.statusText);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('🔑 ✅ Cache result:', result);
+            return result;
+        } else {
+            const errorText = await response.text();
+            console.error('🔑 ❌ Cache API error:', response.status, errorText);
+            throw new Error(`Cache failed: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('🔑 ❌ Failed to cache tracks publicly:', error);
+        // Don't throw - this shouldn't break the main functionality
+    }
+}
 
     async getAlternativePreview(trackName, artistName) {
         try {
