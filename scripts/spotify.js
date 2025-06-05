@@ -1,4 +1,4 @@
-// spotify.js - Smart routing for both chrissummers.dev and GitHub Pages
+// spotify.js - Fixed to show YOUR music to all visitors
 
 class SpotifyPlayer {
     constructor() {
@@ -6,19 +6,15 @@ class SpotifyPlayer {
         
         // Smart routing for API calls
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            // Local development
             this.apiBase = 'http://localhost:3000/api';
             this.redirectUri = window.location.origin;
         } else if (window.location.hostname === 'chrissummers.dev') {
-            // Main domain - use its own API (Vercel)
             this.apiBase = 'https://chrissummers.dev/api';
             this.redirectUri = 'https://chrissummers.dev';
         } else if (window.location.hostname === 'kwisssummers.github.io') {
-            // GitHub Pages - route to Vercel API since GitHub Pages doesn't support serverless functions
             this.apiBase = 'https://kwiss-summers-github-io-wci4.vercel.app/api';
             this.redirectUri = 'https://kwisssummers.github.io';
         } else {
-            // Fallback for any other domain
             this.apiBase = `${window.location.origin}/api`;
             this.redirectUri = window.location.origin;
         }
@@ -30,61 +26,141 @@ class SpotifyPlayer {
         });
         
         this.scopes = 'user-read-recently-played';
-        this.accessToken = localStorage.getItem('spotify_access_token');
-        this.refreshToken = localStorage.getItem('spotify_refresh_token');
-        this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
+        
+        // ADMIN MODE: Check if this is YOU (the owner) accessing
+        this.isOwner = this.checkIfOwner();
+        
+        if (this.isOwner) {
+            // Owner mode: normal authentication
+            this.accessToken = localStorage.getItem('spotify_access_token');
+            this.refreshToken = localStorage.getItem('spotify_refresh_token');
+            this.tokenExpiry = localStorage.getItem('spotify_token_expiry');
+        } else {
+            // Visitor mode: no authentication needed
+            this.accessToken = null;
+            this.refreshToken = null;
+            this.tokenExpiry = null;
+        }
+        
         this.currentAudio = null;
         this.updateInterval = null;
         this.tokenCheckInterval = null;
     }
 
+    // Check if current user is the website owner
+    checkIfOwner() {
+        // Simple check - you can add a password or special URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const isAdmin = urlParams.has('admin') || 
+                       localStorage.getItem('spotify_owner_mode') === 'true' ||
+                       window.location.hostname === 'localhost'; // Auto-admin on localhost
+        
+        if (isAdmin) {
+            localStorage.setItem('spotify_owner_mode', 'true');
+            console.log('🔑 Owner mode activated');
+        }
+        
+        return isAdmin;
+    }
+
     init() {
         console.log('Initializing Spotify Player...');
         
-        if (this.accessToken && this.isTokenValid()) {
-            console.log('Valid token found, starting updates');
-            this.startUpdating();
-            this.startTokenMonitoring();
-        } else if (this.refreshToken && !this.isTokenValid()) {
-            console.log('Token expired, attempting refresh');
-            this.attemptTokenRefresh();
-        } else if (this.hasAuthCode()) {
-            console.log('Auth code found, handling callback');
-            this.handleAuthCallback();
+        if (this.isOwner) {
+            // OWNER MODE: Handle authentication
+            if (this.accessToken && this.isTokenValid()) {
+                console.log('Valid owner token found, starting updates');
+                this.startUpdating();
+                this.startTokenMonitoring();
+            } else if (this.refreshToken && !this.isTokenValid()) {
+                console.log('Owner token expired, attempting refresh');
+                this.attemptTokenRefresh();
+            } else if (this.hasAuthCode()) {
+                console.log('Owner auth code found, handling callback');
+                this.handleAuthCallback();
+            } else {
+                console.log('Owner needs to authenticate');
+                this.showOwnerAuthButton();
+            }
         } else {
-            console.log('No valid auth, showing connect button');
-            this.showConnectButton();
+            // VISITOR MODE: Just try to load your cached music
+            console.log('Visitor mode - loading cached tracks');
+            this.showCachedTracks();
+            
+            // Try to fetch fresh data without authentication
+            this.fetchPublicTracks();
         }
     }
 
+    // NEW: Show admin authentication button only for owner
+    showOwnerAuthButton() {
+        const container = document.getElementById('spotify-widget');
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="spotify-connect">
+                <h3>🎵 Owner Setup</h3>
+                <p>Authenticate your Spotify to share your music with visitors!</p>
+                <button onclick="spotifyPlayer.authenticate()" class="spotify-btn">
+                    Setup Spotify (Owner Only)
+                </button>
+            </div>
+        `;
+    }
+
+    // NEW: Try to fetch public/cached tracks for visitors
+    async fetchPublicTracks() {
+        try {
+            // Try to fetch from your API endpoint that serves cached data
+            const response = await fetch(`${this.apiBase}/spotify-public`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.tracks && data.tracks.length > 0) {
+                    console.log('Loaded public tracks for visitor');
+                    await this.renderTracks(data.tracks, false);
+                    return;
+                }
+            }
+        } catch (error) {
+            console.log('No public tracks available:', error);
+        }
+        
+        // Fallback to any cached tracks in localStorage
+        this.showCachedTracks();
+    }
+
     startTokenMonitoring() {
+        if (!this.isOwner) return; // Only monitor tokens for owner
+        
         this.tokenCheckInterval = setInterval(() => {
             if (!this.isTokenValid()) {
-                console.log('Token expired, attempting refresh');
+                console.log('Owner token expired, attempting refresh');
                 this.attemptTokenRefresh();
             }
         }, 5 * 60 * 1000);
     }
 
     async attemptTokenRefresh() {
-        if (!this.refreshToken) {
-            console.log('No refresh token available');
-            this.showConnectButton();
+        if (!this.isOwner || !this.refreshToken) {
+            console.log('No refresh token available for owner');
+            this.showOwnerAuthButton();
             return;
         }
 
         try {
             await this.refreshAccessToken();
-            console.log('Token refreshed successfully');
+            console.log('Owner token refreshed successfully');
             this.startUpdating();
         } catch (error) {
-            console.error('Failed to refresh token:', error);
+            console.error('Failed to refresh owner token:', error);
             this.clearTokens();
-            this.showConnectButton();
+            this.showOwnerAuthButton();
         }
     }
 
     clearTokens() {
+        if (!this.isOwner) return; // Only clear owner tokens
+        
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_refresh_token');
         localStorage.removeItem('spotify_token_expiry');
@@ -104,24 +180,6 @@ class SpotifyPlayer {
         return Date.now() < (parseInt(this.tokenExpiry) - bufferTime);
     }
 
-    showConnectButton() {
-        const container = document.getElementById('spotify-widget');
-        if (!container) return;
-
-        this.stopUpdating();
-        this.stopTokenMonitoring();
-
-        container.innerHTML = `
-            <div class="spotify-connect">
-                <h3>🎵 Currently Playing</h3>
-                <p>Connect your Spotify to see your recent tracks!</p>
-                <button onclick="spotifyPlayer.authenticate()" class="spotify-btn">
-                    Connect Spotify
-                </button>
-            </div>
-        `;
-    }
-
     stopTokenMonitoring() {
         if (this.tokenCheckInterval) {
             clearInterval(this.tokenCheckInterval);
@@ -130,6 +188,11 @@ class SpotifyPlayer {
     }
 
     authenticate() {
+        if (!this.isOwner) {
+            console.log('Only owner can authenticate');
+            return;
+        }
+        
         const authUrl = new URL('https://accounts.spotify.com/authorize');
         const params = {
             client_id: this.clientId,
@@ -143,38 +206,41 @@ class SpotifyPlayer {
             authUrl.searchParams.append(key, params[key])
         );
 
-        console.log('Redirecting to Spotify auth with:', params);
+        console.log('Redirecting owner to Spotify auth');
         window.location.href = authUrl.toString();
     }
 
     async handleAuthCallback() {
+        if (!this.isOwner) return;
+        
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const error = urlParams.get('error');
 
         if (error) {
             console.error('Spotify auth error:', error);
-            this.showConnectButton();
+            this.showOwnerAuthButton();
             return;
         }
 
         if (code) {
             try {
-                console.log('Handling auth callback with code:', code.substring(0, 10) + '...');
+                console.log('Handling owner auth callback');
                 await this.getAccessToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 this.startUpdating();
                 this.startTokenMonitoring();
             } catch (error) {
                 console.error('Failed to get access token:', error);
-                this.showConnectButton();
+                this.showOwnerAuthButton();
             }
         }
     }
 
-    // Use Vercel serverless function for token exchange
     async getAccessToken(code) {
-        console.log('Exchanging code for token via API:', this.apiBase);
+        if (!this.isOwner) return;
+        
+        console.log('Exchanging owner code for token via API:', this.apiBase);
         
         const response = await fetch(`${this.apiBase}/spotify-token`, {
             method: 'POST',
@@ -203,14 +269,13 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_refresh_token', this.refreshToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Tokens stored successfully. Expires in:', data.expires_in, 'seconds');
+        console.log('Owner tokens stored successfully');
     }
 
-    // Use Vercel serverless function for token refresh
     async refreshAccessToken() {
-        if (!this.refreshToken) throw new Error('No refresh token');
+        if (!this.isOwner || !this.refreshToken) throw new Error('No refresh token');
 
-        console.log('Refreshing access token via API:', this.apiBase);
+        console.log('Refreshing owner access token via API:', this.apiBase);
 
         const response = await fetch(`${this.apiBase}/spotify-refresh`, {
             method: 'POST',
@@ -241,11 +306,11 @@ class SpotifyPlayer {
         localStorage.setItem('spotify_access_token', this.accessToken);
         localStorage.setItem('spotify_token_expiry', this.tokenExpiry.toString());
         
-        console.log('Token refreshed successfully');
+        console.log('Owner token refreshed successfully');
     }
 
     async getRecentTracks() {
-        if (!this.accessToken) throw new Error('No access token');
+        if (!this.isOwner || !this.accessToken) throw new Error('No access token for owner');
 
         const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
             headers: { 'Authorization': `Bearer ${this.accessToken}` }
@@ -262,7 +327,7 @@ class SpotifyPlayer {
         }
 
         const data = await response.json();
-        console.log('Retrieved', data.items.length, 'recent tracks');
+        console.log('Retrieved', data.items.length, 'recent tracks for owner');
         return data.items;
     }
 
@@ -286,12 +351,22 @@ class SpotifyPlayer {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
+        if (!this.isOwner) {
+            // Visitors just see cached/public tracks
+            this.fetchPublicTracks();
+            return;
+        }
+
         try {
             const tracks = await this.getRecentTracks();
             
             if (tracks && tracks.length > 0) {
+                // Cache tracks for visitors
                 localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
                 await this.renderTracks(tracks);
+                
+                // OPTIONAL: Send to your API to cache publicly
+                this.cacheTracksPublicly(tracks);
             } else {
                 this.showNoTracks();
             }
@@ -301,12 +376,26 @@ class SpotifyPlayer {
         }
     }
 
+    // NEW: Cache tracks publicly for visitors
+    async cacheTracksPublicly(tracks) {
+        try {
+            await fetch(`${this.apiBase}/spotify-cache`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tracks })
+            });
+            console.log('Tracks cached publicly for visitors');
+        } catch (error) {
+            console.log('Could not cache tracks publicly:', error);
+        }
+    }
+
     showCachedTracks() {
         const cachedTracks = localStorage.getItem('spotify_cached_tracks');
         if (cachedTracks) {
             try {
                 const tracks = JSON.parse(cachedTracks);
-                console.log('Showing cached tracks');
+                console.log('Showing cached tracks to visitor');
                 this.renderTracks(tracks, true);
             } catch (error) {
                 this.showNoTracks();
@@ -320,6 +409,10 @@ class SpotifyPlayer {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
+        const message = this.isOwner ? 
+            'No recent tracks found. Play some music on Spotify!' :
+            'No music data available yet. Check back soon!';
+
         container.innerHTML = `
             <div class="spotify-tracks">
                 <h3>🎵 Recently Played</h3>
@@ -329,7 +422,7 @@ class SpotifyPlayer {
                     </div>
                     <div class="track-info">
                         <div class="track-title">No recent tracks</div>
-                        <div class="track-artist">Play some music on Spotify!</div>
+                        <div class="track-artist">${message}</div>
                     </div>
                 </div>
             </div>
@@ -340,12 +433,15 @@ class SpotifyPlayer {
         const container = document.getElementById('spotify-widget');
         if (!container) return;
 
+        const statusText = this.isOwner ? 
+            (isCached ? ' (Cached)' : '') : 
+            " (Chris's Music)";
+
         const tracksHtml = await Promise.all(tracks.map(async (item, index) => {
             const track = item.track;
             const artwork = track.album.images[0]?.url || '';
             let previewUrl = track.preview_url;
             
-            // Try to get alternative preview if Spotify doesn't provide one
             if (!previewUrl) {
                 previewUrl = await this.getAlternativePreview(track.name, track.artists[0].name);
             }
@@ -381,19 +477,17 @@ class SpotifyPlayer {
 
         container.innerHTML = `
             <div class="spotify-tracks">
-                <h3>🎵 Recently Played ${isCached ? '(Cached)' : ''}</h3>
+                <h3>🎵 Recently Played${statusText}</h3>
                 ${tracksHtml.join('')}
             </div>
         `;
     }
 
     togglePreview(previewUrl, button, trackIndex) {
-        // Stop current audio if playing
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
             document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
             
-            // If clicking same track, just stop
             if (this.currentAudio.src === previewUrl) {
                 this.currentAudio = null;
                 this.clearProgress(trackIndex);
@@ -401,7 +495,6 @@ class SpotifyPlayer {
             }
         }
 
-        // Start new audio
         this.currentAudio = new Audio(previewUrl);
         this.currentAudio.volume = 0.5;
         
@@ -456,6 +549,8 @@ class SpotifyPlayer {
     }
 
     startUpdating() {
+        if (!this.isOwner) return; // Only owner updates actively
+        
         this.updateDisplay();
         this.updateInterval = setInterval(() => {
             this.updateDisplay();
