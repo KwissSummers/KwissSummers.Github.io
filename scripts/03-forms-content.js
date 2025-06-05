@@ -158,6 +158,8 @@ function initBlogFiltering() {
 }
 
 // === HOMEPAGE CONTENT LOADING ===
+// Fixed version for 03-forms-content.js - fetchRecentDevLogs function
+
 function fetchRecentDevLogs() {
     const cacheBuster = `?cb=${Date.now()}&r=${Math.random()}`;
     
@@ -191,7 +193,8 @@ function fetchRecentDevLogs() {
         }
 
         const postsArray = Array.from(posts);
-        const latestPosts = postsArray.slice(-3).reverse();
+        // FIX: Since posts are already in newest-first order, just take the first 3
+        const latestPosts = postsArray.slice(0, 3); // Take first 3 (newest)
         
         latestPosts.forEach((post) => {
             const id = post.id || '';
