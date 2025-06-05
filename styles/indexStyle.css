@@ -16,13 +16,37 @@
   margin-bottom: 1rem;
 }
 
-/* Homepage Logo Section - Left side of intro */
+/* Homepage Logo Section - Left side of intro with STARRY NIGHT BACKGROUND */
 .homepage-logo {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   border-radius: 12px;
   padding: 1rem;
   transition: all 0.4s ease;
@@ -30,6 +54,20 @@
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes starfield {
+  0% {
+    background-position:
+      0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position:
+      -150px 0, 125px 0, -200px 0, 90px 0, -160px 0, 
+      100px 0, -75px 0, -140px 0, 110px 0, 0 0;
+  }
 }
 
 .homepage-logo:hover {
@@ -47,6 +85,8 @@
   max-height: 210px;
   height: auto;
   border-radius: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Homepage Description Section - Right side of intro */
@@ -109,6 +149,7 @@
 .homepage-content {
   display: flex;
   gap: 2rem;
+  align-items: flex-end; /* Align items to the bottom so Spotify aligns with bottom devlog */
 }
 
 /* Homepage Posts Section - Left side of content */
@@ -202,9 +243,9 @@
   z-index: 1;
 }
 
-/* === ENHANCED SPOTIFY WIDGET STYLES === */
+/* === FIXED SPOTIFY WIDGET STYLES === */
 
-/* Main Spotify Container - Enhanced with better proportions */
+/* Main Spotify Container - FIXED HEIGHT TO FIT EXACTLY 3 TRACKS */
 .homepage-sidepanel {
   flex: 1;
   background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
@@ -212,8 +253,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Changed from center for better track layout */
-  text-align: left; /* Changed from center for better track layout */
+  justify-content: flex-start;
+  text-align: left;
   font-size: 0.9rem;
   line-height: 1.4;
   border-radius: 12px;
@@ -224,7 +265,11 @@
     0 0 40px rgba(29, 185, 84, 0.1),
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  min-height: 300px; /* Ensure consistent height */
+  /* FIXED: Exact height to fit 3 tracks + header */
+  height: 340px; /* Fixed height instead of min-height */
+  max-height: 340px; /* Ensure it doesn't grow */
+  overflow: hidden; /* Prevent overflow */
+  align-self: flex-end; /* Align to bottom of container */
 }
 
 .homepage-sidepanel:hover {
@@ -247,6 +292,7 @@
   width: 100%;
   border-bottom: 1px solid rgba(29, 185, 84, 0.3);
   padding-bottom: 0.5rem;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 /* Spotify Connect Section - Better styling */
@@ -254,6 +300,10 @@
   text-align: center;
   padding: 1rem;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .spotify-connect p {
@@ -285,13 +335,29 @@
   background: linear-gradient(135deg, #1ed760 0%, #21e065 100%);
 }
 
-/* Individual Track Items - Completely redesigned for better layout */
+/* FIXED: Spotify tracks container with proper scrolling */
+.spotify-tracks {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.spotify-tracks-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 260px; /* Height for exactly 3 tracks */
+}
+
+/* Individual Track Items - Optimized for 3-track layout */
 .track-item {
   display: flex;
   gap: 0.75rem;
-  margin-bottom: 0.75rem; /* Reduced from 1rem */
-  padding: 0.75rem;
-  background: rgba(29, 185, 84, 0.08); /* Slightly more visible background */
+  margin-bottom: 0.5rem; /* Reduced spacing */
+  padding: 0.6rem; /* Slightly reduced padding */
+  background: rgba(29, 185, 84, 0.08);
   border-radius: 8px;
   transition: all 0.3s ease;
   border: 1px solid rgba(29, 185, 84, 0.2);
@@ -321,10 +387,10 @@
   border-color: rgba(29, 185, 84, 0.6);
 }
 
-/* Track Artwork - Optimized size and styling */
+/* Track Artwork - Optimized size */
 .track-artwork {
-  width: 50px; /* Reduced from 60px for better proportions */
-  height: 50px;
+  width: 45px; /* Slightly smaller for 3-track layout */
+  height: 45px;
   border-radius: 6px;
   overflow: hidden;
   flex-shrink: 0;
@@ -346,7 +412,7 @@
   object-fit: cover;
 }
 
-/* Spotify overlay icon - Better positioning */
+/* Spotify overlay icon */
 .spotify-overlay {
   position: absolute;
   top: 2px;
@@ -364,7 +430,7 @@
   opacity: 1;
 }
 
-/* No artwork placeholder - Enhanced styling */
+/* No artwork placeholder */
 .no-artwork {
   width: 100%;
   height: 100%;
@@ -377,7 +443,7 @@
   font-weight: bold;
 }
 
-/* Track Information - Improved typography and spacing */
+/* Track Information - Compact for 3-track layout */
 .track-info {
   flex: 1;
   display: flex;
@@ -389,44 +455,44 @@
 .track-title {
   font-weight: 600;
   color: #ffffff;
-  font-size: 0.85rem; /* Slightly smaller for better fit */
+  font-size: 0.8rem; /* Smaller for compact layout */
   line-height: 1.2;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .track-artist {
-  color: rgba(29, 185, 84, 0.9); /* More green tint to match theme */
-  font-size: 0.75rem; /* Slightly smaller */
+  color: rgba(29, 185, 84, 0.9);
+  font-size: 0.7rem; /* Smaller for compact layout */
   line-height: 1.2;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Track Controls - Refined and more compact */
+/* Track Controls - Compact */
 .track-controls {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: center;
-  margin-top: 0.25rem; /* Reduced margin */
+  margin-top: 0.2rem;
 }
 
 .play-btn {
   background: #1db954;
   color: #ffffff;
   border: none;
-  width: 24px; /* Slightly smaller */
-  height: 24px;
+  width: 22px; /* Smaller for compact layout */
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
@@ -437,10 +503,10 @@
   box-shadow: 0 2px 8px rgba(29, 185, 84, 0.4);
 }
 
-/* Progress bar - More refined */
+/* Progress bar - Compact */
 .progress-container {
   flex: 1;
-  height: 3px; /* Slightly thinner */
+  height: 2px; /* Thinner for compact layout */
   background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
   overflow: hidden;
@@ -455,29 +521,33 @@
   border-radius: 2px;
 }
 
-/* Time display - Better number alignment */
+/* Time display - Compact */
 .time-display {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.7);
-  min-width: 30px;
+  min-width: 25px;
   text-align: right;
-  font-variant-numeric: tabular-nums; /* Better number alignment */
+  font-variant-numeric: tabular-nums;
 }
 
-/* No preview message - Better styling */
+/* No preview message */
 .no-preview {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.5);
   font-style: italic;
   text-align: center;
   flex: 1;
 }
 
-/* Loading State - Enhanced */
+/* Loading State */
 .spotify-loading {
   text-align: center;
   padding: 1rem;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .spotify-loading h3 {
@@ -533,28 +603,32 @@
   }
   
   /* Spotify widget adjustments for tablet */
+  .homepage-sidepanel {
+    height: 320px; /* Slightly smaller for tablet */
+  }
+  
   .track-item {
     padding: 0.5rem;
     gap: 0.5rem;
   }
   
   .track-artwork {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
   
   .track-title {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .track-artist {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .play-btn {
-    width: 22px;
-    height: 22px;
-    font-size: 0.6rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.55rem;
   }
 }
 
@@ -591,13 +665,17 @@
   }
   
   /* Mobile Spotify widget optimizations */
+  .homepage-sidepanel {
+    height: 300px; /* Smaller for mobile */
+  }
+  
   .track-item {
     padding: 0.4rem;
   }
   
   .track-artwork {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
   }
   
   .track-controls {
@@ -605,21 +683,21 @@
   }
   
   .play-btn {
-    width: 20px;
-    height: 20px;
-    font-size: 0.55rem;
+    width: 18px;
+    height: 18px;
+    font-size: 0.5rem;
   }
   
   .track-title {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .track-artist {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
   
   .time-display {
-    font-size: 0.65rem;
-    min-width: 25px;
+    font-size: 0.6rem;
+    min-width: 20px;
   }
 }

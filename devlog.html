@@ -2,20 +2,33 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChrisSummer's website | Dev Log</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChrisSummer's website | Dev Log</title>
 
-  <link rel="stylesheet" href="styles/universalStyle.css" />
-  <link rel="stylesheet" href="styles/devlogStyle.css" />
+    <!-- Core CSS files in order -->
+    <link rel="stylesheet" href="styles/01-base-reset.css">
+    <link rel="stylesheet" href="styles/02-navigation-tabs.css">
+    <link rel="stylesheet" href="styles/03-banner-starfield.css">
+    <link rel="stylesheet" href="styles/04-container-layout.css">
+    <link rel="stylesheet" href="styles/05-firefly-ambient-effects.css">
+    <link rel="stylesheet" href="styles/06-persistent-controls-transitions.css">
+    <link rel="stylesheet" href="styles/07-responsive-design.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="styles/devlogStyle.css">
+    
+    <!-- Essential scripts -->
+    <script src="scripts/HTMLInclude.min.js"></script>
+    <script src="scripts/01-core-init.js"></script>
+    <script src="scripts/02-audio-firefly.js"></script>
+    <script src="scripts/03-forms-content.js"></script>
+    <script src="scripts/04-main-init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script src="scripts/HTMLInclude.min.js"></script>
-  <script src="scripts/script.js" defer></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -31,7 +44,7 @@
       <!-- Banner -->
       <section class="homepage-banner">
         <div class="banner-inline">
-          <img src="images/artMe.jpg" alt="Ohm Desai Mascot Logo" class="banner-logo">
+          <img src="images/artMe.jpg" alt="Chris Li Logo" class="banner-logo">
           <div class="banner-text">
             <div class="homepage-title">Dev Log</div>
             <div class="homepage-tagline">Updates & Plans</div>
@@ -46,132 +59,8 @@
       <section class="devlog-layout">
         <!-- Dev Log Posts -->
         <div class="devlog-posts">
-          <!-- Add your dev log entries here using this template:
           
-          <article class="devlog-post" id="your-project-name">
-            <h2>Development Log – Your Project Name</h2>
-            <p class="devlog-date">Posted: Date</p>
-            
-            <p class="devlog-excerpt">
-              Brief overview of your project and current development status. This should be a compelling 
-              summary that makes people want to read more about your progress.
-            </p>
-            
-            <button class="devlog-toggle">Read More</button>
-            
-            <div class="devlog-full" hidden>
-              <h4>Completed:</h4>
-              <ul>
-                <li>Feature or milestone you've completed</li>
-                <li>Another completed item</li>
-                <li>Technical achievement or implementation</li>
-              </ul>
-              
-              <h4>Challenges:</h4>
-              <ul>
-                <li>Technical challenge you're facing</li>
-                <li>Design decision you're working through</li>
-                <li>Performance or implementation issue</li>
-              </ul>
-              
-              <h4>Next Steps:</h4>
-              <ul>
-                <li>Immediate next feature to implement</li>
-                <li>Upcoming milestone or goal</li>
-                <li>Technical improvement or optimization</li>
-              </ul>
-              
-              <h4>Screenshots/Media:</h4>
-              <p>
-                Add descriptions of progress, screenshots, or links to demos here.
-              </p>
-            </div>
-          </article>
-          
-          -->
-          
-          <!-- Example devlog entry - delete this when you add your own -->
-          <article class="devlog-post" id="example-project">
-            <h2>Development Log 1 – This Website</h2>
-            <p class="devlog-date">Posted: May 24th, 2025</p>
-            
-            <p class="devlog-excerpt">
-              First project post college: This Website!
-            </p>
-            
-            <button class="devlog-toggle">Read More</button>
-            
-            <div class="devlog-full" hidden>
-              <h4>Getting Started with Dev Logs</h4>
-              <p>
-                So I've never really done a dev log before in my own capacity, I've done a lot of 
-                projects in school and I'm pretty good at documenting my work and writing reports. 
-                Althought now that I'm doing it on my own, it feels a little different. Anyways, I guess
-                working on this website and getting it set up would probably qualify it for a dev log post.
-                So yeah, yippie.
-              </p>
-              
-              <h4>Whats happening right now?</h4>
-              <p>
-                The code for this website was originally written for a client project I did in college for 
-                web development class. While game dev was my main focus, I had to take classes like web development, and 
-                machine learning, as well as SQL and database management and more. I'm straying off topic, but as I 
-                write this post, I'm still in the process of coding this website and converting the content and code to 
-                be more personal and less client based. 
-              </p>
-              
-              <h4>Thoughts for improvement and Things I wanna do</h4>
-              <p>
-                Right now I'm writing this post in the actual devlog.html file. But I know that in forum websites 
-                like reddit, they have a system where you can make posts and leave comments and stuff on the actual website. 
-                I don't know how to do that yet, but it's something I'll likely have to consider if I keep doing these 
-                posts. Having a comment section would be a good way to get feedback, and more importantly a on-site way 
-                to make posts may make creating these posts significantly easier than writing them in the actual code.
-              </p>
-            </div>
-          </article>
-
-          <article class="devlog-post" id="example-project">
-            <h2>Development Log 2 – This Website</h2>
-            <p class="devlog-date">Posted: May 28th, 2025</p>
-            
-            <p class="devlog-excerpt">
-              Styling the website
-            </p>
-            
-            <button class="devlog-toggle">Read More</button>
-            
-            <div class="devlog-full" hidden>
-              <h4>Adding Scripts!</h4>
-              <p>
-                I'm technically still not done getting the website set up yet, but I thought it would be fun 
-                to add some more scripts and personalize the website a bit more. I'm trying to add a spotify widget 
-                to the website that shows my last played song(s). If possible I'd like there to be a play button 
-                that shows the 30 second sample of the song, I've seen it before on lyric websites.
-              </p>
-              
-              <h4>What am I working on right now?</h4>
-              <p>
-                As of now I still dont have my career page set up yet, I want to have it all nice and neat.
-                Also I added my about page and I changed the styling a little from the prior version, I'm trying 
-                to have it look like the way steam profiles are set up, with the banner at the top and the
-                profile picture on the left side. I also did a bunch of bugfixes for the blog page and added the 
-                tag filtering system.
-              </p>
-              
-              <h4>Thoughts for improvement and Things I wanna do</h4>
-              <p>
-                Right now I feel like the background of my website is a little bland, I want a more personalized 
-                background and I think it would be so cool to have more animated elements on the page. Dimden's site 
-                has animated rain particles and thunder sounds, I love that vibe a lot. I think it's brilliant. 
-                Other than that, I'm considering changing the color scheme of the site. The current color was what my 
-                client wanted which was a dark gray for simplicity. But I feel like I can make it cozier, so we'll see 
-                if anything changes on that front.
-              </p>
-            </div>
-          </article>
-
-          <article class="devlog-post" id="example-project">
+          <article class="devlog-post" id="website-devlog-3" data-category="website" data-tags="styling,development">
             <h2>Development Log 3 – This Website</h2>
             <p class="devlog-date">Posted: June 3rd, 2025</p>
             
@@ -216,37 +105,112 @@
               </p>
             </div>
           </article>
+
+          <article class="devlog-post" id="website-devlog-2" data-category="website" data-tags="styling,planning">
+            <h2>Development Log 2 – This Website</h2>
+            <p class="devlog-date">Posted: May 28th, 2025</p>
+            
+            <p class="devlog-excerpt">
+              Styling the website
+            </p>
+            
+            <button class="devlog-toggle">Read More</button>
+            
+            <div class="devlog-full" hidden>
+              <h4>Adding Scripts!</h4>
+              <p>
+                I'm technically still not done getting the website set up yet, but I thought it would be fun 
+                to add some more scripts and personalize the website a bit more. I'm trying to add a spotify widget 
+                to the website that shows my last played song(s). If possible I'd like there to be a play button 
+                that shows the 30 second sample of the song, I've seen it before on lyric websites.
+              </p>
+              
+              <h4>What am I working on right now?</h4>
+              <p>
+                As of now I still dont have my career page set up yet, I want to have it all nice and neat.
+                Also I added my about page and I changed the styling a little from the prior version, I'm trying 
+                to have it look like the way steam profiles are set up, with the banner at the top and the
+                profile picture on the left side. I also did a bunch of bugfixes for the blog page and added the 
+                tag filtering system.
+              </p>
+              
+              <h4>Thoughts for improvement and Things I wanna do</h4>
+              <p>
+                Right now I feel like the background of my website is a little bland, I want a more personalized 
+                background and I think it would be so cool to have more animated elements on the page. Dimden's site 
+                has animated rain particles and thunder sounds, I love that vibe a lot. I think it's brilliant. 
+                Other than that, I'm considering changing the color scheme of the site. The current color was what my 
+                client wanted which was a dark gray for simplicity. But I feel like I can make it cozier, so we'll see 
+                if anything changes on that front.
+              </p>
+            </div>
+          </article>
+
+          <article class="devlog-post" id="website-devlog-1" data-category="website" data-tags="introduction,development">
+            <h2>Development Log 1 – This Website</h2>
+            <p class="devlog-date">Posted: May 24th, 2025</p>
+            
+            <p class="devlog-excerpt">
+              First project post college: This Website!
+            </p>
+            
+            <button class="devlog-toggle">Read More</button>
+            
+            <div class="devlog-full" hidden>
+              <h4>Getting Started with Dev Logs</h4>
+              <p>
+                So I've never really done a dev log before in my own capacity, I've done a lot of 
+                projects in school and I'm pretty good at documenting my work and writing reports. 
+                Althought now that I'm doing it on my own, it feels a little different. Anyways, I guess
+                working on this website and getting it set up would probably qualify it for a dev log post.
+                So yeah, yippie.
+              </p>
+              
+              <h4>Whats happening right now?</h4>
+              <p>
+                The code for this website was originally written for a client project I did in college for 
+                web development class. While game dev was my main focus, I had to take classes like web development, and 
+                machine learning, as well as SQL and database management and more. I'm straying off topic, but as I 
+                write this post, I'm still in the process of coding this website and converting the content and code to 
+                be more personal and less client based. 
+              </p>
+              
+              <h4>Thoughts for improvement and Things I wanna do</h4>
+              <p>
+                Right now I'm writing this post in the actual devlog.html file. But I know that in forum websites 
+                like reddit, they have a system where you can make posts and leave comments and stuff on the actual website. 
+                I don't know how to do that yet, but it's something I'll likely have to consider if I keep doing these 
+                posts. Having a comment section would be a good way to get feedback, and more importantly a on-site way 
+                to make posts may make creating these posts significantly easier than writing them in the actual code.
+              </p>
+            </div>
+          </article>
         </div>
 
         <!-- Sidebar -->
         <aside class="devlog-sidebar">
-          <h3>Jump To</h3>
+          <h3>Filter By</h3>
           <ul>
-            <!-- Update these links when you add new dev log entries -->
-            <li><a href="#example-project">Website Devlog</a></li>
-            <!-- Add more project links here as you create dev logs -->
+            <li><button class="filter-btn active" data-filter="all">Show All</button></li>
+            <li><button class="filter-btn" data-filter="website">Website</button></li>
           </ul>
           
           <h3>Project Status</h3>
-          <ul>
-            <!-- Add your current projects and their status -->
-            <div class="project-status-item">
-            <div class="project-title">This Website</div>
-            <div class="project-status">In Development</div>
+          <div class="project-status-item">
+            <div class="project-info">
+              <div class="project-title">This Website</div>
+              <div class="project-status">In Development</div>
             </div>
-            <!-- Add more projects here -->
-          </ul>
+          </div>
           
           <h3>Tech Used Since Launch</h3>
           <div class="tech-tags">
-            <!-- Add technologies you're currently working with -->
             <span class="tech-tag">JavaScript</span>
             <span class="tech-tag">HTML/CSS</span>
             <span class="tech-tag">React</span>
             <span class="tech-tag">Node.js</span>
             <span class="tech-tag">API Integration</span>
             <span class="tech-tag">Backend Hosting</span>
-            <!-- Add more tech tags based on your projects -->
           </div>
         </aside>
       </section>
@@ -259,6 +223,54 @@
   <!-- Enable dynamic includes -->
   <script>
     HTMLInclude();
+  </script>
+
+  <!-- Devlog Filtering JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const devlogPosts = document.querySelectorAll('.devlog-post');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const filter = this.getAttribute('data-filter');
+          
+          // Update active button
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Filter posts
+          devlogPosts.forEach(post => {
+            const category = post.getAttribute('data-category');
+            const tags = post.getAttribute('data-tags');
+            
+            if (filter === 'all') {
+              post.style.display = 'block';
+              post.classList.remove('hiding');
+              post.classList.add('showing');
+            } else {
+              // Check if post matches category or tags
+              const matchesCategory = category === filter;
+              const matchesTags = tags && tags.split(',').some(tag => tag.trim() === filter);
+              
+              if (matchesCategory || matchesTags) {
+                post.style.display = 'block';
+                post.classList.remove('hiding');
+                post.classList.add('showing');
+              } else {
+                post.classList.add('hiding');
+                post.classList.remove('showing');
+                setTimeout(() => {
+                  if (post.classList.contains('hiding')) {
+                    post.style.display = 'none';
+                  }
+                }, 300);
+              }
+            }
+          });
+        });
+      });
+    });
   </script>
 
 </body>

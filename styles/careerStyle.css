@@ -1,4 +1,4 @@
-/* === Enhanced Career Page Styles with Golden Glow === */
+/* === Enhanced Career Page Styles with Starry Night Banners === */
 
 /* Career Overview Section - Enhanced */
 .career-overview {
@@ -171,8 +171,33 @@
   }
 }
 
+/* STARRY NIGHT BANNER HEADERS */
 .career-summary h2 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -182,6 +207,20 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes starfield {
+  0% {
+    background-position:
+      0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position:
+      -150px 0, 125px 0, -200px 0, 90px 0, -160px 0, 
+      100px 0, -75px 0, -140px 0, 110px 0, 0 0;
+  }
 }
 
 .career-summary p {
@@ -225,7 +264,31 @@
 }
 
 .career-highlights h3 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -235,6 +298,8 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
 }
 
 .career-highlights ul {
@@ -255,7 +320,31 @@
 }
 
 .career-timeline h2 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -270,6 +359,8 @@
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .career-timeline h2:hover {
@@ -362,7 +453,31 @@
 }
 
 .career-skills h2 {
-  background: linear-gradient(135deg, #1e8449 0%, #11a350 100%);
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -377,6 +492,8 @@
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .career-skills h2:hover {
@@ -415,7 +532,31 @@
 }
 
 .skills-column h3 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 2rem;
@@ -425,6 +566,8 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
 }
 
 .skill-category {
@@ -495,7 +638,31 @@
 }
 
 .career-education h2 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -510,6 +677,8 @@
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .career-education h2:hover {
@@ -548,7 +717,31 @@
 }
 
 .education-column h3 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin: -2rem -2rem 1.5rem -2rem;
   padding: 1.25rem 1.5rem;
@@ -558,6 +751,8 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  position: relative;
+  overflow: hidden;
 }
 
 .education-column h3.long-header {
@@ -651,7 +846,31 @@
 }
 
 .career-coursework h2 {
-  background: linear-gradient(135deg, #0f1b2e 0%, #1a2332 100%) !important;
+  background: 
+    /* Animated stars - multiple layers for depth */
+    radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+    radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+    radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+    /* Deep space gradient */
+    linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+  background-size: 
+    150px 150px,
+    125px 125px,
+    200px 200px,
+    90px 90px,
+    160px 160px,
+    100px 100px,
+    75px 75px,
+    140px 140px,
+    110px 110px,
+    100% 100%;
+  animation: starfield 120s linear infinite;
   color: #ffffff;
   margin-bottom: 2rem;
   padding: 1.25rem 2rem;
@@ -666,6 +885,8 @@
     0 8px 25px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .career-coursework h2:hover {

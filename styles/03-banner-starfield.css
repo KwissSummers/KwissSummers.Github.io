@@ -1,0 +1,155 @@
+/* 03-banner-starfield.css - DEEP BLUE STARRY NIGHT BANNER */
+
+/* === DEEP BLUE STARRY NIGHT BANNER === */
+.homepage-banner {
+    padding: 2rem;
+    background: 
+      /* Animated stars - multiple layers for depth */
+      radial-gradient(1px 1px at 15% 25%, #ffffff, transparent),
+      radial-gradient(2px 2px at 85% 15%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 45% 75%, #ffffff, transparent),
+      radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 25% 85%, #ffffff, transparent),
+      radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 5% 5%, #ffffff, transparent),
+      radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5), transparent),
+      /* Deep space gradient - very dark blues like reference images */
+      linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 25%, #0f1419 50%, #141b2d 75%, #080b14 100%);
+    
+    background-size: 
+      300px 300px,
+      250px 250px,
+      400px 400px,
+      180px 180px,
+      320px 320px,
+      200px 200px,
+      150px 150px,
+      280px 280px,
+      220px 220px,
+      100% 100%;
+    
+    animation: starfield 120s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin: 1rem 2rem;
+    box-shadow: 
+      0 0 40px rgba(10, 15, 28, 0.8),
+      0 0 80px rgba(20, 31, 58, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Enhanced starfield animation */
+@keyframes starfield {
+    0% {
+      background-position:
+        0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+    100% {
+      background-position:
+        -300px 0, 250px 0, -400px 0, 180px 0, -320px 0, 
+        200px 0, -150px 0, -280px 0, 220px 0, 0 0;
+    }
+}
+
+/* Milky way effect overlay */
+.homepage-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.02) 50%, transparent 60%);
+    animation: milkyway 180s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes milkyway {
+    0% { 
+      opacity: 0.2;
+      transform: translateX(-30px) rotate(0deg);
+    }
+    100% { 
+      opacity: 0.5;
+      transform: translateX(30px) rotate(2deg);
+    }
+}
+
+/* Twinkling stars overlay */
+.homepage-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 20% 80%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5), transparent);
+    background-size: 200px 200px, 350px 350px, 180px 180px, 250px 250px, 300px 300px;
+    animation: twinkle 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; }
+}
+
+/* Ensure banner content is above all overlays */
+.banner-inline {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+}
+
+.banner-logo {
+    width: 115px;
+    height: 115px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* === Homepage Title and Tagline === */
+.homepage-title {
+    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.homepage-tagline {
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}

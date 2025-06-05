@@ -1,3 +1,5 @@
+/* projectsStyle.css - COMPLETE UPDATED FILE */
+
 /* === Enhanced Projects Gallery - 3D Boxes with Golden Glow === */
 
 /* Projects Gallery Container */
@@ -195,20 +197,56 @@
   padding: 0.6rem 0.8rem;
 }
 
-/* Secondary Button Style */
-.project-button.secondary {
-  background-color: transparent;
-  border: 1px solid #66c0f4;
-  color: #66c0f4;
+/* FIXED: GitHub Button Style - Purple like GitHub Desktop */
+.project-button[href*="github"] {
+  background-color: #6f42c1;
+  border: 1px solid #6f42c1;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.project-button.secondary:hover {
-  background-color: #66c0f4;
-  color: #1a1a1a;
+.project-button[href*="github"]:hover {
+  background-color: #8a63d2;
+  color: #ffffff;
   box-shadow: 
-    0 6px 20px rgba(102, 192, 244, 0.4),
-    0 0 15px rgba(102, 192, 244, 0.2);
+    0 6px 20px rgba(111, 66, 193, 0.4),
+    0 0 15px rgba(111, 66, 193, 0.2);
+}
+
+/* FIXED: Trailer Button Style - Red */
+.project-button[href*="youtube"],
+.project-button[href*="youtu.be"],
+.project-button.secondary {
+  background-color: #e74c3c;
+  border: 1px solid #e74c3c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.project-button[href*="youtube"]:hover,
+.project-button[href*="youtu.be"]:hover,
+.project-button.secondary:hover {
+  background-color: #c0392b;
+  color: #ffffff;
+  box-shadow: 
+    0 6px 20px rgba(231, 76, 60, 0.4),
+    0 0 15px rgba(231, 76, 60, 0.2);
+}
+
+/* FIXED: Itch.io Button Style - Orange/Red (itch.io brand colors) */
+.project-button[href*="itch.io"] {
+  background-color: #fa5c5c;
+  border: 1px solid #fa5c5c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.project-button[href*="itch.io"]:hover {
+  background-color: #ff7675;
+  color: #ffffff;
+  box-shadow: 
+    0 6px 20px rgba(250, 92, 92, 0.4),
+    0 0 15px rgba(250, 92, 92, 0.2);
 }
 
 /* Concept-only Button */
@@ -235,7 +273,7 @@
   display: none !important;
 }
 
-/* Filter/Category Tabs */
+/* FIXED: Filter/Category Tabs with Color Coding */
 .projects-filter {
   display: flex;
   justify-content: center;
@@ -269,13 +307,59 @@
   transform: translateY(-2px);
 }
 
+/* FIXED: Color-coded active filter buttons matching category colors */
 .filter-tab.active {
-  background-color: rgba(255, 200, 100, 0.8);
-  color: #1a1a1a;
-  border-color: rgba(255, 200, 100, 0.8);
+  font-weight: bold;
   box-shadow: 
     0 0 25px rgba(255, 200, 100, 0.5),
     0 0 50px rgba(255, 180, 80, 0.3);
+}
+
+/* All Projects - Golden (default) */
+.filter-tab[data-filter="all"].active {
+  background-color: rgba(255, 200, 100, 0.8);
+  color: #1a1a1a;
+  border-color: rgba(255, 200, 100, 0.8);
+}
+
+/* Game Projects - Red */
+.filter-tab[data-filter="game"].active {
+  background-color: #e74c3c;
+  color: #ffffff;
+  border-color: #e74c3c;
+  box-shadow: 
+    0 0 25px rgba(231, 76, 60, 0.5),
+    0 0 50px rgba(231, 76, 60, 0.3);
+}
+
+/* Web Dev Projects - Blue */
+.filter-tab[data-filter="web"].active {
+  background-color: #3498db;
+  color: #ffffff;
+  border-color: #3498db;
+  box-shadow: 
+    0 0 25px rgba(52, 152, 219, 0.5),
+    0 0 50px rgba(52, 152, 219, 0.3);
+}
+
+/* AI/ML Projects - Orange */
+.filter-tab[data-filter="ai-ml"].active {
+  background-color: #f39c12;
+  color: #ffffff;
+  border-color: #f39c12;
+  box-shadow: 
+    0 0 25px rgba(243, 156, 18, 0.5),
+    0 0 50px rgba(243, 156, 18, 0.3);
+}
+
+/* Design Projects - Purple */
+.filter-tab[data-filter="design"].active {
+  background-color: #9b59b6;
+  color: #ffffff;
+  border-color: #9b59b6;
+  box-shadow: 
+    0 0 25px rgba(155, 89, 182, 0.5),
+    0 0 50px rgba(155, 89, 182, 0.3);
 }
 
 /* Project Categories - Color coding with enhanced glow */

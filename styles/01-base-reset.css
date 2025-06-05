@@ -1,0 +1,98 @@
+/* 01-base-reset.css - Global Reset & Base Styles */
+
+/* === Global Reset & Base Styles === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background: 
+      /* Enhanced wooden panel texture - spaced out by 30% */
+      repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.015) 3px,
+        transparent 6px,
+        rgba(0, 0, 0, 0.04) 9px,
+        transparent 12px,
+        rgba(255, 255, 255, 0.02) 130px,
+        rgba(255, 255, 255, 0.04) 133px,
+        rgba(0, 0, 0, 0.06) 136px,
+        transparent 139px,
+        rgba(255, 255, 255, 0.01) 260px
+      ),
+      /* Spaced out vertical wood grain */
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        rgba(255, 255, 255, 0.015) 1.5px,
+        transparent 3px,
+        rgba(0, 0, 0, 0.02) 4.5px,
+        transparent 6px,
+        rgba(255, 255, 255, 0.008) 7.5px,
+        transparent 9px
+      ),
+      /* Wood panel separators - spaced out */
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 154px,
+        rgba(0, 0, 0, 0.1) 156px,
+        rgba(255, 255, 255, 0) 158px,
+        transparent 161px
+      ),
+      /* Base gradient - lighter for better contrast */
+      linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+      color: #aeaeae;
+      background-attachment: fixed;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Heading Font Styles === */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+h1 { font-size: 4rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+/* === Footer Styling === */
+.site-footer {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+.site-footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.site-footer a:hover {
+    opacity: 1;
+}

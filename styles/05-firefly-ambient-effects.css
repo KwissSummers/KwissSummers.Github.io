@@ -1,0 +1,296 @@
+/* 05-firefly-ambient-effects.css - RAINY CAFE ATMOSPHERE */
+
+/* === RAINY CAFE ATMOSPHERE === */
+
+/* Rain Container - covers the entire viewport */
+.rain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Individual Fireflies - Floating Glowing Particles */
+.rain-drop {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+/* Firefly Animation - Random Floating Movement */
+@keyframes firefly-float {
+    0% {
+        transform: translate(0px, 0px) scale(0.8);
+        opacity: 0.6;
+    }
+    25% {
+        transform: translate(30px, -20px) scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translate(-25px, 15px) scale(1.1);
+        opacity: 1;
+    }
+    75% {
+        transform: translate(20px, -10px) scale(0.9);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-15px, 25px) scale(0.7);
+        opacity: 0.4;
+    }
+}
+
+@keyframes firefly-float-alt {
+    0% {
+        transform: translate(0px, 0px) scale(0.9);
+        opacity: 0.5;
+    }
+    20% {
+        transform: translate(-40px, 30px) scale(1.1);
+        opacity: 0.8;
+    }
+    40% {
+        transform: translate(35px, -25px) scale(1);
+        opacity: 1;
+    }
+    60% {
+        transform: translate(-20px, 40px) scale(0.8);
+        opacity: 0.9;
+    }
+    80% {
+        transform: translate(25px, -15px) scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-30px, -35px) scale(0.6);
+        opacity: 0.3;
+    }
+}
+
+@keyframes firefly-float-circular {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+        opacity: 0.7;
+    }
+    25% {
+        transform: translate(40px, 40px) scale(0.9);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(0px, 80px) scale(1.1);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translate(-40px, 40px) scale(0.8);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(0px, 0px) scale(1);
+        opacity: 0.5;
+    }
+}
+
+/* Sparkle animation for fireflies */
+@keyframes firefly-sparkle {
+    0%, 100% { 
+        box-shadow: 0 0 8px currentColor, 0 0 15px currentColor; 
+        filter: brightness(1);
+    }
+    50% { 
+        box-shadow: 0 0 15px currentColor, 0 0 25px currentColor, 0 0 35px currentColor; 
+        filter: brightness(1.5);
+    }
+}
+
+/* Fizzle out animation */
+@keyframes firefly-fizzle {
+    0% { 
+        opacity: 1; 
+        transform: scale(1); 
+        filter: brightness(1); 
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.2); 
+        filter: brightness(1.5); 
+    }
+    80% { 
+        opacity: 0.3; 
+        transform: scale(0.8); 
+        filter: brightness(0.7); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: scale(0.3); 
+        filter: brightness(0); 
+    }
+}
+
+/* Golden Fireflies */
+.rain-drop.gold {
+    background: radial-gradient(circle, rgba(255, 215, 100, 0.9) 0%, rgba(255, 180, 50, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(255, 215, 100, 0.8),
+        0 0 15px rgba(255, 180, 50, 0.4);
+    animation: firefly-float 8s ease-in-out infinite, firefly-sparkle 2s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1s);
+    color: rgba(255, 215, 100, 0.9);
+}
+
+.rain-drop.gold:hover {
+    transform: scale(1.5) !important;
+    box-shadow: 
+        0 0 15px rgba(255, 215, 100, 1),
+        0 0 25px rgba(255, 180, 50, 0.8),
+        0 0 35px rgba(255, 215, 100, 0.9);
+}
+
+/* Blue Fireflies */
+.rain-drop.blue {
+    background: radial-gradient(circle, rgba(100, 200, 255, 0.9) 0%, rgba(50, 150, 255, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(100, 200, 255, 0.8),
+        0 0 15px rgba(50, 150, 255, 0.4);
+    animation: firefly-float-alt 9s ease-in-out infinite, firefly-sparkle 2.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.5s);
+    color: rgba(100, 200, 255, 0.9);
+}
+
+.rain-drop.blue:hover {
+    transform: scale(1.4) !important;
+    box-shadow: 
+        0 0 12px rgba(100, 200, 255, 1),
+        0 0 20px rgba(50, 150, 255, 0.8);
+}
+
+/* Green Fireflies */
+.rain-drop.green {
+    background: radial-gradient(circle, rgba(100, 255, 150, 0.9) 0%, rgba(50, 200, 100, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(100, 255, 150, 0.8),
+        0 0 15px rgba(50, 200, 100, 0.4);
+    animation: firefly-float-circular 7s ease-in-out infinite, firefly-sparkle 1.8s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.8s);
+    color: rgba(100, 255, 150, 0.9);
+}
+
+.rain-drop.green:hover {
+    transform: scale(1.6) !important;
+    box-shadow: 
+        0 0 18px rgba(100, 255, 150, 1),
+        0 0 30px rgba(50, 200, 100, 0.8);
+}
+
+/* Silver Fireflies */
+.rain-drop.silver {
+    background: radial-gradient(circle, rgba(220, 220, 220, 0.9) 0%, rgba(180, 180, 180, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(220, 220, 220, 0.8),
+        0 0 15px rgba(180, 180, 180, 0.4);
+    animation: firefly-float 8.5s ease-in-out infinite, firefly-sparkle 2.2s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1.2s);
+    color: rgba(220, 220, 220, 0.9);
+}
+
+.rain-drop.silver:hover {
+    transform: scale(1.3) !important;
+    box-shadow: 
+        0 0 12px rgba(220, 220, 220, 1),
+        0 0 22px rgba(180, 180, 180, 0.8);
+}
+
+/* Pink Fireflies */
+.rain-drop.pink {
+    background: radial-gradient(circle, rgba(255, 150, 200, 0.9) 0%, rgba(255, 100, 150, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 8px rgba(255, 150, 200, 0.8),
+        0 0 15px rgba(255, 100, 150, 0.4);
+    animation: firefly-float-alt 7.5s ease-in-out infinite, firefly-sparkle 1.9s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.3s);
+    color: rgba(255, 150, 200, 0.9);
+}
+
+.rain-drop.pink:hover {
+    transform: scale(1.4) !important;
+    box-shadow: 
+        0 0 14px rgba(255, 150, 200, 1),
+        0 0 25px rgba(255, 100, 150, 0.8);
+}
+
+/* Light Rain Drops (less common) */
+.rain-drop.light {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(200, 200, 200, 0.2) 70%, transparent 100%);
+    box-shadow: 
+        0 0 6px rgba(255, 255, 255, 0.5),
+        0 0 12px rgba(200, 200, 200, 0.3);
+    animation: firefly-float-circular 10s ease-in-out infinite, firefly-sparkle 3s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 2s);
+    color: rgba(255, 255, 255, 0.6);
+    width: 2px;
+    height: 2px;
+}
+
+/* Medium Rain Drops (less common) */
+.rain-drop.medium {
+    background: radial-gradient(circle, rgba(200, 220, 255, 0.7) 0%, rgba(150, 180, 220, 0.3) 70%, transparent 100%);
+    box-shadow: 
+        0 0 7px rgba(200, 220, 255, 0.6),
+        0 0 14px rgba(150, 180, 220, 0.4);
+    animation: firefly-float 9.5s ease-in-out infinite, firefly-sparkle 2.7s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1.5s);
+    color: rgba(200, 220, 255, 0.7);
+    width: 3px;
+    height: 3px;
+}
+
+/* Heavy Rain Drops (rare) */
+.rain-drop.heavy {
+    background: radial-gradient(circle, rgba(150, 150, 255, 0.8) 0%, rgba(100, 100, 200, 0.4) 70%, transparent 100%);
+    box-shadow: 
+        0 0 10px rgba(150, 150, 255, 0.7),
+        0 0 20px rgba(100, 100, 200, 0.5);
+    animation: firefly-float-alt 11s ease-in-out infinite, firefly-sparkle 3.5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 2.5s);
+    color: rgba(150, 150, 255, 0.8);
+    width: 5px;
+    height: 5px;
+}
+
+/* Fizzling animation class */
+.firefly-fizzling {
+    animation: firefly-fizzle 0.8s ease-out forwards !important;
+    pointer-events: none;
+}
+
+/* Mobile responsive for fireflies */
+@media (max-width: 768px) {
+    .rain-drop {
+        width: 3px;
+        height: 3px;
+    }
+    
+    .rain-drop.light { 
+        width: 1.5px; 
+        height: 1.5px; 
+    }
+    .rain-drop.medium { 
+        width: 2.5px; 
+        height: 2.5px; 
+    }
+    .rain-drop.heavy { 
+        width: 4px; 
+        height: 4px;
+    }
+}

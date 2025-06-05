@@ -1,0 +1,230 @@
+/* 06-persistent-controls-transitions.css - Persistent Controls and Page Transitions */
+
+/* === TINY PERSISTENT CONTROL BUTTONS === */
+.persistent-controls {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  z-index: 1000;
+}
+
+.control-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}
+
+.control-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.control-button.active {
+  background: rgba(102, 217, 166, 0.7);
+  border-color: rgba(102, 217, 166, 0.6);
+  opacity: 0.9;
+}
+
+.control-button.active:hover {
+  background: rgba(102, 217, 166, 0.9);
+  border-color: rgba(102, 217, 166, 0.8);
+  opacity: 1;
+}
+
+/* Hide the old larger audio toggle */
+.audio-toggle {
+  display: none !important;
+}
+
+/* === TAB TRANSITION ANIMATIONS === */
+
+/* Option 1: Simple Fade Transition */
+.page-transition-fade {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page-transition-fade.page-loaded {
+  opacity: 1;
+}
+
+/* Option 2: Slide In From Right */
+.page-transition-slide {
+  transform: translateX(50px);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.page-transition-slide.page-loaded {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Option 3: Scale + Fade (subtle zoom effect) */
+.page-transition-scale {
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.page-transition-scale.page-loaded {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Option 4: Slide Up From Bottom */
+.page-transition-slide-up {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.page-transition-slide-up.page-loaded {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Option 5: Gaming-Style Glitch Effect (more complex) */
+.page-transition-glitch {
+  opacity: 0;
+  transform: translateX(-10px);
+  filter: blur(2px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-transition-glitch.page-loaded {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+/* Apply to main content container */
+#homepage-main {
+  /* Choose your preferred transition style */
+  /* Example: */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease-out;
+}
+
+#homepage-main.page-loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Loading indicator for page transitions */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 26, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.loading-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Staggered animation for content sections */
+.homepage-banner {
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.main-nav {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.homepage-intro {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.homepage-socials {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.homepage-content {
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .page-transition-fade,
+  .page-transition-slide,
+  .page-transition-scale,
+  .page-transition-slide-up,
+  .page-transition-glitch,
+  #homepage-main {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .homepage-banner,
+  .homepage-banner::before,
+  .homepage-banner::after {
+    animation: none !important;
+  }
+  
+  .homepage-banner {
+    background: linear-gradient(135deg, #0a0f1c 0%, #1a1f3a 50%, #080b14 100%);
+  }
+}
