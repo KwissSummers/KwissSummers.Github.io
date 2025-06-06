@@ -19,7 +19,7 @@ jobs:
           echo "🤖 Triggering autonomous Spotify update..."
           
           # Call your Vercel API endpoint
-          RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+          RESPONSE=$(curl -s -L -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             -d '{"source": "github_actions"}' \
