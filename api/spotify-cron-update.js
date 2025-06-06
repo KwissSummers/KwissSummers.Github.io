@@ -37,14 +37,21 @@ export default async function handler(req, res) {
         console.log('Body received:', !!req.body);
         console.log('Secret received:', !!secret);
 
-        // Check authentication
+        // Check authentication with detailed debugging
+        console.log('CRON_SECRET length:', CRON_SECRET?.length);
+        console.log('Received secret length:', secret?.length);
+        console.log('Secrets match:', secret === CRON_SECRET);
+        
         if (!secret || secret !== CRON_SECRET) {
             return res.status(401).json({ 
                 error: 'Unauthorized - missing credentials',
                 debug: {
                     hasBody: !!req.body,
                     hasSecret: !!secret,
-                    contentType: req.headers['content-type']
+                    contentType: req.headers['content-type'],
+                    secretLength: secret?.length,
+                    cronSecretLength: CRON_SECRET?.length,
+                    secretsMatch: secret === CRON_SECRET
                 }
             });
         }
