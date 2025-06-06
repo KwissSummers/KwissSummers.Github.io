@@ -1,7 +1,6 @@
 // api/spotify-cron-update.js - Autonomous Spotify updates via GitHub Actions
-const jwt = require('jsonwebtoken');
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -28,12 +27,26 @@ module.exports = async function handler(req, res) {
             return res.status(500).json({ error: 'Server configuration incomplete' });
         }
 
-        // Extract credentials from request body
-        const { source, secret } = req.body;
+        // Extract credentials from request body - with fallback for undefined body
+        const body = req.body || {};
+        const { source, secret } = body;
 
-        // Check authentication - FIXED
+        // Debug logging
+        console.log('Request method:', req.method);
+        console.log('Content-Type:', req.headers['content-type']);
+        console.log('Body received:', !!req.body);
+        console.log('Secret received:', !!secret);
+
+        // Check authentication
         if (!secret || secret !== CRON_SECRET) {
-            return res.status(401).json({ error: 'Unauthorized - missing credentials' });
+            return res.status(401).json({ 
+                error: 'Unauthorized - missing credentials',
+                debug: {
+                    hasBody: !!req.body,
+                    hasSecret: !!secret,
+                    contentType: req.headers['content-type']
+                }
+            });
         }
 
         console.log(`🤖 Autonomous update triggered by: ${source || 'unknown'}`);
@@ -144,4 +157,4 @@ module.exports = async function handler(req, res) {
             message: error.message 
         });
     }
-};
+}
