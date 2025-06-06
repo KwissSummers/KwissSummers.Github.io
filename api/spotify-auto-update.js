@@ -1,4 +1,4 @@
-// api/spotify-cache.js - Upstash Redis version (simplest)
+// api/spotify-auto-update.js - Automatic background updates
 const jwt = require('jsonwebtoken');
 
 module.exports = async function handler(req, res) {
@@ -25,10 +25,11 @@ module.exports = async function handler(req, res) {
             return res.status(500).json({ error: 'Server configuration error' });
         }
 
-        // Get token from cookie
-        const cookies = req.headers.cookie;
+        // Get token from cookie OR Authorization header
         let isAdmin = false;
         
+        // Method 1: Check cookies (for browser requests)
+        const cookies = req.headers.cookie;
         if (cookies) {
             const tokenMatch = cookies.match(/admin-token=([^;]+)/);
             if (tokenMatch) {
@@ -42,22 +43,61 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        // Only admin can cache tracks
+        // Method 2: Check Authorization header (for automated calls)
+        if (!isAdmin && req.headers.authorization) {
+            try {
+                const token = req.headers.authorization.replace('Bearer ', '');
+                const decoded = jwt.verify(token, JWT_SECRET);
+                isAdmin = decoded.admin === true;
+            } catch (error) {
+                isAdmin = false;
+            }
+        }
+
+        // Only admin can trigger auto-updates
         if (!isAdmin) {
             return res.status(403).json({ error: 'Admin access required' });
         }
 
-        const { tracks } = req.body;
+        const { access_token, refresh_token } = req.body;
         
-        if (!tracks || !Array.isArray(tracks)) {
-            return res.status(400).json({ error: 'Invalid tracks data' });
+        if (!access_token) {
+            return res.status(400).json({ error: 'Access token required' });
         }
 
-        // Try Upstash Redis first, fallback to memory
+        // Get recent tracks from Spotify
+        console.log('🤖 Auto-update: Fetching recent tracks...');
+        
+        const spotifyResponse = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=3', {
+            headers: { 'Authorization': `Bearer ${access_token}` }
+        });
+
+        if (!spotifyResponse.ok) {
+            if (spotifyResponse.status === 401 && refresh_token) {
+                // Token expired, need to refresh
+                return res.status(401).json({ 
+                    error: 'Token expired',
+                    needs_refresh: true 
+                });
+            }
+            throw new Error(`Spotify API error: ${spotifyResponse.status}`);
+        }
+
+        const spotifyData = await spotifyResponse.json();
+        const tracks = spotifyData.items;
+
+        if (!tracks || tracks.length === 0) {
+            return res.status(200).json({ 
+                success: true,
+                message: 'No recent tracks found',
+                tracks_cached: 0
+            });
+        }
+
+        // Cache tracks to Upstash Redis
         let cacheResult = 'memory';
         
         try {
-            // Use Upstash Redis REST API (no extra dependencies needed!)
             const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
             const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
             
@@ -65,10 +105,10 @@ module.exports = async function handler(req, res) {
                 const cacheData = {
                     tracks: tracks,
                     timestamp: Date.now(),
-                    cached_by: 'admin'
+                    cached_by: 'auto_update'
                 };
                 
-                // Store in Upstash with 30 day expiration (2,592,000 seconds) for monthly cleanup
+                // Store with 30 day expiration (2,592,000 seconds)
                 const response = await fetch(`${UPSTASH_URL}/setex/spotify:tracks/2592000/${encodeURIComponent(JSON.stringify(cacheData))}`, {
                     headers: {
                         'Authorization': `Bearer ${UPSTASH_TOKEN}`,
@@ -78,7 +118,7 @@ module.exports = async function handler(req, res) {
                 
                 if (response.ok) {
                     cacheResult = 'upstash_redis';
-                    console.log(`✅ Cached ${tracks.length} tracks in Upstash Redis`);
+                    console.log(`🤖 Auto-cached ${tracks.length} tracks in Upstash Redis`);
                 } else {
                     throw new Error('Upstash request failed');
                 }
@@ -86,7 +126,7 @@ module.exports = async function handler(req, res) {
                 throw new Error('Upstash not configured');
             }
         } catch (upstashError) {
-            console.log('Upstash unavailable, using memory fallback:', upstashError.message);
+            console.log('🤖 Upstash unavailable, using memory fallback:', upstashError.message);
             
             // Fallback to memory cache
             if (!global.spotifyTracks) {
@@ -96,19 +136,20 @@ module.exports = async function handler(req, res) {
             global.spotifyTracks = {
                 tracks: tracks,
                 timestamp: Date.now(),
-                cached_by: 'admin'
+                cached_by: 'auto_update'
             };
         }
         
         return res.status(200).json({ 
             success: true, 
-            message: `Cached ${tracks.length} tracks`,
+            message: `Auto-cached ${tracks.length} tracks`,
             timestamp: Date.now(),
-            storage: cacheResult
+            storage: cacheResult,
+            tracks_cached: tracks.length
         });
         
     } catch (error) {
-        console.error('Spotify cache error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('🤖 Auto-update error:', error);
+        return res.status(500).json({ error: 'Auto-update failed' });
     }
 };

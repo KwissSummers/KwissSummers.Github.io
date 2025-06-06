@@ -1,4 +1,4 @@
-// spotify.js - DEBUG VERSION with force load and detailed logging
+// spotify.js - Complete version with auto-updates and monthly cleanup
 
 class SpotifyPlayer {
     constructor() {
@@ -21,6 +21,7 @@ class SpotifyPlayer {
         this.scopes = 'user-read-recently-played';
         this.currentAudio = null;
         this.updateInterval = null;
+        this.autoUpdateInterval = null;
         this.tokenCheckInterval = null;
         
         console.log('🎵 Spotify Player constructed');
@@ -31,26 +32,20 @@ class SpotifyPlayer {
         console.log('🎵 SPOTIFY INITIALIZATION STARTING');
         console.log('🎵 =================================');
         
-        // STEP 1: Check if container exists
         const container = document.getElementById('spotify-widget');
         console.log('🎵 Container check:', container ? '✅ Found' : '❌ Missing');
         
         if (!container) {
             console.error('🎵 ❌ CRITICAL: spotify-widget container not found!');
-            console.log('🎵 Available elements with "spotify":', 
-                Array.from(document.querySelectorAll('[id*="spotify"], [class*="spotify"]')));
             return;
         }
 
-        // STEP 2: Clear any existing loading state
         console.log('🎵 Clearing loading state...');
         container.innerHTML = '<div class="spotify-loading"><h3>🎵 Initializing...</h3></div>';
 
-        // STEP 3: Check admin status
         const isOwner = this.checkIfOwner();
         console.log('🎵 Admin status:', isOwner ? '🔑 ADMIN' : '👥 VISITOR');
 
-        // STEP 4: Proceed based on mode
         if (isOwner) {
             console.log('🎵 🔑 Entering ADMIN mode...');
             this.handleAdminMode();
@@ -63,28 +58,20 @@ class SpotifyPlayer {
     checkIfOwner() {
         console.log('🎵 Checking admin status...');
         
-        // Method 1: Admin protection system
         if (window.adminProtection) {
             console.log('🎵 Admin protection found:', window.adminProtection.isAdmin());
             if (window.adminProtection.isAdmin()) {
                 console.log('🔑 Admin detected via protection system');
                 return true;
             }
-        } else {
-            console.log('🎵 Admin protection not available');
         }
         
-        // Method 2: Direct localStorage check
         const adminAuth = localStorage.getItem('admin_authenticated');
         const adminTimestamp = localStorage.getItem('admin_timestamp');
-        console.log('🎵 localStorage admin_authenticated:', adminAuth);
-        console.log('🎵 localStorage admin_timestamp:', adminTimestamp);
         
         if (adminAuth === 'true' && adminTimestamp) {
             const sessionAge = Date.now() - parseInt(adminTimestamp);
             const sessionValid = sessionAge < 24 * 60 * 60 * 1000;
-            console.log('🎵 Session age (hours):', Math.round(sessionAge / (1000 * 60 * 60)));
-            console.log('🎵 Session valid:', sessionValid);
             
             if (sessionValid) {
                 console.log('🔑 Admin detected via localStorage');
@@ -92,10 +79,7 @@ class SpotifyPlayer {
             }
         }
         
-        // Method 3: Legacy Spotify flag
         const legacyFlag = localStorage.getItem('spotify_owner_mode');
-        console.log('🎵 Legacy spotify_owner_mode:', legacyFlag);
-        
         if (legacyFlag === 'true') {
             console.log('🔑 Admin detected via legacy flag');
             return true;
@@ -143,11 +127,9 @@ class SpotifyPlayer {
         console.log('👥 VISITOR MODE INITIALIZATION');
         console.log('👥 =================================');
         
-        // FORCE: Show cached tracks immediately
         console.log('👥 🚀 FORCE showing cached tracks...');
         this.forceShowCachedTracks();
         
-        // Background: Try to get fresh data
         console.log('👥 🔄 Attempting to fetch fresh data in background...');
         this.tryFetchPublicTracks();
     }
@@ -208,7 +190,6 @@ class SpotifyPlayer {
             }
         } catch (error) {
             console.log('👥 ⚠️ Public API unavailable:', error.name);
-            // This is expected - keep showing cached tracks
         }
     }
 
@@ -338,7 +319,6 @@ class SpotifyPlayer {
         }
     }
 
-    // Rest of the methods remain the same...
     authenticate() {
         if (!this.checkIfOwner()) {
             alert('Admin access required for Spotify setup.');
@@ -461,70 +441,63 @@ class SpotifyPlayer {
         return data.items;
     }
 
-    // Fixed updateDisplay method for spotify.js
-// Replace your existing updateDisplay method with this:
-
-async updateDisplay() {
-    try {
-        console.log('🔑 📡 Fetching recent tracks from Spotify...');
-        const tracks = await this.getRecentTracks();
-        
-        if (tracks && tracks.length > 0) {
-            console.log(`🔑 ✅ Got ${tracks.length} tracks from Spotify`);
+    async updateDisplay() {
+        try {
+            console.log('🔑 📡 Fetching recent tracks from Spotify...');
+            const tracks = await this.getRecentTracks();
             
-            // Cache locally first
-            localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
-            
-            // Render tracks
-            await this.renderTracks(tracks);
-            
-            // CRITICAL: Cache tracks to server for visitors
-            console.log('🔑 💾 Caching tracks to server...');
-            await this.cacheTracksPublicly(tracks);
-            console.log('🔑 ✅ Tracks cached to server successfully');
-            
-        } else {
-            console.log('🔑 📭 No tracks found');
-            this.showNoTracks('admin');
+            if (tracks && tracks.length > 0) {
+                console.log(`🔑 ✅ Got ${tracks.length} tracks from Spotify`);
+                
+                // Cache locally first
+                localStorage.setItem('spotify_cached_tracks', JSON.stringify(tracks));
+                
+                // Render tracks
+                await this.renderTracks(tracks);
+                
+                // Cache tracks to server for visitors
+                console.log('🔑 💾 Caching tracks to server...');
+                await this.cacheTracksPublicly(tracks);
+                console.log('🔑 ✅ Tracks cached to server successfully');
+                
+            } else {
+                console.log('🔑 📭 No tracks found');
+                this.showNoTracks('admin');
+            }
+        } catch (error) {
+            console.error('🔑 ❌ Update failed:', error);
+            this.forceShowCachedTracks();
         }
-    } catch (error) {
-        console.error('🔑 ❌ Update failed:', error);
-        this.forceShowCachedTracks();
     }
-}
 
-// Also make sure your cacheTracksPublicly method is correct:
-async cacheTracksPublicly(tracks) {
-    try {
-        console.log('🔑 🌐 Calling cache API with', tracks.length, 'tracks');
-        
-        const response = await fetch(`${this.apiBase}/spotify-cache`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                // Include cookies for admin authentication
-                'credentials': 'include'
-            },
-            credentials: 'include', // Important for admin auth
-            body: JSON.stringify({ tracks })
-        });
-        
-        console.log('🔑 📡 Cache API response:', response.status, response.statusText);
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('🔑 ✅ Cache result:', result);
-            return result;
-        } else {
-            const errorText = await response.text();
-            console.error('🔑 ❌ Cache API error:', response.status, errorText);
-            throw new Error(`Cache failed: ${response.status}`);
+    async cacheTracksPublicly(tracks) {
+        try {
+            console.log('🔑 🌐 Calling cache API with', tracks.length, 'tracks');
+            
+            const response = await fetch(`${this.apiBase}/spotify-cache`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ tracks })
+            });
+            
+            console.log('🔑 📡 Cache API response:', response.status, response.statusText);
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('🔑 ✅ Cache result:', result);
+                return result;
+            } else {
+                const errorText = await response.text();
+                console.error('🔑 ❌ Cache API error:', response.status, errorText);
+                throw new Error(`Cache failed: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('🔑 ❌ Failed to cache tracks publicly:', error);
         }
-    } catch (error) {
-        console.error('🔑 ❌ Failed to cache tracks publicly:', error);
-        // Don't throw - this shouldn't break the main functionality
     }
-}
 
     async getAlternativePreview(trackName, artistName) {
         try {
@@ -605,11 +578,58 @@ async cacheTracksPublicly(tracks) {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
+    // ENHANCED: Auto-update methods
     startUpdating() {
+        // Immediate update
         this.updateDisplay();
+        
+        // Regular updates every 60 seconds (when admin is active)
         this.updateInterval = setInterval(() => {
             this.updateDisplay();
         }, 60000);
+        
+        // Background auto-updates every 2 hours (even when not actively browsing)
+        this.autoUpdateInterval = setInterval(() => {
+            this.triggerAutoUpdate();
+        }, 2 * 60 * 60 * 1000); // 2 hours
+        
+        console.log('🤖 Auto-updates enabled: every 2 hours');
+    }
+
+    // NEW: Trigger background auto-update
+    async triggerAutoUpdate() {
+        if (!this.accessToken) {
+            console.log('🤖 Auto-update skipped: no access token');
+            return;
+        }
+        
+        try {
+            console.log('🤖 Triggering background auto-update...');
+            
+            const response = await fetch(`${this.apiBase}/spotify-auto-update`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    access_token: this.accessToken,
+                    refresh_token: this.refreshToken
+                })
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('🤖 Auto-update success:', result.message);
+            } else if (response.status === 401) {
+                console.log('🤖 Auto-update token expired, refreshing...');
+                await this.attemptTokenRefresh();
+            } else {
+                console.log('🤖 Auto-update failed:', response.status);
+            }
+        } catch (error) {
+            console.log('🤖 Auto-update error:', error.message);
+        }
     }
 
     startTokenMonitoring() {
@@ -620,16 +640,24 @@ async cacheTracksPublicly(tracks) {
         }, 5 * 60 * 1000);
     }
 
+    // ENHANCED: Stop all updates including auto-updates
     stopUpdating() {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
         
+        if (this.autoUpdateInterval) {
+            clearInterval(this.autoUpdateInterval);
+            this.autoUpdateInterval = null;
+        }
+        
         if (this.tokenCheckInterval) {
             clearInterval(this.tokenCheckInterval);
             this.tokenCheckInterval = null;
         }
+        
+        console.log('🤖 All updates stopped');
     }
 }
 

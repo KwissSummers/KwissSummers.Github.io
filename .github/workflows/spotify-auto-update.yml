@@ -1,0 +1,49 @@
+# .github/workflows/spotify-auto-update.yml
+# FREE autonomous Spotify updates using GitHub Actions
+
+name: Auto-Update Spotify Tracks
+
+on:
+  schedule:
+    # Run every 2 hours
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-spotify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Update Spotify Cache
+        run: |
+          echo "🤖 Triggering autonomous Spotify update..."
+          
+          # Call your Vercel API endpoint
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -d '{"source": "github_actions"}' \
+            https://chrissummers.dev/api/spotify-cron-update)
+          
+          HTTP_CODE="${RESPONSE: -3}"
+          BODY="${RESPONSE%???}"
+          
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+          
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Update successful"
+          else
+            echo "❌ Update failed"
+            exit 1
+          fi
+
+      - name: Verify Cache Update
+        run: |
+          echo "🔍 Verifying cache was updated..."
+          
+          # Check if tracks were updated
+          curl -s https://chrissummers.dev/api/spotify-public | \
+            jq -r '.message, (.timestamp | todate), (.tracks | length | tostring + " tracks")'
+          
+          echo "✅ Verification complete"
