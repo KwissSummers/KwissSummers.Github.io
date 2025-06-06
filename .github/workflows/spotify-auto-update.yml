@@ -18,11 +18,10 @@ jobs:
         run: |
           echo "🤖 Triggering autonomous Spotify update..."
           
-          # Call your Vercel API endpoint
+          # Call your Vercel API endpoint with secret in request body
           RESPONSE=$(curl -s -L -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            -d '{"source": "github_actions"}' \
+            -d '{"source": "github_actions", "secret": "${{ secrets.CRON_SECRET }}"}' \
             https://chrissummers.dev/api/spotify-cron-update)
           
           HTTP_CODE="${RESPONSE: -3}"
