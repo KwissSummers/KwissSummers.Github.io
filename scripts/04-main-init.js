@@ -450,7 +450,7 @@ function addEnhancedControlButtons() {
     // Create controls label
     const controlsLabel = document.createElement('div');
     controlsLabel.className = 'controls-label';
-    controlsLabel.textContent = 'toggle music/particles';
+    controlsLabel.textContent = 'Toggles!';
     
     // Create controls row
     const controlsRow = document.createElement('div');
