@@ -14,6 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Check CRON_SECRET presence
+        run: |
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "❌ CRON_SECRET is empty"
+            exit 1
+          else
+            echo "✅ CRON_SECRET is present (length: ${#CRON_SECRET})"
+          fi
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+
       - name: Update Spotify Cache
         run: |
           echo "🤖 Triggering autonomous Spotify update..."
@@ -21,7 +32,7 @@ jobs:
           # Call your Vercel API endpoint with secret in request body
           RESPONSE=$(curl -s -L -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
-            -d '{"source": "github_actions", "secret": "${{ secrets.CRON_SECRET }}"}' \
+            -d "{\"source\": \"github_actions\", \"secret\": \"${{ secrets.CRON_SECRET }}\"}" \
             https://chrissummers.dev/api/spotify-cron-update)
           
           HTTP_CODE="${RESPONSE: -3}"
