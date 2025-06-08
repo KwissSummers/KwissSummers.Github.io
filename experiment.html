@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris Li - Resume</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 0.75in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 10.5pt;
+            line-height: 1.15;
+            color: black;
+            background: white;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        /* Header Cell */
+        .header-cell {
+            border: none;
+            border-bottom: 2px solid black;
+            text-align: center;
+            padding: 7pt;
+            margin-bottom: 0;
+        }
+
+        .name {
+            font-size: 15pt;
+            font-weight: bold;
+            letter-spacing: 2pt;
+            margin-bottom: 5pt;
+        }
+
+        .contact-info {
+            font-size: 10pt;
+            line-height: 1.15;
+        }
+
+        /* Section Cells */
+        .section-cell {
+            border: none;
+            border-bottom: 2px solid black;
+            padding: 4pt 8pt;
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1pt;
+            margin-bottom: 5pt;
+            padding-bottom: 0;
+            background: none;
+            color: black;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 4pt;
+        }
+
+        .education-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2pt;
+            padding-bottom: 1pt;
+            border-bottom: 1px dotted #666;
+        }
+
+        .degree-school {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .date {
+            font-style: italic;
+            margin-left: 7pt;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7pt;
+            margin-bottom: 5pt;
+        }
+
+        .skill-category {
+            margin-bottom: 3pt;
+        }
+
+        .skill-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1.5pt;
+        }
+
+        /* Projects */
+        .subsection {
+            margin-bottom: 5pt;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5pt;
+            padding-bottom: 1pt;
+            border-bottom: 1px dotted #666;
+        }
+
+        .project-title {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .bullet-list {
+            margin: 0;
+            padding-left: 15pt;
+            margin-bottom: 3pt;
+        }
+
+        .bullet-list li {
+            margin-bottom: 1pt;
+            line-height: 1.15;
+        }
+
+        /* Work Experience */
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5pt;
+            padding-bottom: 1pt;
+            border-bottom: 1px dotted #666;
+        }
+
+        .job-title-company {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        /* Achievements */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5pt;
+        }
+
+        .achievement-item {
+            margin-bottom: 1.5pt;
+            font-size: 10pt;
+            line-height: 1.15;
+        }
+
+        /* Additional Info */
+        .info-section {
+            margin-bottom: 1pt;
+        }
+
+        /* Print optimization */
+        @media print {
+            body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Cell -->
+    <div class="header-cell">
+        <div class="name">CHRIS LI</div>
+        <div class="contact-info">
+            Charlotte, NC | 704-712-8897<br>
+            Chris4summers@outlook.com | linkedin.com/in/chris4li<br>
+            github.com/KwissSummers | chrissummers.dev
+        </div>
+    </div>
+
+    <!-- Education Cell -->
+    <div class="section-cell">
+        <div class="section-header">EDUCATION</div>
+        <div class="subsection">
+            <div class="education-header">
+                <div class="degree-school">Bachelor of Science in Computer Science</div>
+                <div class="date">May 2025</div>
+            </div>
+            <div>University of North Carolina at Charlotte</div>
+            <div>Concentration: AI, Robotics, Game Development | GPA: 3.60 | Graduated Cum Laude</div>
+            <div><strong>Honors:</strong> Chancellor's List (2025), Dean's List (2021-2025)</div>
+        </div>
+    </div>
+
+    <!-- Technical Skills Cell -->
+    <div class="section-cell">
+        <div class="section-header">TECHNICAL SKILLS</div>
+        <div class="skills-grid">
+            <div>
+                <div class="skill-category">
+                    <div class="skill-label">Programming Languages</div>
+                    <div>Java, JavaScript, Python, C, C++, C#, SQL, HTML, CSS</div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-label">Technical Areas</div>
+                    <div>Machine Learning, AI, Web Development, Game Development, Database Management</div>
+                </div>
+            </div>
+            <div>
+                <div class="skill-category">
+                    <div class="skill-label">Technologies & Frameworks</div>
+                    <div>Node.js, Unity, GameMaker, Git, GitHub, API Integration</div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-label">Other Skills</div>
+                    <div>Problem Solving, Team Collaboration, Critical Thinking</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Cell -->
+    <div class="section-cell">
+        <div class="section-header">PROJECTS</div>
+        <div class="subsection">
+            <div class="project-header">
+                <div class="project-title">Personal Portfolio Website</div>
+                <div class="date">May 2025</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Built personal website using HTML, CSS, JavaScript, and Node.js</li>
+                <li>Integrated Spotify Web API to display recently played music</li>
+                <li>Implemented contact forms, user authentication, and responsive design</li>
+                <li>Added interactive particle effects and mobile optimization</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <div class="project-header">
+                <div class="project-title">Machine Learning Fraud Detection</div>
+                <div class="date">Spring 2024</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Developed machine learning model in Python to detect credit card fraud</li>
+                <li>Processed datasets and tested multiple algorithms for accuracy</li>
+                <li>Completed one-week sprint project for Machine Learning course</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <div class="project-header">
+                <div class="project-title">Game Development Portfolio</div>
+                <div class="date">2024-2025</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Created games including "Redline Rampage," "Uproot," and "Shadows of Pestis"</li>
+                <li>Programmed AI pathfinding, physics systems, and user interfaces</li>
+                <li>Designed art assets, audio, and game mechanics using Unity and GameMaker</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Work Experience Cell -->
+    <div class="section-cell">
+        <div class="section-header">WORK EXPERIENCE</div>
+        <div class="subsection">
+            <div class="job-header">
+                <div class="job-title-company">AI Prompt Writer | Outlier</div>
+                <div class="date">June 2024 - Present</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Train AI models on writing, coding, linguistics, and creative content</li>
+                <li>Analyze data and provide feedback to improve AI system performance</li>
+                <li>Work across multiple domains including problem-solving and information analysis</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <div class="job-header">
+                <div class="job-title-company">Customer Service Representative | Fortune Garden</div>
+                <div class="date">June 2017 - July 2024</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Provided customer service and managed inventory for small business over 7 years</li>
+                <li>Coordinated team activities and assisted with basic translation (English, Mandarin, Spanish)</li>
+                <li>Maintained organized work environment and collaborative operations</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <div class="job-header">
+                <div class="job-title-company">Art Camp Counselor | Morrison Family YMCA</div>
+                <div class="date">June 2022 - August 2022</div>
+            </div>
+            <ul class="bullet-list">
+                <li>Led art activities and implemented safety protocols for children's programs</li>
+                <li>Facilitated communication between campers, parents, and staff</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Certifications & Achievements Cell -->
+    <div class="section-cell">
+        <div class="section-header">CERTIFICATIONS & ACHIEVEMENTS</div>
+        <div class="achievement-grid">
+            <div class="achievement-item">• Winner - 49er Game Jam (November 2023)</div>
+            <div class="achievement-item">• FreeCodeCamp Web Design Certification (2024)</div>
+            <div class="achievement-item">• FreeCodeCamp JavaScript Certification (2024)</div>
+            <div class="achievement-item">• Microsoft Excel Advanced Certification (2024)</div>
+            <div class="achievement-item">• C++ Programming Certification (2023)</div>
+            <div class="achievement-item">• CPR and First Aid Certified (2022)</div>
+        </div>
+    </div>
+
+    <!-- Additional Information Cell -->
+    <div class="section-cell" style="border-bottom: none;">
+        <div class="section-header">ADDITIONAL INFORMATION</div>
+        <div class="info-section">
+            <strong>Student Organizations:</strong> UNCC Game Developers Club, IGDA at UNCC (Fall 2023 - Present)
+        </div>
+        <div class="info-section">
+            <strong>Languages:</strong> English (Native), Mandarin (Basic), Spanish (Basic)
+        </div>
+    </div>
+</body>
+</html>

@@ -171,12 +171,15 @@ function initSimpleHangingLights() {
 }
 
 // === ENHANCED PERSISTENT AUDIO MANAGER - FIXED VERSION ===
+// Updated section for 04-main-init.js - FIXED MUSIC BEHAVIOR
+
 class EnhancedPersistentAudioManager extends PersistentAudioManager {
     constructor() {
         super();
         this.defaultVolume = 0.5; // Start at 50% volume
         this.volume = this.defaultVolume;
         this.userHasExplicitlyDisabled = false; // Track if user turned off music
+        this.hasEverPlayed = false; // Track if music has played this session
         
         // Load user preferences FIRST before any auto-start
         this.loadUserPreferences();
@@ -186,7 +189,7 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             this.audio.volume = this.volume;
         }
         
-        // Only auto-start if user hasn't explicitly disabled it
+        // Setup auto-start behavior based on user preferences
         this.setupConditionalAutoStart();
     }
     
@@ -198,22 +201,26 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
                 this.isEnabled = parsed.audioEnabled !== false; // Default to true if not set
                 this.volume = parsed.volume || this.defaultVolume;
                 this.userHasExplicitlyDisabled = parsed.userExplicitlyDisabled === true;
+                this.hasEverPlayed = parsed.hasEverPlayed === true;
                 
                 console.log('🎵 User audio preferences loaded:', {
                     enabled: this.isEnabled,
                     volume: Math.round(this.volume * 100) + '%',
-                    userDisabled: this.userHasExplicitlyDisabled
+                    userDisabled: this.userHasExplicitlyDisabled,
+                    hasEverPlayed: this.hasEverPlayed
                 });
             } else {
-                // First time visitor - default to enabled
+                // First time visitor - should auto-start on interaction
                 this.isEnabled = true;
                 this.userHasExplicitlyDisabled = false;
-                console.log('🎵 First time visitor - audio enabled by default');
+                this.hasEverPlayed = false;
+                console.log('🎵 First time visitor - will auto-start on interaction');
             }
         } catch (error) {
             console.warn('Failed to load audio preferences:', error);
             this.isEnabled = true;
             this.userHasExplicitlyDisabled = false;
+            this.hasEverPlayed = false;
         }
     }
     
@@ -222,13 +229,15 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             const settings = {
                 audioEnabled: this.isEnabled,
                 volume: this.volume,
-                userExplicitlyDisabled: this.userHasExplicitlyDisabled
+                userExplicitlyDisabled: this.userHasExplicitlyDisabled,
+                hasEverPlayed: this.hasEverPlayed
             };
             localStorage.setItem(this.storageKey, JSON.stringify(settings));
             console.log('🎵 Audio settings saved:', {
                 enabled: this.isEnabled,
                 volume: Math.round(this.volume * 100) + '%',
-                userDisabled: this.userHasExplicitlyDisabled
+                userDisabled: this.userHasExplicitlyDisabled,
+                hasEverPlayed: this.hasEverPlayed
             });
         } catch (e) {
             console.warn('Failed to save audio settings:', e);
@@ -236,44 +245,43 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
     }
     
     setupConditionalAutoStart() {
-        // Only attempt auto-start if user hasn't explicitly disabled audio
-        if (this.isEnabled && !this.userHasExplicitlyDisabled) {
-            this.attemptAutoStart();
+        // ORIGINAL BEHAVIOR: Auto-start on first interaction if:
+        // 1. User hasn't explicitly disabled it, AND
+        // 2. It's either first time OR user had it enabled before
+        if (!this.userHasExplicitlyDisabled && (!this.hasEverPlayed || this.isEnabled)) {
+            this.setupAutoStartOnInteraction();
         } else {
-            console.log('🔇 Auto-start skipped - user has disabled audio');
+            console.log('🔇 Auto-start skipped - user has disabled audio or had it off');
             this.updateButtons();
         }
     }
     
-    attemptAutoStart() {
-        const startAudio = () => {
-            // Double-check preferences haven't changed
-            if (!this.isEnabled || this.userHasExplicitlyDisabled) {
-                console.log('🔇 Auto-start cancelled - user preferences changed');
-                return;
+    setupAutoStartOnInteraction() {
+        const startAudioOnFirstInteraction = () => {
+            // Only start if user hasn't explicitly disabled it since page load
+            if (!this.userHasExplicitlyDisabled) {
+                this.volume = this.defaultVolume;
+                this.setVolume(this.defaultVolume);
+                this.startAudio();
+                this.hasEverPlayed = true;
+                this.saveSettings();
+                console.log('🎵 Auto-started ambient audio on first interaction at 50% volume');
+            } else {
+                console.log('🔇 Auto-start cancelled - user disabled during page load');
             }
             
-            this.volume = this.defaultVolume;
-            this.setVolume(this.defaultVolume);
-            this.startAudio();
-            console.log('🎵 Auto-started ambient audio at 50% volume');
+            // Remove listeners after first interaction
+            document.removeEventListener('click', startAudioOnFirstInteraction);
+            document.removeEventListener('keydown', startAudioOnFirstInteraction);
+            document.removeEventListener('touchstart', startAudioOnFirstInteraction);
         };
         
-        // Try immediate start
-        setTimeout(startAudio, 100);
+        // Listen for any user interaction
+        document.addEventListener('click', startAudioOnFirstInteraction, { once: true });
+        document.addEventListener('keydown', startAudioOnFirstInteraction, { once: true });
+        document.addEventListener('touchstart', startAudioOnFirstInteraction, { once: true });
         
-        // Also try on first user interaction as fallback
-        const enableAudioOnInteraction = () => {
-            // Check if user still wants audio and hasn't explicitly disabled it
-            if (this.isEnabled && !this.userHasExplicitlyDisabled && (this.audio.paused || !this.audio)) {
-                startAudio();
-            }
-            document.removeEventListener('click', enableAudioOnInteraction);
-            document.removeEventListener('keydown', enableAudioOnInteraction);
-        };
-        
-        document.addEventListener('click', enableAudioOnInteraction, { once: true });
-        document.addEventListener('keydown', enableAudioOnInteraction, { once: true });
+        console.log('🎵 Auto-start listeners set up - waiting for user interaction');
     }
     
     async startAudio() {
@@ -286,6 +294,7 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             // Don't restart if already playing
             if (!this.audio.paused) {
                 this.isEnabled = true;
+                this.hasEverPlayed = true;
                 this.saveSettings();
                 this.updateButtons();
                 this.updateVolumeDisplay();
@@ -295,6 +304,7 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             await this.audio.play();
             this.isEnabled = true;
             this.userHasExplicitlyDisabled = false; // User action to start = they want it
+            this.hasEverPlayed = true;
             window.globalAudioInstance.isPlaying = true;
             this.saveSettings();
             this.saveAudioState();
