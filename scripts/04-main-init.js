@@ -198,10 +198,12 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
             const settings = localStorage.getItem(this.storageKey);
             if (settings) {
                 const parsed = JSON.parse(settings);
-                this.isEnabled = parsed.audioEnabled !== false; // Default to true if not set
                 this.volume = parsed.volume || this.defaultVolume;
                 this.userHasExplicitlyDisabled = parsed.userExplicitlyDisabled === true;
                 this.hasEverPlayed = parsed.hasEverPlayed === true;
+                
+                // Set isEnabled based on user's explicit choice
+                this.isEnabled = !this.userHasExplicitlyDisabled;
                 
                 console.log('🎵 User audio preferences loaded:', {
                     enabled: this.isEnabled,
@@ -245,13 +247,13 @@ class EnhancedPersistentAudioManager extends PersistentAudioManager {
     }
     
     setupConditionalAutoStart() {
-        // ORIGINAL BEHAVIOR: Auto-start on first interaction if:
-        // 1. User hasn't explicitly disabled it, AND
-        // 2. It's either first time OR user had it enabled before
-        if (!this.userHasExplicitlyDisabled && (!this.hasEverPlayed || this.isEnabled)) {
+        // RESTORED ORIGINAL BEHAVIOR: Auto-start on first interaction if:
+        // 1. User hasn't explicitly disabled it, AND  
+        // 2. Either first time visitor OR returning user who had it enabled
+        if (!this.userHasExplicitlyDisabled) {
             this.setupAutoStartOnInteraction();
         } else {
-            console.log('🔇 Auto-start skipped - user has disabled audio or had it off');
+            console.log('🔇 Auto-start skipped - user has explicitly disabled audio');
             this.updateButtons();
         }
     }

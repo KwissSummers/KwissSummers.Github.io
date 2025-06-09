@@ -49,12 +49,10 @@ body {
         ),
         /* PITCH BLACK base gradient like Steam */
         linear-gradient(135deg, #020202 0%, #060606 25%, #030303 50%, #080808 75%, #020202 100%);
-    margin: 0;
-    padding: 30px;
-    box-sizing: border-box;
+    display: flex;
     min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+    width: 100%;
+    flex-direction: column;
     overflow-y: auto;
 }
 

@@ -269,7 +269,7 @@ class SpotifyPlayer {
         const isAdmin = this.checkIfOwner();
         const statusText = isAdmin ? 
             (isCached ? ' (Cached)' : '') : 
-            " (Chris's Music)";
+            "";
 
         try {
             const tracksHtml = await Promise.all(tracks.map(async (item, index) => {

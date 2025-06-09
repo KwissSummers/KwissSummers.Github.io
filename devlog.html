@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- FORCE DESKTOP VIEW ON MOBILE - REMOVE RESPONSIVE VIEWPORT -->
-    <meta name="viewport" content="width=1200, initial-scale=0.3, minimum-scale=0.1, maximum-scale=2.0, user-scalable=yes">
     <title>ChrisSummer's website | Dev Log</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
@@ -36,7 +34,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="responsive">
   <!-- Rain Effects -->
     <div class="ambient-light"></div>
     <div class="rain-container" id="rainContainer"></div>
@@ -65,54 +63,6 @@
         <!-- Dev Log Posts -->
         <div class="devlog-posts">
           
-          <article class="devlog-post" id="website-devlog-3" data-category="website" data-tags="styling,development">
-            <h2>Development Log 5 – This Website</h2>
-            <p class="devlog-date">Posted: June 6th, 2025</p>
-            
-            <p class="devlog-excerpt">
-              Bugfixing, so much bugfixing
-            </p>
-            
-            <button class="devlog-toggle">Read More</button>
-            
-            <div class="devlog-full" hidden>
-              <h4>Spotify Widget</h4>
-              <p>
-                Turns out there were some holes in the code of my spotify widget. The widget was only working 
-                locally on specific browser local save data. Extremely long story short, I had to rewrite and 
-                add so many more files and code and api configurations across so many different services/websites. 
-                The current version works the way I envisioned it, to summarize it, I had to set up a server storage 
-                to cache the data from the spotify API. Then I had to setup a automated workflow on github action to 
-                update the cache. Then I also had to set up security measures for ?admin to prevent unauthorized access to the API. 
-                Dont get me started on the number of environmental variables and bugs I had to fix, or the amount of time 
-                spent debugging. But it works. It finally works.
-              </p>
-              
-              <h4>Server side passwords</h4>
-              <p>
-                So I learned today that basically anyone can use ?admin to access admin features on a website. I didn't even 
-                know that was a thing before. I implemented a server side password protection system to prevent unauthorized 
-                access, it's so weird doing things server side vs client side. Theres so many more steps and hoops to jump through. 
-                I understood server/client side before in theory with my experience modding games, but doing it in a web context was 
-                so bizzare. Looking back, if I had approached this project with a server side mindset from the start and with my gamer mindset. 
-                This silly little website would've caused me much less grief. But I learned a LOT in the process.
-              </p>
-              
-              <h4>Whats left?</h4>
-              <p>
-                Ahhhh I'm tired of developing this website and debugging! I'm done for now. The biggest glaring issue on my checklist is that 
-                the website still isn't super well styled/optimized for mobile viewing. I forced the desktop view on mobile so that the website 
-                looks the way I want it to. I had a mobile version of the website but it was a little buddy styling wise. I just have too many css 
-                style code to customize everything and it translates poorly to mobile. Honestly I might just have to build an entire mobile version 
-                of the website from scratch but by the gods I dont want to. Lastly the spotify widget works, but I found out from my friend that 
-                theres literally already a service that basically does everything my spotify widget does. And I could've just used that instead of 
-                building my entire widget from the ground up. I'm so miffed, but this did force me learn about server side code and api calls, also 
-                a lot more functions on github and vercel. I cant help but smile and laugh at the irony of it all, I seem to be mildly amused by my 
-                own suffering. I always considered myself a realist, but maybe I'm a teeny tiny bit of a glass half full person too. Just a tiny bit.
-              </p>
-            </div>
-          </article>
-
           <article class="devlog-post" id="website-devlog-3" data-category="website" data-tags="styling,development">
             <h2>Development Log 4 – This Website</h2>
             <p class="devlog-date">Posted: June 5th, 2025</p>
@@ -316,8 +266,6 @@
           <div class="tech-tags">
             <span class="tech-tag">JavaScript</span>
             <span class="tech-tag">HTML/CSS</span>
-            <span class="tech-tag">React</span>
-            <span class="tech-tag">Node.js</span>
             <span class="tech-tag">API Integration</span>
             <span class="tech-tag">Backend Hosting</span>
           </div>
