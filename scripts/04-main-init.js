@@ -1503,12 +1503,14 @@ function addColorBlindSupport() {
     
     // Add patterns to different categories
     setTimeout(() => {
-        // Project filters
+        /*
+        // Project filters - REMOVED FOR NOW 
         addPatternToElements('[data-filter="game"]', '●');
         addPatternToElements('[data-filter="web"]', '▲');
         addPatternToElements('[data-filter="ai-ml"]', '■');
         addPatternToElements('[data-filter="design"]', '♦');
-        
+        */
+
         // Skill tags - use more specific selectors
         const skillTags = document.querySelectorAll('.skill-tag');
         skillTags.forEach((tag, index) => {

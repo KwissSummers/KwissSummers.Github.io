@@ -65,6 +65,7 @@
         <button class="filter-tab" data-filter="web">Web Dev</button>
         <button class="filter-tab" data-filter="ai-ml">AI/ML</button>
         <button class="filter-tab" data-filter="design">Design</button>
+        <button class="filter-tab" data-filter="internship">Internship</button>
       </section>
 
       <!-- Project Gallery Section -->
@@ -89,6 +90,26 @@
             </div>
             <div class="project-actions">
               <a href="https://sock8416.itch.io/redline-rampage" class="project-button" target="_blank">Play on itch.io</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="game">
+            <h3>Caaarrrrrds</h3>
+            <p class="project-tech">Art Creation • Game Design • Game Development</p>
+            <div class="project-description">
+              <p class="project-description-short">A small scoped game created for the 2 day 2026 Spring Game Jam</p>
+              <p class="project-description-full">
+                A real time card game made for the 2026 UNCC Spring Jam for the theme "Heart of The Cards". The premise was that the player
+                would fight against a boss by playing cards that had different effects while the boss actively attacked the player at set intervals. 
+                <br><br>
+                I did the art for the cards and designed the gameplay systems for the game. Admittedly we had to scope down quite a bit to make it to the jam 
+                deadline. So the game itself is a little half baked, but the core mechanics remain functional and actually amusing to play. 
+                Probably the game I'm most content with jam wise. 
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
+            </div>
+            <div class="project-actions">
+              <a href="https://ckronstad.itch.io/caaarrrrrds" class="project-button" target="_blank">Play on itch.io</a>
             </div>
           </div>
 
@@ -250,6 +271,70 @@
             </div>
           </div>
 
+          <!-- Internship Projects -->
+          <div class="project-card" data-category="internship">
+            <h3>PEP-GP-WebDevProject-Recipe_v2.1</h3>
+            <p class="project-tech">JavaScript • HTML • CSS</p>
+            <div class="project-description">
+              <p class="project-description-short">RecipeHub is a full-stack web application that allows users to manage recipes and ingredients through a browser-based interface. The application includes user authentication with different permission levels (regular users and admins). 
+                Regular users can perform CRUD operations on recipes including viewing, searching, adding, updating, and deleting recipes. Admin users have additional privileges to manage ingredients including viewing, adding, and deleting them from the system.</p>
+              <p class="project-description-full">
+                The application is built using a HTML/CSS/JavaScript frontend that communicates with a Java backend API running on port 8081. The frontend implements proper security measures including CORS support and password confirmation during registration. 
+                The system provides comprehensive user session management with login/logout functionality and role-based access control for admin features.
+                <br><br>
+                Development of this application requires Java version 9-22 compatibility and includes separate testing capabilities, though tests cannot run simultaneously with the backend server. The project follows a structured organization with dedicated components for user authentication, recipe management, and ingredient administration.
+                <br><br>
+                This project emphasizes building a complete web application with both frontend and backend integration, focusing on proper user interface design, secure authentication, and efficient data management through a REST API architecture.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/KwissSummers-PEP-GP-WebDevProject-Recipe" class="project-button" target="_blank">View GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="internship">
+            <h3>PEP-SpringSocialMediaBlogAPI-Project_v2.0</h3>
+            <p class="project-tech">Java • Spring Boot • Spring Web • Spring Data JPA</p>
+            <div class="project-description">
+              <p class="project-description-short">
+                A backend-only social media API built using the Spring ecosystem. The application manages user accounts and user-generated messages, supporting authentication and full CRUD operations. It provides endpoints for user registration, login, and message handling without a frontend interface.
+              </p>
+              <p class="project-description-full">
+                This application is developed using the Spring Framework, leveraging Spring Boot for rapid setup and configuration, Spring Web for RESTful API development, and Spring Data JPA for database interactions. The API is designed to handle core social media functionality including user authentication, message creation, retrieval, updates, and deletion.
+                <br><br>
+                The system supports structured endpoint design to deliver data efficiently for potential frontend integration. It ensures proper separation of concerns through layered architecture, including controller, service, and repository layers.
+                <br><br>
+                This project emphasizes scalable backend development using modern Java frameworks, focusing on clean architecture, efficient data persistence, and REST API best practices.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/KwissSummers-PEP-SpringSocialMediaBlogAPI-Project" class="project-button" target="_blank">View GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="internship">
+            <h3>PEP-SocialMediaBlogAPI-Project_v2.0</h3>
+            <p class="project-tech">Java • Javalin • JDBC</p>
+            <div class="project-description">
+              <p class="project-description-short">
+                A backend-only social media API that enables management of user accounts and messages. Users can view all messages or filter messages by specific users, with full support for authentication and CRUD operations.
+              </p>
+              <p class="project-description-full">
+                This application is built using Java with the Javalin framework to create lightweight RESTful endpoints and JDBC for direct database connectivity. It provides core backend functionality including user registration, login, and complete message management (create, read, update, delete).
+                <br><br>
+                The API is designed to efficiently handle requests for retrieving all messages or messages by individual users, ensuring flexible data access patterns. It follows REST principles to allow easy integration with any frontend client.
+                <br><br>
+                This project highlights foundational backend development skills, focusing on manual database interaction, lightweight API design, and implementing core social media features without the abstraction of larger frameworks.
+              </p>
+              <button class="read-more-btn" onclick="toggleDescription(this)">Read More</button>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/KwissSummers/KwissSummers-PEP-SocialMediaBlogAPI-Project" class="project-button" target="_blank">View GitHub</a>
+            </div>
+          </div>
+
           <!-- Design Projects -->
           <div class="project-card" data-category="design">
             <h3>KarpTime App Concept</h3>
@@ -290,6 +375,8 @@
               <a href="https://github.com/KwissSummers/gameJamLinks" class="project-button" target="_blank">View All Jams</a>
             </div>
           </div>
+
+          
 
           <!-- Placeholder for future projects -->
           <div class="project-card" data-category="all">

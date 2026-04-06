@@ -362,6 +362,16 @@
     0 0 50px rgba(155, 89, 182, 0.3);
 }
 
+/* Internship Projects - Teal */
+.filter-tab[data-filter="internship"].active {
+  background-color: #1abc9c;
+  color: #ffffff;
+  border-color: #1abc9c;
+  box-shadow: 
+    0 0 25px rgba(26, 188, 156, 0.5),
+    0 0 50px rgba(26, 188, 156, 0.3);
+}
+
 /* Project Categories - Color coding with enhanced glow */
 .project-card[data-category="game"] {
   border-left: 4px solid #e74c3c;
